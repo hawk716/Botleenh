@@ -1,0 +1,12 @@
+{
+  "120363422381460940@g.us": {
+    "pins": true,
+    "files": true,
+    "videos": true,
+    "forwards": true,
+    "audio": true,
+    "voice": true,
+    "contacts": true,
+    "edits": true
+  }
+}

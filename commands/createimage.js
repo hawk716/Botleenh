@@ -1,0 +1,64 @@
+const axios = require('axios');
+
+async function createImageCommand(sock, chatId, message) {
+    try {
+        // Get the prompt from the message
+        const text = message.message?.conversation?.trim() || 
+                     message.message?.extendedTextMessage?.text?.trim() || '';
+        
+        // Remove the command prefix and trim
+        const imagePrompt = text.replace(/^\.?انشاء\s*/i, '').trim();
+        
+        if (!imagePrompt) {
+            await sock.sendMessage(chatId, {
+                text: 'يرجى تقديم وصف لإنشاء الصورة.\n\nمثال: .انشاء قطة جميلة في العراق'
+            }, {
+                quoted: message
+            });
+            return;
+        }
+
+        // Send processing message
+        await sock.sendMessage(chatId, {
+            text: '🎨 جاري إنشاء صورتك... يرجى الانتظار.'
+        }, {
+            quoted: message
+        });
+
+        try {
+            // Make API request to sii3.top
+            const response = await axios.get(`https://sii3.top/api/gpt-img.php?text=${encodeURIComponent(imagePrompt)}`, {
+                timeout: 30000
+            });
+
+            if (response.data && response.data.image_url) {
+                // Send the generated image URL
+                await sock.sendMessage(chatId, {
+                    image: { url: response.data.image_url },
+                    caption: `🎨 الصورة المولدة للوصف: "${imagePrompt}"`
+                }, {
+                    quoted: message
+                });
+            } else {
+                throw new Error('No image URL in response');
+            }
+        } catch (apiError) {
+            console.error('Error calling image API:', apiError);
+            await sock.sendMessage(chatId, {
+                text: '❌ فشل في إنشاء الصورة. يرجى المحاولة لاحقاً.'
+            }, {
+                quoted: message
+            });
+        }
+
+    } catch (error) {
+        console.error('Error in createimage command:', error);
+        await sock.sendMessage(chatId, {
+            text: '❌ حدث خطأ. يرجى المحاولة لاحقاً.'
+        }, {
+            quoted: message
+        });
+    }
+}
+
+module.exports = createImageCommand;
