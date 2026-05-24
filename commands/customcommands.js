@@ -1,23 +1,39 @@
-
 const fs = require('fs');
 const path = require('path');
 
 const customCommandsPath = path.join(__dirname, '../data/customCommands.json');
 
-function loadCustomCommands() {
+function logToFile(msg) {
+    const logFile = path.join(__dirname, '../data', 'debug_custom.log');
+    try {
+        fs.appendFileSync(logFile, `[${new Date().toISOString()}] ${msg}\n`);
+    } catch (e) {}
+}
+
+function loadAllCustomCommands() {
     try {
         if (!fs.existsSync(customCommandsPath)) {
             fs.writeFileSync(customCommandsPath, JSON.stringify({}, null, 2));
             return {};
         }
-        return JSON.parse(fs.readFileSync(customCommandsPath, 'utf8'));
+        const raw = JSON.parse(fs.readFileSync(customCommandsPath, 'utf8'));
+
+        // Migration: if old flat format detected (values are arrays), reset to per-group format.
+        // Old format example: { "نكته": ["alias1", "alias2"] }
+        // New format: { "<chatId>": { "نكته": ["alias1"] } }
+        const isOldFormat = Object.values(raw).some(v => Array.isArray(v));
+        if (isOldFormat) {
+            fs.writeFileSync(customCommandsPath, JSON.stringify({}, null, 2));
+            return {};
+        }
+        return raw;
     } catch (error) {
         console.error('Error loading custom commands:', error);
         return {};
     }
 }
 
-function saveCustomCommands(data) {
+function saveAllCustomCommands(data) {
     try {
         fs.writeFileSync(customCommandsPath, JSON.stringify(data, null, 2));
         return true;
@@ -27,71 +43,100 @@ function saveCustomCommands(data) {
     }
 }
 
-// State management for multi-step commands
+function loadGroupCustomCommands(chatId) {
+    const all = loadAllCustomCommands();
+    return all[chatId] || {};
+}
+
+function saveGroupCustomCommands(chatId, groupData) {
+    const all = loadAllCustomCommands();
+    if (!groupData || Object.keys(groupData).length === 0) {
+        delete all[chatId];
+    } else {
+        all[chatId] = groupData;
+    }
+    return saveAllCustomCommands(all);
+}
+
 const commandStates = new Map();
 
 async function handleCustomCommandManagement(sock, chatId, message, senderId, cleanMessage) {
-    const customCommands = loadCustomCommands();
+    const customCommands = loadGroupCustomCommands(chatId);
     const state = commandStates.get(senderId);
 
-    // تغيير امر
+    const validCommands = ['م1', '1', 'م2', '2', 'م3', '3', 'م4', '4', 'م5', '5', 'م6', '6', 'حب', 'كره', 'حظي', 'حظه', 'وجهي', 'وجهه', 'برجي', 'عمري', 'عمره', 'امنيتي', 'امنيته', 'نجومي', 'نجومه', 'مزاجي', 'مزاجه', 'غبائي', 'غبائه', 'من يحبني', 'من يحبه', 'من يكرهني', 'من يكرهه', 'نكته', 'نكتة', 'ايش تختار', 'ذكاء', 'شِعر', 'اقتباس', 'الاوامر', 'م'];
+
+    logToFile(`[CustomCmd] chat=${chatId}, sender=${senderId}, msg="${cleanMessage}", state=${JSON.stringify(state)}`);
+
     if (cleanMessage === 'تغيير امر' || cleanMessage === 'تغيير_امر') {
         commandStates.set(senderId, { step: 'waiting_old_command', chatId });
-        await sock.sendMessage(chatId, { 
-            text: '*↢ تمـام، ارسل الامر القديم ليتم تغييره.*' 
+        await sock.sendMessage(chatId, {
+            text: '*↢ تمـام، ارسل امر البوت الذي تريد تغييره.*'
         }, { quoted: message });
         return true;
     }
 
-    // Step 1: User sent old command
-    if (state && state.step === 'waiting_old_command') {
-        commandStates.set(senderId, { 
-            step: 'waiting_new_command', 
+    if (state && state.step === 'waiting_old_command' && state.chatId === chatId) {
+        const commandExists = validCommands.includes(cleanMessage);
+        let isExistingAlias = false;
+        for (const aliases of Object.values(customCommands)) {
+            if (aliases.includes(cleanMessage)) {
+                isExistingAlias = true;
+                break;
+            }
+        }
+
+        if (!commandExists && !isExistingAlias) {
+            await sock.sendMessage(chatId, {
+                text: `*↢ عـذراً، الأمر ( ${cleanMessage} ) غير موجود.*`
+            }, { quoted: message });
+            return true;
+        }
+
+        commandStates.set(senderId, {
+            step: 'waiting_new_command',
             oldCommand: cleanMessage,
-            chatId 
+            chatId
         });
-        await sock.sendMessage(chatId, { 
-            text: `*↢ اعطني الامر الجديد لـ ( ${cleanMessage} ) ليتم وضعه مكانه.*` 
+        await sock.sendMessage(chatId, {
+            text: `*↢ تمـام، ارسل الاسم الجديد لـ ( ${cleanMessage} ).*`
         }, { quoted: message });
         return true;
     }
 
-    // Step 2: User sent new command
-    if (state && state.step === 'waiting_new_command') {
+    if (state && state.step === 'waiting_new_command' && state.chatId === chatId) {
         const oldCommand = state.oldCommand;
         const newCommand = cleanMessage;
-        
+
         if (!customCommands[oldCommand]) {
             customCommands[oldCommand] = [];
         }
-        
+
         if (!customCommands[oldCommand].includes(newCommand)) {
             customCommands[oldCommand].push(newCommand);
         }
-        
-        saveCustomCommands(customCommands);
+
+        saveGroupCustomCommands(chatId, customCommands);
         commandStates.delete(senderId);
-        
-        await sock.sendMessage(chatId, { 
-            text: `*↢ تم تحديث الامر باسم ↫ ( ${newCommand} )*` 
+
+        await sock.sendMessage(chatId, {
+            text: `*↢ تم تحديث الامر باسم ↫ ( ${newCommand} ) في هذه المجموعة.*`
         }, { quoted: message });
         return true;
     }
 
-    // حذف امر
     if (cleanMessage === 'حذف امر' || cleanMessage === 'حذف_امر') {
         commandStates.set(senderId, { step: 'waiting_delete_command', chatId });
-        await sock.sendMessage(chatId, { 
-            text: '*↢ ارسل الامر الذي وضعته مكان القديم لمسحه.*' 
+        await sock.sendMessage(chatId, {
+            text: '*↢ ارسل الامر الذي وضعته مكان القديم لمسحه.*'
         }, { quoted: message });
         return true;
     }
 
-    // Delete command step
-    if (state && state.step === 'waiting_delete_command') {
+    if (state && state.step === 'waiting_delete_command' && state.chatId === chatId) {
         const commandToDelete = cleanMessage;
         let deleted = false;
-        
+
         for (const [oldCmd, aliases] of Object.entries(customCommands)) {
             const index = aliases.indexOf(commandToDelete);
             if (index > -1) {
@@ -103,49 +148,49 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
                 break;
             }
         }
-        
-        saveCustomCommands(customCommands);
+
+        saveGroupCustomCommands(chatId, customCommands);
         commandStates.delete(senderId);
-        
+
         if (deleted) {
-            await sock.sendMessage(chatId, { 
-                text: `*↢ تم مسح الامر ↫ ( ${commandToDelete} )*` 
+            await sock.sendMessage(chatId, {
+                text: `*↢ تم مسح الامر ↫ ( ${commandToDelete} )*`
             }, { quoted: message });
         } else {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ الامر غير موجود في القائمة.*' 
+            await sock.sendMessage(chatId, {
+                text: '*↢ الامر غير موجود في القائمة.*'
             }, { quoted: message });
         }
         return true;
     }
 
-    // الاوامر المضافه
     if (cleanMessage === 'الاوامر المضافه' || cleanMessage === 'الاوامر_المضافه') {
         const commands = Object.entries(customCommands);
-        
+
         if (commands.length === 0) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ لا توجد اوامر مضافة.*' 
+            await sock.sendMessage(chatId, {
+                text: '*↢ لا توجد اوامر مضافة في هذه المجموعة.*'
             }, { quoted: message });
             return true;
         }
-        
-        let text = '*↢ قائمـة الاوامـر المضافة*\n*ٴ┈─┈─┈─┈─┈─┈─┈─┈─*\n';
-        commands.forEach(([oldCmd, aliases], index) => {
+
+        let text = '*↢ قائمـة الاوامـر المضافة في هذه المجموعة*\n*ٴ┈─┈─┈─┈─┈─┈─┈─┈─*\n';
+        let idx = 1;
+        commands.forEach(([oldCmd, aliases]) => {
             aliases.forEach(alias => {
-                text += `*${index + 1}: ( ${oldCmd} ) ← ( ${alias} )*\n`;
+                text += `*${idx}: ( ${oldCmd} ) ← ( ${alias} )*\n`;
+                idx++;
             });
         });
-        
+
         await sock.sendMessage(chatId, { text }, { quoted: message });
         return true;
     }
 
-    // مسح الاوامر المضافه
     if (cleanMessage === 'مسح الاوامر المضافه' || cleanMessage === 'مسح_الاوامر_المضافه') {
-        saveCustomCommands({});
-        await sock.sendMessage(chatId, { 
-            text: '*↢ تم مسح قائمة الاوامر المضافة.*' 
+        saveGroupCustomCommands(chatId, {});
+        await sock.sendMessage(chatId, {
+            text: '*↢ تم مسح قائمة الاوامر المضافة في هذه المجموعة.*'
         }, { quoted: message });
         return true;
     }
@@ -153,21 +198,22 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
     return false;
 }
 
-// Check if a message matches a custom command
-function getOriginalCommand(cleanMessage) {
-    const customCommands = loadCustomCommands();
-    
+function getOriginalCommand(cleanMessage, chatId) {
+    if (!chatId) return null;
+    const customCommands = loadGroupCustomCommands(chatId);
+
     for (const [originalCmd, aliases] of Object.entries(customCommands)) {
         if (aliases.includes(cleanMessage)) {
             return originalCmd;
         }
     }
-    
+
     return null;
 }
 
 module.exports = {
     handleCustomCommandManagement,
     getOriginalCommand,
-    loadCustomCommands
+    loadGroupCustomCommands,
+    loadCustomCommands: loadAllCustomCommands
 };

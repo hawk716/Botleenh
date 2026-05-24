@@ -4,12 +4,23 @@ const { isBanned } = require('./lib/isBanned');
 const yts = require('yt-search');
 const { fetchBuffer } = require('./lib/myfunc');
 const fs = require('fs');
+// const path = require('path'); // Already declared above
+
+// دالة لتسجيل السجلات في ملف
+function logToFile(message) {
+    const logFile = path.join(__dirname, 'data', 'debug.log');
+    const timestamp = new Date().toISOString();
+    const logLine = `[${timestamp}] ${message}\n`;
+    try {
+        fs.appendFileSync(logFile, logLine);
+    } catch(e) {}
+}
 const fetch = require('node-fetch');
 const ytdl = require('ytdl-core');
 const path = require('path');
 const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
-const { isSudo } = require('./lib/index');
+const { isSudo, setPinlock } = require('./lib/index');
 const { autotypingCommand, isAutotypingEnabled, handleAutotypingForMessage, handleAutotypingForCommand, showTypingAfterCommand } = require('./commands/autotyping');
 const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./commands/autoread');
 const { getUserRank, getRankLevel, setUserRank } = require('./lib/ranks');
@@ -45,6 +56,7 @@ const menu1Command = require('./commands/menu1');
 const menu2Command = require('./commands/menu2');
 const menu3Command = require('./commands/menu3');
 const menu4Command = require('./commands/menu4');
+const menu5Command = require('./commands/menu5');
 const menu6Command = require('./commands/menu6');
 const banCommand = require('./commands/ban');
 const { promoteCommand } = require('./commands/promote');
@@ -60,7 +72,7 @@ const { tictactoeCommand, handleTicTacToeMove, joinTicTacToeGame } = require('./
 const { incrementMessageCount, topMembers } = require('./commands/topmembers');
 const ownerCommand = require('./commands/owner');
 const deleteCommand = require('./commands/delete');
-const { handleAntilinkCommand, handleLinkDetection } = require('./commands/antilink');
+const { handleAntilinkCommand } = require('./commands/antilink');
 const { handleAntitagCommand, handleTagDetection } = require('./commands/antitag');
 const { Antilink } = require('./lib/antilink');
 const { handleMentionDetection, mentionToggleCommand, setMentionCommand } = require('./commands/mention');
@@ -121,7 +133,7 @@ const textmakerCommand = require('./commands/textmaker');
 const { handleAntideleteCommand, handleMessageRevocation, storeMessage } = require('./commands/antidelete');
 const clearTmpCommand = require('./commands/cleartmp');
 const setProfilePicture = require('./commands/setpp');
-const { setGroupDescription, setGroupName, setGroupPhoto } = require('./commands/groupmanage');
+const { setGroupDescription, clearGroupDescription, setGroupName, setGroupPhoto } = require('./commands/groupmanage');
 const instagramCommand = require('./commands/instagram');
 const facebookCommand = require('./commands/facebook');
 const spotifyCommand = require('./commands/spotify');
@@ -140,13 +152,14 @@ const { shayariCommand } = require('./commands/shayari');
 const { rosedayCommand } = require('./commands/roseday');
 const imagineCommand = require('./commands/imagine');
 const createImageCommand = require('./commands/createimage');
-const videoCommand = require('./commands/video');
+const { videoCommand } = require('./commands/video');
 const sudoCommand = require('./commands/sudo');
 const { miscCommand, handleHeart } = require('./commands/misc');
 const { animeCommand } = require('./commands/anime');
 const { piesCommand, piesAlias } = require('./commands/pies');
 const stickercropCommand = require('./commands/stickercrop');
 const { zodiacCmd, handleZodiacResponse, ageCmd, handleAgeImage, handleAgeTrigger, jokeCmd, pendingZodiac, ageRequests } = require('./commands/zodiac-age');
+const { chooseCommand } = require('./commands/choose');
 const updateCommand = require('./commands/update');
 const { loveCommand, hateCommand, luckCommand, faceCommand, wishCommand, starsCommand, moodCommand, stupidCommand, whoLovesCommand, whoHatesCommand } = require('./commands/fun');
 const removebgCommand = require('./commands/removebg');
@@ -164,10 +177,12 @@ const callownerCommand = require('./commands/callowner');
 const toggleSettingsCommand = require('./commands/togglesettings');
 const { isFeatureEnabled } = require('./lib/groupSettings');
 const { handleCustomCommandManagement, getOriginalCommand } = require('./commands/customcommands');
-const { handleSubscriptionManagement, checkUserSubscription } = require('./commands/subscription');
+const { handleSubscriptionManagement, checkUserSubscription, requestSubscription } = require('./commands/subscription');
 const { handleWelcome, handleWelcomeText, sendWelcome, handleGoodbye } = require('./lib/welcome');
 const wordban = require('./commands/wordban');
-const { setRules, getRules, clearRules, setNickname, getNickname, pinMessage, unpinMessage, unpinAll } = require('./commands/groupmanage');
+const { getToggle, TOGGLE_TYPES } = require('./lib/toggleSystem');
+const idCommand = require('./commands/id');
+const { setRules, getRules, clearRules, handleRulesText, setNickname, getNickname, pinMessage, unpinMessage, unpinAll } = require('./commands/groupmanage');
 
 // Command imports for Arabic commands
 const antilinkArabic = require('./commands/antilink');
@@ -206,7 +221,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
             await handleMessageRevocation(sock, message);
             return;
         }
+
         const senderId = message.key.participant || message.key.remoteJid;
+        console.log(`[Message Handler] senderId: ${senderId}, isGroup: ${chatId.endsWith('@g.us')}`);
         const isGroup = chatId.endsWith('@g.us');
         const senderIsSudo = await isSudo(senderId);
 
@@ -243,24 +260,33 @@ async function handleMessages(sock, messageUpdate, printLog) {
         const messageWithoutDot = userMessage.startsWith('.') ? userMessage.slice(1) : userMessage;
         const cleanMessage = messageWithoutDot;
 
-        if (isGroup && !message.key.fromMe && !senderIsSudo) {
+        // Check if this is a subscription-related command - allow these even if not subscribed
+        const isSubscriptionCommand = cleanMessage.includes('اضف اشتراك') || 
+                                      cleanMessage.includes('اضف_اشتراك') ||
+                                      cleanMessage.includes('تفعيل الاشتراك') ||
+                                      cleanMessage.includes('تفعيل_الاشتراك') ||
+                                      cleanMessage.includes('حذف اشتراك') ||
+                                      cleanMessage.includes('حذف_اشتراك') ||
+                                      cleanMessage.includes('عرض الاشتراك') ||
+                                      cleanMessage.includes('عرض_الاشتراك') ||
+                                      userMessage.includes('chat.whatsapp.com');
+
+        if (isGroup && !message.key.fromMe && !senderIsSudo && !isSubscriptionCommand) {
             const subCheck = await checkUserSubscription(sock, chatId, senderId);
-            if (!subCheck.subscribed) {
+            if (subCheck && subCheck.remaining && subCheck.remaining <= 0) {
                 try {
                     await sock.sendMessage(chatId, { delete: message.key });
-                    await sock.sendMessage(chatId, {
-                        text: `*↫ عليك الاشتـراك في قنـاة البـوت اولاً لارسـال الـرسائل.*\n*- 𝑳𝒊𝒏𝒌: ${subCheck.link}*`,
-                        detectLink: false
-                    });
-                } catch (e) {
-                    console.error('Error enforcing subscription:', e);
-                }
+                } catch (e) {}
+                await sock.sendMessage(chatId, {
+                    text: `*↫ @${senderId.split('@')[0]} عليك الاشتـراك في قنـاة البـوت اولاً لارسـال الـرسائل.*\n*- 𝑳𝒊𝒏𝒌: ${subCheck.inviteLink || subCheck.groupId}*`,
+                    mentions: [senderId],
+                });
                 return;
             }
         }
 
-        const isUnbanCommand = normalizedMessage.startsWith('الغاء_الحظر') ||
-                              userMessage.startsWith('الغاء الحظر') ||
+        const isUnbanCommand = cleanMessage?.startsWith('الغاء حظر') ||
+                              cleanMessage?.startsWith('الغاء_حظر') ||
                               cleanMessage?.startsWith('الغاء الحظر') ||
                               cleanMessage?.startsWith('الغاء_الحظر');
 
@@ -280,6 +306,20 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 console.error('Error deleting restricted user message:', e);
             }
             return;
+        }
+
+        if (isGroup) {
+            if (await handleTagDetection(sock, chatId, message, senderId)) return;
+        }
+
+        if (isGroup && userMessage) {
+            const handledWelcome = await handleWelcomeText(sock, chatId, senderId, rawText);
+            if (handledWelcome) return;
+        }
+
+        if (userMessage) {
+            const handledRules = await handleRulesText(sock, chatId, senderId, rawText);
+            if (handledRules) return;
         }
 
         if (/^[1-3]$/.test(userMessage)) {
@@ -311,16 +351,18 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         const isArabicCommand = /^[\u0621-\u064Aa-zA-Z0-9\s\-_]+$/.test(messageWithoutDot) && messageWithoutDot.length <= 200 && messageWithoutDot.length > 0;
 
-        if (!isArabicCommand) {
+        const downloadCommands = ['اغنية', 'فيديو', 'انستقرام', 'انستا', 'فيسبوك', 'تيك توك', 'سبوتيفاي', 'قصص انستا'];
+        const isDownloadCommand = downloadCommands.some(cmd => cleanMessage === cmd || cleanMessage.startsWith(cmd + ' '));
+        const hasUrlInMessage = /https?:\/\//.test(cleanMessage);
+
+        if (!isArabicCommand && !isDownloadCommand) {
             await handleAutotypingForMessage(sock, chatId, userMessage);
 
             if (isGroup) {
-                // Chatbot سيرد فقط على الرسائل التي تذكر البوت أو ترد عليه
-                // التحقق يتم داخل handleChatbotResponse نفسه
+                await handleBadwordDetection(sock, chatId, message, userMessage, senderId);
+                await Antilink(message, sock);
                 await handleChatbotResponse(sock, chatId, message, userMessage, senderId);
 
-                // مراقبة القوانين فقط
-                await handleTagDetection(sock, chatId, message, senderId);
                 await handleMentionDetection(sock, chatId, message);
                 await handleLockDetection(sock, chatId, message, senderId);
             }
@@ -330,13 +372,65 @@ async function handleMessages(sock, messageUpdate, printLog) {
         const normalizedCleanMessage = cleanMessage.replace(/\s+/g, '_');
 
         let commandExecuted = false;
+        let wasCustomCommandTransformed = false;
 
-        const originalCommand = getOriginalCommand(cleanMessage);
-        if (originalCommand) {
-            cleanMessage = originalCommand;
+        const originalCommand = getOriginalCommand(cleanMessage, chatId);
+        console.log(`[DEBUG] cleanMessage="${cleanMessage}", originalCommand="${originalCommand}"`);
+        logToFile(`[DEBUG] cleanMessage="${cleanMessage}", originalCommand="${originalCommand}"`);
+        console.log(`[DEBUG customCommands] checking: "${cleanMessage}"`);
+        logToFile(`[DEBUG customCommands] checking: "${cleanMessage}"`);
+        
+if (originalCommand) {
+            const newCmd = originalCommand;
+            console.log(`[Custom Command] EXECUTING directly: "${newCmd}" for alias "${cleanMessage}"`);
+            logToFile(`[Custom Command] EXECUTING directly: "${newCmd}" for alias "${cleanMessage}"`);
+            
+            // تنفيذ مباشرة بدون switch
+            if (newCmd === 'م1' || newCmd === '1') {
+                await menu1Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'م2' || newCmd === '2') {
+                await menu2Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'م3' || newCmd === '3') {
+                await menu3Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'م4' || newCmd === '4') {
+                await menu4Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'م5' || newCmd === '5') {
+                await menu5Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'م6' || newCmd === '6') {
+                await menu6Command(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'حب') {
+                await loveCommand(sock, chatId, message, senderId);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'كره') {
+                await hateCommand(sock, chatId, message, senderId);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else if (newCmd === 'نكتة' || newCmd === 'نكته') {
+                await jokeCmd(sock, chatId, message);
+                await showTypingAfterCommand(sock, chatId);
+                return;
+            } else {
+                console.log(`[Custom Command] No handler for: "${newCmd}"`);
+                logToFile(`[Custom Command] No handler for: "${newCmd}"`);
+            }
+            return;
         }
 
         const customCmdHandled = await handleCustomCommandManagement(sock, chatId, message, senderId, cleanMessage);
+        console.log(`[Main Debug] customCmdHandled: ${customCmdHandled}, cleanMessage: "${cleanMessage}"`);
         if (customCmdHandled) {
             commandExecuted = true;
             await showTypingAfterCommand(sock, chatId);
@@ -389,9 +483,11 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
 
         const menuCommands = ['الاوامر', 'م1', 'م2', 'م3', 'م4', 'م5', 'م6', '1', '2', '3', '4', '5', '6'];
-        if (isGroup && menuCommands.includes(cleanMessage) && !isFeatureEnabled(chatId, 'menus_enabled') && !message.key.fromMe && !senderIsSudo) {
+        // تحقق إذا كان الأمر مخصص قبل فحص الأوامر المعطلة
+        const isCustomCommand = wasCustomCommandTransformed;
+        if (isGroup && menuCommands.includes(cleanMessage) && !isFeatureEnabled(chatId, 'menus_enabled') && !message.key.fromMe && !senderIsSudo && !isCustomCommand) {
             await sock.sendMessage(chatId, {
-                text: '*↢ امـر ( الاوامر ) معطل حالياً.*'
+                text: '*↢ امـ ( الاوامر ) معطل حالياً.*'
             }, { quoted: message });
             return;
         }
@@ -404,8 +500,10 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
-        const downloadCommands = ['اغنية', 'فيديو', 'انستقرام', 'انستا', 'فيسبوك', 'تيك توك', 'سبوتيفاي', 'قصص انستا'];
-        if (isGroup && downloadCommands.some(cmd => cleanMessage === cmd || cleanMessage.startsWith(cmd + ' ')) && !isFeatureEnabled(chatId, 'download_enabled') && !message.key.fromMe && !senderIsSudo) {
+        const isDownloadEnabled = isFeatureEnabled(chatId, 'download_enabled');
+        console.log(`[DOWNLOAD] Command: ${cleanMessage}, isDownloadCommand: ${isDownloadCommand}, isDownloadEnabled: ${isDownloadEnabled}, isGroup: ${isGroup}, senderIsSudo: ${senderIsSudo}, fromMe: ${message.key.fromMe}`);
+
+        if (isGroup && isDownloadCommand && !isDownloadEnabled && !message.key.fromMe && !senderIsSudo) {
             await sock.sendMessage(chatId, {
                 text: '*↢ امـر ( التحميل ) معطل حالياً ⚠️*\n*↢ لا يعمـل سوى مع " المالك " فقـط*'
             }, { quoted: message, contextInfo: {} });
@@ -452,11 +550,36 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 await checkRankCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
+            case cleanMessage === 'الايدي' || cleanMessage.startsWith('الايدي ') || normalizedCleanMessage === 'الايدي' || normalizedCleanMessage.startsWith('الايدي_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.ID)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر الايدي معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
+                await idCommand(sock, chatId, message, senderId);
+                commandExecuted = true;
+                break;
             case cleanMessage === 'تقيد' || cleanMessage.startsWith('تقيد ') || normalizedCleanMessage === 'تقيد' || normalizedCleanMessage.startsWith('تقيد_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.BAN)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر التقييد معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
                 await restrictCommand(sock, chatId, message, senderId);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'الغاء التقيد' || cleanMessage.startsWith('الغاء التقيد ') || normalizedCleanMessage === 'الغاء_التقيد' || normalizedCleanMessage.startsWith('الغاء_التقيد_'):
+            case cleanMessage === 'الغاء التقيد' || cleanMessage.startsWith('الغاء التقيد ') || cleanMessage === 'الغاء التقييد' || cleanMessage.startsWith('الغاء التقييد ') || normalizedCleanMessage === 'الغاء_التقيد' || normalizedCleanMessage.startsWith('الغاء_التقيد_') || normalizedCleanMessage === 'الغاء_التقييد' || normalizedCleanMessage.startsWith('الغاء_التقييد_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.BAN)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر التقييد معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
                 await unrestrictCommand(sock, chatId, message, senderId);
                 commandExecuted = true;
                 break;
@@ -499,6 +622,10 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case cleanMessage === 'م4' || cleanMessage === '4':
                 await menu4Command(sock, chatId, message);
+                commandExecuted = true;
+                break;
+            case cleanMessage === 'م5' || cleanMessage === '5':
+                await menu5Command(sock, chatId, message);
                 commandExecuted = true;
                 break;
 
@@ -559,8 +686,8 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 await jokeCmd(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'م5' || cleanMessage === '5':
-                await menu4Command(sock, chatId, message);
+            case cleanMessage === 'ايش تختار' || normalizedCleanMessage === 'ايش_تختار':
+                await chooseCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
             case cleanMessage === 'م6' || cleanMessage === '6':
@@ -596,9 +723,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
             case cleanMessage === 'حظر' || cleanMessage.startsWith('حظر ') || normalizedCleanMessage === 'حظر' || normalizedCleanMessage.startsWith('حظر_'):
-                if (isGroup && !isFeatureEnabled(chatId, 'ban_enabled') && !message.key.fromMe && !senderIsSudo) {
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.BAN)) && !message.key.fromMe && !senderIsSudo) {
                     await sock.sendMessage(chatId, {
-                        text: '*↢ امـر ( الحظر ) معطل حالياً ⚠️*\n*↢ لا يعمـل سوى مع " المالك " فقـط*'
+                        text: '*↢ امـر الحظر معطل من قبل المالك*'
                     }, { quoted: message, contextInfo: {} });
                     commandExecuted = true;
                     break;
@@ -607,6 +734,13 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
             case cleanMessage === 'الغاء الحظر' || cleanMessage === 'الغاء_الحظر' || cleanMessage.startsWith('الغاء الحظر ') || normalizedCleanMessage === 'الغاء_الحظر' || normalizedCleanMessage.startsWith('الغاء_الحظر_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.BAN)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر الحظر معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
                 console.log('🔓 تم اكتشاف أمر إلغاء الحظر');
                 await unbanCommand(sock, chatId, message, senderId);
                 commandExecuted = true;
@@ -709,6 +843,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
             case cleanMessage === 'حذف' || cleanMessage.startsWith('حذف ') || normalizedCleanMessage === 'حذف' || normalizedCleanMessage.startsWith('حذف_'):
                 await deleteCommand(sock, chatId, message, senderId);
+                commandExecuted = true;
                 break;
             case cleanMessage === 'نص لملصق' || cleanMessage.startsWith('نص لملصق ') || normalizedCleanMessage === 'نص_لملصق' || normalizedCleanMessage.startsWith('نص_لملصق_'):
                 await attpCommand(sock, chatId, message);
@@ -884,8 +1019,50 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage.startsWith('قفل ') && !cleanMessage.startsWith('قفل امر') && cleanMessage !== 'قفل الروابط' && cleanMessage !== 'قفل التاك' && cleanMessage !== 'قفل القروب':
-            case normalizedCleanMessage.startsWith('قفل_') && !normalizedCleanMessage.startsWith('قفل_امر') && normalizedCleanMessage !== 'قفل_الروابط' && normalizedCleanMessage !== 'قفل_التاك' && normalizedCleanMessage !== 'قفل_القروب':
+            case cleanMessage === 'قفل التثبيت' || normalizedCleanMessage === 'قفل_التثبيت':
+                if (!isGroup) {
+                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
+                    commandExecuted = true;
+                    break;
+                }
+                const senderRankPin = await getUserRank(chatId, senderId, isSenderAdmin);
+                const senderLevelPin = getRankLevel(senderRankPin);
+                if (senderLevelPin < 3 && !message.key.fromMe) {
+                    await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 مدير 〗*' }, { quoted: message });
+                    commandExecuted = true;
+                    break;
+                }
+                await setPinlock(chatId, true);
+                await sock.sendMessage(chatId, { 
+                    text: `*↢ تم قفل التثبيت✓*`,
+                }, { quoted: message });
+                commandExecuted = true;
+                break;
+
+            case cleanMessage === 'فتح التثبيت' || normalizedCleanMessage === 'فتح_التثبيت':
+                if (!isGroup) {
+                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
+                    commandExecuted = true;
+                    break;
+                }
+                {
+                    const srp2 = await getUserRank(chatId, senderId, isSenderAdmin);
+                    const slp2 = getRankLevel(srp2);
+                    if (slp2 < 3 && !message.key.fromMe) {
+                        await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 مدير 〗*' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                }
+                await setPinlock(chatId, false);
+                await sock.sendMessage(chatId, { 
+                    text: `*↢ تم فتح التثبيت✓*`,
+                }, { quoted: message });
+                commandExecuted = true;
+                break;
+
+            case cleanMessage.startsWith('قفل ') && !cleanMessage.startsWith('قفل امر') && cleanMessage !== 'قفل الروابط' && cleanMessage !== 'قفل التاك' && cleanMessage !== 'قفل القروب' && cleanMessage !== 'قفل التثبيت':
+            case normalizedCleanMessage.startsWith('قفل_') && !normalizedCleanMessage.startsWith('قفل_امر') && normalizedCleanMessage !== 'قفل_الروابط' && normalizedCleanMessage !== 'قفل_التاك' && normalizedCleanMessage !== 'قفل_القروب' && normalizedCleanMessage !== 'قفل_التثبيت':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
                     return;
@@ -894,8 +1071,8 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage.startsWith('فتح ') && !cleanMessage.startsWith('فتح امر') && cleanMessage !== 'فتح الروابط' && cleanMessage !== 'فتح التاك' && cleanMessage !== 'فتح القروب':
-            case normalizedCleanMessage.startsWith('فتح_') && !normalizedCleanMessage.startsWith('فتح_امر') && normalizedCleanMessage !== 'فتح_الروابط' && normalizedCleanMessage !== 'فتح_التاك' && normalizedCleanMessage !== 'فتح_القروب':
+            case cleanMessage.startsWith('فتح ') && !cleanMessage.startsWith('فتح امر') && cleanMessage !== 'فتح الروابط' && cleanMessage !== 'فتح التاك' && cleanMessage !== 'فتح القروب' && cleanMessage !== 'فتح التثبيت':
+            case normalizedCleanMessage.startsWith('فتح_') && !normalizedCleanMessage.startsWith('فتح_امر') && normalizedCleanMessage !== 'فتح_الروابط' && normalizedCleanMessage !== 'فتح_التاك' && normalizedCleanMessage !== 'فتح_القروب' && normalizedCleanMessage !== 'فتح_التثبيت':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
                     return;
@@ -1107,6 +1284,13 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 if (isGroup) await clearCommand(sock, chatId);
                 break;
             case cleanMessage === 'رفع' || cleanMessage.startsWith('رفع ') || normalizedCleanMessage === 'رفع' || normalizedCleanMessage.startsWith('رفع_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر الرفع معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
                 if (cleanMessage === 'رفع مالك' || cleanMessage.startsWith('رفع مالك ') ||
                     normalizedCleanMessage === 'رفع_مالك' || normalizedCleanMessage.startsWith('رفع_مالك_')) {
                     await setOwnerCommand(sock, chatId, message, senderId);
@@ -1125,11 +1309,18 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     commandExecuted = true;
                 } else {
                     const mentionedJidListPromote = message.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
-                    await promoteCommand(sock, chatId, mentionedJidListPromote, message);
+                    await promoteCommand(sock, chatId, mentionedJidListPromote, message, senderId);
                     commandExecuted = true;
                 }
                 break;
             case cleanMessage === 'تنزيل' || cleanMessage.startsWith('تنزيل ') || normalizedCleanMessage === 'تنزيل' || normalizedCleanMessage.startsWith('تنزيل_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, {
+                        text: '*↢ امـر التنزيل معطل من قبل المالك*'
+                    }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true;
+                    break;
+                }
                 if (cleanMessage === 'تنزيل مدير' || cleanMessage.startsWith('تنزيل مدير ') ||
                     normalizedCleanMessage === 'تنزيل_مدير' || normalizedCleanMessage.startsWith('تنزيل_مدير_')) {
                     await demoteManagerCommand(sock, chatId, message, senderId);
@@ -1175,54 +1366,33 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 break;
 
             case cleanMessage === 'تفعيل الترحيب' || normalizedCleanMessage === 'تفعيل_الترحيب':
-                if (isGroup) {
-                    if (!isSenderAdmin) {
-                        const adminStatus = await isAdmin(sock, chatId, senderId);
-                        isSenderAdmin = adminStatus.isSenderAdmin;
-                    }
-
-                    const groupMetaWelcome = await sock.groupMetadata(chatId);
-                    const participantWelcome = groupMetaWelcome.participants.find(p => p.id === senderId);
-                    const senderRank = await getUserRank(chatId, senderId, participantWelcome && participantWelcome.admin);
-                    const senderLevel = getRankLevel(senderRank);
-                    if (isSenderAdmin || message.key.fromMe || senderLevel >= 2) {
-                        const welcomeMsg = { message: { conversation: 'ترحيب on' }};
-                        await welcomeCommand(sock, chatId, welcomeMsg);
-                    } else {
-                        await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 ادمن 〗*' }, { quoted: message });
-                    }
-                } else {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                }
-                break;
             case cleanMessage === 'تعطيل الترحيب' || normalizedCleanMessage === 'تعطيل_الترحيب':
-                if (isGroup) {
-                    if (!isSenderAdmin) {
-                        const adminStatus = await isAdmin(sock, chatId, senderId);
-                        isSenderAdmin = adminStatus.isSenderAdmin;
-                    }
-
-                    if (isSenderAdmin || message.key.fromMe) {
-                        const welcomeMsg = { message: { conversation: 'ترحيب off' }};
-                        await welcomeCommand(sock, chatId, welcomeMsg);
-                    } else {
-                        await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
-                    }
-                } else {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                }
-                break;
+            case cleanMessage === 'الترحيب' || normalizedCleanMessage === 'الترحيب':
+            case cleanMessage === 'ضع ترحيب' || normalizedCleanMessage === 'ضع_ترحيب':
+            case cleanMessage === 'مسح الترحيب' || normalizedCleanMessage === 'مسح_الترحيب':
             case cleanMessage === 'ترحيب' || cleanMessage.startsWith('ترحيب ') || normalizedCleanMessage === 'ترحيب' || normalizedCleanMessage.startsWith('ترحيب_'):
                 if (isGroup) {
                     if (!isSenderAdmin) {
                         const adminStatus = await isAdmin(sock, chatId, senderId);
                         isSenderAdmin = adminStatus.isSenderAdmin;
                     }
-
-                    if (isSenderAdmin || message.key.fromMe) {
-                        await welcomeCommand(sock, chatId, message);
+                    const groupMetaWelcome = await sock.groupMetadata(chatId);
+                    const participantWelcome = groupMetaWelcome.participants.find(p => p.id === senderId);
+                    const senderRank = await getUserRank(chatId, senderId, participantWelcome && participantWelcome.admin);
+                    const senderLevel = getRankLevel(senderRank);
+                    if (isSenderAdmin || message.key.fromMe || senderLevel >= 2) {
+                        let match = '';
+                        if (cleanMessage === 'تفعيل الترحيب' || normalizedCleanMessage === 'تفعيل_الترحيب') match = 'تفعيل';
+                        else if (cleanMessage === 'تعطيل الترحيب' || normalizedCleanMessage === 'تعطيل_الترحيب') match = 'تعطيل';
+                        else if (cleanMessage === 'الترحيب' || normalizedCleanMessage === 'الترحيب') match = 'الترحيب';
+                        else if (cleanMessage === 'ضع ترحيب' || normalizedCleanMessage === 'ضع_ترحيب') match = 'ضع';
+                        else if (cleanMessage === 'مسح الترحيب' || normalizedCleanMessage === 'مسح_الترحيب') match = 'مسح';
+                        else if (cleanMessage.startsWith('ترحيب ') || normalizedCleanMessage.startsWith('ترحيب_')) {
+                            match = cleanMessage.replace('ترحيب ', '').trim();
+                        }
+                        await handleWelcome(sock, chatId, message, match);
                     } else {
-                        await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
+                        await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 ادمن 〗*' }, { quoted: message });
                     }
                 } else {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
@@ -1262,14 +1432,14 @@ async function handleMessages(sock, messageUpdate, printLog) {
                 return;
 
             case cleanMessage === 'مسح الوصف':
-                await setGroupDescription(sock, chatId, senderId, '', message);
+                await clearGroupDescription(sock, chatId, senderId, message);
                 return;
 
             case cleanMessage === 'ضع قوانين' || cleanMessage.startsWith('ضع قوانين '):
                 await setRules(sock, chatId, senderId, cleanMessage.replace('ضع قوانين', '').trim(), message);
                 return;
 
-            case cleanMessage === 'القوانين':
+            case cleanMessage === 'القوانين' || cleanMessage === 'قوانين':
                 await getRules(sock, chatId, message);
                 return;
 
@@ -1652,12 +1822,108 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     const replyHandled = await checkReply(sock, chatId, userMessage);
                     if (replyHandled) return;
 
-                    await handleTagDetection(sock, chatId, message, senderId);
                     await handleMentionDetection(sock, chatId, message);
                     await handleLockDetection(sock, chatId, message, senderId);
                 }
                 commandExecuted = false;
                 break;
+        }
+
+        // إذا لم يتم تنفيذ الأمر وكان هناك تحويل من أمر مخصص، حاول مرة أخرى بعد تحديث normalizedCleanMessage
+        if (!commandExecuted && wasCustomCommandTransformed) {
+            const normalizedCleanMessageAfterTransform = cleanMessage.replace(/\s+/g, '_');
+            
+            switch (true) {
+                case cleanMessage === 'م1' || cleanMessage === '1':
+                    await menu1Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'م2' || cleanMessage === '2':
+                    await menu2Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'م3' || cleanMessage === '3':
+                    await menu3Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'م4' || cleanMessage === '4':
+                    await menu4Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'م5' || cleanMessage === '5':
+                    await menu5Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'م6' || cleanMessage === '6':
+                    await menu6Command(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'حب' || normalizedCleanMessageAfterTransform === 'حب':
+                    await loveCommand(sock, chatId, message, senderId);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'كره' || normalizedCleanMessageAfterTransform === 'كره':
+                    await hateCommand(sock, chatId, message, senderId);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'حظي' || cleanMessage === 'حظه' || normalizedCleanMessageAfterTransform === 'حظي' || normalizedCleanMessageAfterTransform === 'حظه':
+                    await luckCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'وجهي' || cleanMessage === 'وجهه' || normalizedCleanMessageAfterTransform === 'وجهي' || normalizedCleanMessageAfterTransform === 'وجهه':
+                    await faceCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'امنيتي' || cleanMessage === 'امنيته' || normalizedCleanMessageAfterTransform === 'امنيتي' || normalizedCleanMessageAfterTransform === 'امنيته':
+                    await wishCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'نجومي' || cleanMessage === 'نجومه' || normalizedCleanMessageAfterTransform === 'نجومي' || normalizedCleanMessageAfterTransform === 'نجومه':
+                    await starsCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'مزاجي' || cleanMessage === 'مزاجه' || normalizedCleanMessageAfterTransform === 'مزاجي' || normalizedCleanMessageAfterTransform === 'مزاجه':
+                    await moodCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'غبائي' || cleanMessage === 'غبائه' || normalizedCleanMessageAfterTransform === 'غبائي' || normalizedCleanMessageAfterTransform === 'غبائه':
+                    await stupidCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'من يحبني' || cleanMessage === 'من يحبه' || normalizedCleanMessageAfterTransform === 'من_يحبني' || normalizedCleanMessageAfterTransform === 'من_يحبه':
+                    await whoLovesCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'من يكرهني' || cleanMessage === 'من يكرهه' || normalizedCleanMessageAfterTransform === 'من_يكرهني' || normalizedCleanMessageAfterTransform === 'من_يكرهه':
+                    await whoHatesCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'برجي' || cleanMessage === 'برجه':
+                    await zodiacCmd(sock, chatId, message, senderId);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'عمري' || cleanMessage === 'عمره':
+                    let gLink = '';
+                    if (isGroup) {
+                        try { gLink = await sock.groupInviteCode(chatId).then(c => 'https://chat.whatsapp.com/' + c); } catch(e) {}
+                    }
+                    await ageCmd(sock, chatId, message, senderId, gLink);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'نكته' || cleanMessage === 'نكتة':
+                    await jokeCmd(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+                case cleanMessage === 'ايش تختار' || normalizedCleanMessageAfterTransform === 'ايش_تختار':
+                    await chooseCommand(sock, chatId, message);
+                    commandExecuted = true;
+                    break;
+            }
+        }
+
+        if (!commandExecuted && isGroup && userMessage) {
+            const wordBanned = await wordban.checkMessage(sock, chatId, senderId, message, userMessage);
+            if (wordBanned) return;
         }
 
         if (commandExecuted !== false) {
@@ -1724,9 +1990,6 @@ async function handleGroupParticipantUpdate(sock, update) {
 
         if (action === 'add') {
             await handleJoinEvent(sock, id, participants);
-            for (const userId of participants) {
-                await sendWelcome(sock, id, userId);
-            }
         }
 
         if (action === 'remove') {

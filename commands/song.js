@@ -1,132 +1,128 @@
-
-const axios = require('axios');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
+const { execFile } = require('child_process');
 
-// Store processed message IDs to prevent duplicates
+const YT_DLP = '/home/runner/workspace/.pythonlibs/bin/yt-dlp';
 const processedMessages = new Set();
+const MAX_SIZE = 100 * 1024 * 1024;
 
-const AXIOS_DEFAULTS = {
-        timeout: 60000,
-        headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*'
-        }
-};
-
-async function tryRequest(getter, attempts = 3) {
-        let lastError;
-        for (let attempt = 1; attempt <= attempts; attempt++) {
-                try {
-                        return await getter();
-                } catch (err) {
-                        lastError = err;
-                        if (attempt < attempts) {
-                                await new Promise(r => setTimeout(r, 1000 * attempt));
-                        }
-                }
-        }
-        throw lastError;
-}
-
-async function getIzumiDownloadByUrl(youtubeUrl) {
-        const apiUrl = `https://izumiiiiiiii.dpdns.org/downloader/youtube?url=${encodeURIComponent(youtubeUrl)}&format=mp3`;
-        const res = await tryRequest(() => axios.get(apiUrl, AXIOS_DEFAULTS));
-        if (res?.data?.result?.download) return res.data.result;
-        throw new Error('Izumi youtube?url returned no download');
-}
-
-async function getIzumiDownloadByQuery(query) {
-        const apiUrl = `https://izumiiiiiiii.dpdns.org/downloader/youtube-play?query=${encodeURIComponent(query)}`;
-        const res = await tryRequest(() => axios.get(apiUrl, AXIOS_DEFAULTS));
-        if (res?.data?.result?.download) return res.data.result;
-        throw new Error('Izumi youtube-play returned no download');
-}
-
-async function getOkatsuDownloadByUrl(youtubeUrl) {
-        const apiUrl = `https://okatsu-rolezapiiz.vercel.app/downloader/ytmp3?url=${encodeURIComponent(youtubeUrl)}`;
-        const res = await tryRequest(() => axios.get(apiUrl, AXIOS_DEFAULTS));
-        if (res?.data?.dl) {
-                return {
-                        download: res.data.dl,
-                        title: res.data.title,
-                        thumbnail: res.data.thumb
-                };
-        }
-        throw new Error('Okatsu ytmp3 returned no download');
+function run(args, timeout = 120000) {
+    return new Promise((resolve, reject) => {
+        const child = execFile(YT_DLP, args, { timeout, maxBuffer: 10 * 1024 * 1024 }, (err, stdout, stderr) => {
+            if (err) {
+                const msg = stderr?.split('\n').find(l => l.startsWith('ERROR:')) || err.message;
+                reject(new Error(msg?.substring(0, 200)));
+            } else {
+                resolve(stdout);
+            }
+        });
+    });
 }
 
 async function songCommand(sock, chatId, message) {
     try {
-        // Check if message has already been processed
-        if (processedMessages.has(message.key.id)) {
-            return;
-        }
-        
-        // Add message ID to processed set
+        if (processedMessages.has(message.key.id)) return;
         processedMessages.add(message.key.id);
-        
-        // Clean up old message IDs after 5 minutes
-        setTimeout(() => {
-            processedMessages.delete(message.key.id);
-        }, 5 * 60 * 1000);
+        setTimeout(() => processedMessages.delete(message.key.id), 5 * 60 * 1000);
 
         const text = message.message?.conversation || message.message?.extendedTextMessage?.text || '';
         const searchQuery = text.replace(/^(اغنية|أغنية|song)\s*/i, '').trim();
-        
-        if (!searchQuery) {
+        if (!searchQuery) return;
+
+        let videoUrl = '';
+        let videoTitle = '';
+        let videoThumbnail = '';
+
+        if (searchQuery.includes('youtube.com') || searchQuery.includes('youtu.be')) {
+            videoUrl = searchQuery;
+            try {
+                const out = await run(['--dump-json', '--no-download', '--no-warnings', '--socket-timeout', '10', videoUrl], 30000);
+                const info = JSON.parse(out);
+                videoTitle = info.title || '';
+                videoThumbnail = info.thumbnail || '';
+            } catch (e) {
+                console.log('[SONG] Info fetch failed:', e.message?.substring(0, 80));
+                try {
+                    const m = searchQuery.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+                    if (m) {
+                        const s = await yts({ videoId: m[1] });
+                        if (s?.videos?.[0]) {
+                            videoTitle = s.videos[0].title || '';
+                            videoThumbnail = s.videos[0].thumbnail || '';
+                        }
+                    }
+                } catch (_) {}
+            }
+        } else {
+            const search = await yts(searchQuery);
+            if (!search?.videos?.length) {
+                await sock.sendMessage(chatId, { text: '*↢ لم يتم العثور على نتائج.*' }, { quoted: message });
+                return;
+            }
+            videoUrl = search.videos[0].url;
+            videoTitle = search.videos[0].title || '';
+            videoThumbnail = search.videos[0].thumbnail || '';
+        }
+
+        if (!videoUrl) {
+            await sock.sendMessage(chatId, { text: '*↢ الفيديو غير متاح.*' }, { quoted: message });
             return;
         }
 
-        let video;
-        if (searchQuery.includes('youtube.com') || searchQuery.includes('youtu.be')) {
-            video = { url: searchQuery };
-        } else {
-            const search = await yts(searchQuery);
-            if (!search || !search.videos.length) {
-                await sock.sendMessage(chatId, { text: 'لم يتم العثور على نتائج.' }, { quoted: message });
-                return;
-            }
-            video = search.videos[0];
-        }
+        const safeTitle = (videoTitle || 'audio').replace(/[^\w\s\u0600-\u06FF]/gi, '').trim() || 'audio';
 
-        // Send download info with thumbnail
         await sock.sendMessage(chatId, {
-            image: { url: video.thumbnail },
-            caption: `*➦:𝗱𝗼𝘄𝗻𝗹𝗼𝗮𝗱 : ${video.title} 🎵*\n*➦:𝘁𝗶𝗺𝗲 : ${video.timestamp} ⏱*`
+            image: { url: videoThumbnail || 'https://via.placeholder.com/300' },
+            caption: `*↢ جاري تحميل:*\n*${videoTitle || '...'}*\n⏳ الرجاء الانتظار...`
         }, { quoted: message });
 
-        // Try Izumi primary by URL, then by query, then Okatsu fallback
-        let audioData;
         try {
-            // 1) Primary: Izumi by youtube url
-            audioData = await getIzumiDownloadByUrl(video.url);
-        } catch (e1) {
-            try {
-                // 2) Secondary: Izumi search by query/title
-                const query = video.title || text;
-                audioData = await getIzumiDownloadByQuery(query);
-            } catch (e2) {
-                // 3) Fallback: Okatsu by youtube url
-                audioData = await getOkatsuDownloadByUrl(video.url);
-            }
-        }
+            const tmpDir = path.join(__dirname, '../temp');
+            if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 
-        // Send audio only ONCE
-        const audioUrl = audioData.download || audioData.dl || audioData.url;
-        const fileName = `${(audioData.title || video.title || 'song')}.mp3`;
-        
-        await sock.sendMessage(chatId, {
-            audio: { url: audioUrl },
-            mimetype: 'audio/mpeg',
-            fileName: fileName,
-            ptt: false
-        }, { quoted: message });
+            const ts = Date.now();
+            const outPath = path.join(tmpDir, `s_${ts}.%(ext)s`);
+
+            await run([
+                '--extract-audio', '--audio-format', 'mp3', '--audio-quality', '0',
+                '--output', outPath, '--no-warnings', '--no-playlist',
+                '--socket-timeout', '15', '--format', 'bestaudio/best',
+                videoUrl
+            ]);
+
+            const files = fs.readdirSync(tmpDir);
+            const found = files.find(f => f.startsWith(`s_${ts}`) && (f.endsWith('.mp3') || f.endsWith('.m4a')));
+            if (!found) throw new Error('الملف لم يتم العثور عليه');
+
+            const fp = path.join(tmpDir, found);
+            const st = fs.statSync(fp);
+
+            if (st.size > MAX_SIZE) { fs.unlinkSync(fp); throw new Error('الملف كبير جداً'); }
+            if (st.size === 0) { fs.unlinkSync(fp); throw new Error('الملف فارغ'); }
+
+            const buf = fs.readFileSync(fp);
+            fs.unlinkSync(fp);
+
+            await sock.sendMessage(chatId, {
+                audio: buf,
+                mimetype: 'audio/mpeg',
+                fileName: `${safeTitle}.mp3`,
+                ptt: false
+            }, { quoted: message });
+
+            console.log('[SONG] ✅ تم الإرسال');
+
+        } catch (dlErr) {
+            console.error('[SONG] فشل التحميل:', dlErr.message?.substring(0, 150));
+            await sock.sendMessage(chatId, {
+                text: `*↢ معلومات الأغنية:*\n\n🎵 *${videoTitle || 'فيديو'}*\n\n*↢ الرابط:*\n${videoUrl}`,
+            }, { quoted: message });
+        }
 
     } catch (err) {
-        console.error('Song command error:', err);
-        await sock.sendMessage(chatId, { text: '❌ فشل تحميل الأغنية.' }, { quoted: message });
+        console.error('[SONG] خطأ:', err.message?.substring(0, 100));
+        await sock.sendMessage(chatId, { text: '*↢ عذراً حدث خطأ.*' }, { quoted: message });
     }
 }
 

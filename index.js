@@ -48,6 +48,13 @@ const { join } = require('path')
 // Import lightweight store
 const store = require('./lib/lightweight_store')
 
+// Reconnection tracking with exponential backoff
+let reconnectAttempts = 0
+let lastReconnectTime = 0
+const MAX_RECONNECT_ATTEMPTS = 10
+const BASE_RECONNECT_DELAY = 3000 // 3 seconds
+const MAX_RECONNECT_DELAY = 60000 // 60 seconds
+
 // Initialize store
 store.readFromFile()
 const settings = require('./settings')
@@ -116,6 +123,7 @@ async function startXeonBotInc() {
         msgRetryCounterCache,
         defaultQueryTimeoutMs: undefined,
     })
+    global.sock = XeonBotInc;
 
     XeonBotInc.recentManualActions = new Map()
 
@@ -124,34 +132,51 @@ async function startXeonBotInc() {
     // Message handling
     XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
         try {
-            const mek = chatUpdate.messages[0]
-            if (!mek.message) return
-            mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-            if (mek.key && mek.key.remoteJid === 'status@broadcast') {
-                await handleStatus(XeonBotInc, chatUpdate);
-                return;
+            for (const mek of chatUpdate.messages) {
+                try {
+                    if (!mek.message) continue;
+                    mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
+                    if (mek.key && mek.key.remoteJid === 'status@broadcast') {
+                        await handleStatus(XeonBotInc, chatUpdate);
+                        continue;
+                    }
+                    if (!XeonBotInc.public && !mek.key.fromMe && chatUpdate.type === 'notify') continue
+                    if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) continue
+
+                    await handleMessages(XeonBotInc, { messages: [mek], type: chatUpdate.type }, true)
+                } catch (err) {
+                    console.error("Error in handleMessages:", err)
+                    if (mek.key && mek.key.remoteJid) {
+                        await XeonBotInc.sendMessage(mek.key.remoteJid, {
+                            text: '❌ حدث خطأ أثناء معالجة رسالتك.'
+                        }).catch(console.error);
+                    }
+                }
             }
-            if (!XeonBotInc.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
-            if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
 
             // Clear message retry cache to prevent memory bloat
             if (XeonBotInc?.msgRetryCounterCache) {
                 XeonBotInc.msgRetryCounterCache.clear()
             }
+        } catch (err) {
+            console.error("Error in messages.upsert:", err)
+        }
+    })
 
-            try {
-                await handleMessages(XeonBotInc, chatUpdate, true)
-            } catch (err) {
-                console.error("Error in handleMessages:", err)
-                // Only try to send error message if we have a valid chatId
-                if (mek.key && mek.key.remoteJid) {
-                    await XeonBotInc.sendMessage(mek.key.remoteJid, {
-                        text: '❌ حدث خطأ أثناء معالجة رسالتك.'
-                    }).catch(console.error);
+    XeonBotInc.ev.on('messages.update', async (updates) => {
+        try {
+            const { incrementEdits } = require('./lib/members');
+            for (const update of updates) {
+                if (update.key && update.key.remoteJid && update.key.remoteJid.endsWith('@g.us')) {
+                    const chatId = update.key.remoteJid;
+                    const senderId = update.key.participant || update.key.remoteJid;
+                    if (!update.key.fromMe) {
+                        incrementEdits(chatId, senderId);
+                    }
                 }
             }
         } catch (err) {
-            console.error("Error in messages.upsert:", err)
+            console.error("Error in messages.update:", err)
         }
     })
 
@@ -231,6 +256,8 @@ async function startXeonBotInc() {
     XeonBotInc.ev.on('connection.update', async (s) => {
         const { connection, lastDisconnect } = s
         if (connection == "open") {
+            // Reset reconnect counter on successful connection
+            reconnectAttempts = 0
             console.log(chalk.magenta(` `))
             console.log(chalk.yellow(`🌿Connected to => ` + JSON.stringify(XeonBotInc.user, null, 2)))
 
@@ -239,6 +266,22 @@ async function startXeonBotInc() {
                 text: `🤖 تم الاتصال بنجاح!\n\n⏰ الوقت: ${new Date().toLocaleString()}\n✅ الحالة: متصل وجاهز!`,
                 contextInfo: {}
             });
+
+            // إضافة رقم المطور تلقائياً عند الاقتران
+            try {
+                const ownerJid = settings.ownerNumber + '@s.whatsapp.net';
+                if (!XeonBotInc.contacts) {
+                    XeonBotInc.contacts = {};
+                }
+                XeonBotInc.contacts[ownerJid] = {
+                    id: ownerJid,
+                    name: 'المطور',
+                    notify: 'المطور'
+                };
+                console.log(chalk.green(`✅ تم إضافة رقم المطور تلقائياً: ${settings.ownerNumber}`));
+            } catch (err) {
+                console.log(chalk.red(`⚠️ خطأ في إضافة رقم المطور: ${err.message}`));
+            }
 
             await delay(1999)
             console.log(chalk.yellow(`\n\n                  ${chalk.bold.blue(`[ ${global.botname || 'KNIGHT BOT' } ]`)}\n\n`))
@@ -252,17 +295,65 @@ async function startXeonBotInc() {
         }
         if (connection === 'close') {
             const statusCode = lastDisconnect?.error?.output?.statusCode
+            const errorMessage = lastDisconnect?.error?.message || 'Unknown error'
+            
+            console.log(chalk.yellow(`📊 Disconnect Info: statusCode=${statusCode}, error=${errorMessage}`))
+            
             if (statusCode === DisconnectReason.loggedOut || statusCode === 401) {
                 try {
                     rmSync('./session', { recursive: true, force: true })
                 } catch { }
                 console.log(chalk.red('تم تسجيل الخروج من الجلسة. الرجاء إعادة المصادقة.'))
+                reconnectAttempts = 0
                 startXeonBotInc()
             } else {
-                startXeonBotInc()
+                // Exponential backoff for reconnection
+                reconnectAttempts++
+                const now = Date.now()
+                const timeSinceLastReconnect = now - lastReconnectTime
+                
+                if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
+                    console.log(chalk.red(`❌ تم تجاوز الحد الأقصى لمحاولات إعادة الاتصال (${MAX_RECONNECT_ATTEMPTS}). يرجى إعادة تشغيل البوت يدويًا.`))
+                    process.exit(1)
+                }
+                
+                // Calculate exponential backoff with jitter
+                const exponentialDelay = Math.min(
+                    BASE_RECONNECT_DELAY * Math.pow(2, reconnectAttempts - 1),
+                    MAX_RECONNECT_DELAY
+                )
+                const jitter = Math.random() * 1000 // Add up to 1 second of randomness
+                const totalDelay = exponentialDelay + jitter
+                
+                console.log(chalk.yellow(`⚠️ انقطع الاتصال. محاولة الاتصال رقم ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS} بعد ${(totalDelay / 1000).toFixed(1)} ثانية...`))
+                
+                setTimeout(() => {
+                    lastReconnectTime = Date.now()
+                    startXeonBotInc()
+                }, totalDelay)
             }
         }
     })
+
+    // Group invite handler: automatically accept group invitations
+    XeonBotInc.ev.on('groups.upsert', async (groupList) => {
+        try {
+            for (const group of groupList) {
+                console.log(`[GROUP] New/updated group: ${group.id} - ${group.subject}`);
+            }
+        } catch (error) {
+            console.error('[GROUP] Error in groups.upsert:', error);
+        }
+    });
+
+    // Handle direct group invitations - automatically accept when bot is added to group
+    XeonBotInc.ev.on('call.offer', async (offer) => {
+        try {
+            console.log('[GROUP-INVITE] Received offer:', offer);
+        } catch (error) {
+            console.error('[GROUP-INVITE] Error:', error);
+        }
+    });
 
     // Track recently-notified callers to avoid spamming messages
     const antiCallNotified = new Set();
