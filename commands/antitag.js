@@ -1,5 +1,14 @@
 const { setAntitag, getAntitag, removeAntitag } = require('../lib/index');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
+const { addRestriction } = require('../lib/restrictions');
+const { addTagViolation, resetTagViolations } = require('../lib/antilink');
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+}
 
 async function handleAntitagCommand(sock, chatId, userMessage, senderId, isSenderAdmin, message) {
     try {
@@ -17,24 +26,19 @@ async function handleAntitagCommand(sock, chatId, userMessage, senderId, isSende
 
         const username = `@${senderId.split('@')[0]}`;
 
-        // معالجة الأوامر العربية مباشرة
-        if (userMessage === 'فتح التاك') {
-            const existingConfig = await getAntitag(chatId, 'on');
-            if (existingConfig?.enabled) {
-                await removeAntitag(chatId, 'on');
-            }
+        if (userMessage === 'قفل التاك') {
             await setAntitag(chatId, 'on', 'delete');
             await sock.sendMessage(chatId, { 
-                text: `*↢ ال${senderRank} 「 ${username} 」*\n*↢ تم فتح التـاك*`,
+                text: `*↢ ال${senderRank} 「 ${username} 」*\n*↢ تم قفل التـاك*`,
                 mentions: [senderId]
             }, { quoted: message });
             return;
         }
 
-        if (userMessage === 'قفل التاك') {
+        if (userMessage === 'فتح التاك') {
             await removeAntitag(chatId, 'on');
             await sock.sendMessage(chatId, { 
-                text: `*↢ ال${senderRank} 「 ${username} 」*\n*↢ تم قفل التـاك*`,
+                text: `*↢ ال${senderRank} 「 ${username} 」*\n*↢ تم فتح التـاك*`,
                 mentions: [senderId]
             }, { quoted: message });
             return;
@@ -71,67 +75,64 @@ async function handleAntitagCommand(sock, chatId, userMessage, senderId, isSende
 async function handleTagDetection(sock, chatId, message, senderId) {
     try {
         const antitagSetting = await getAntitag(chatId, 'on');
-        if (!antitagSetting || !antitagSetting.enabled) return;
+        if (!antitagSetting || !antitagSetting.enabled) return false;
 
-        // Check if message contains mentions
-        const mentions = message.message?.extendedTextMessage?.contextInfo?.mentionedJid || 
-                        message.message?.conversation?.match(/@\d+/g) ||
-                        [];
+        const msg = message.message || {};
+        const contextInfo = msg.extendedTextMessage?.contextInfo ||
+                           msg.imageMessage?.contextInfo ||
+                           msg.videoMessage?.contextInfo ||
+                           msg.documentMessage?.contextInfo ||
+                           null;
 
-        // Check if it's a group message and has multiple mentions
-        if (mentions.length > 0 && mentions.length >= 3) {
-            // Get group participants to check if it's tagging most/all members
+        const mentionedJids = contextInfo?.mentionedJid || [];
+        const groupMentions = contextInfo?.groupMentions || [];
+        const messageText = msg.conversation ||
+                           msg.extendedTextMessage?.text ||
+                           '';
+        const hasTextMention = /@\S+/.test(messageText);
+        if (mentionedJids.length === 0 && groupMentions.length === 0 && !hasTextMention) return false;
+
+        let isGroupAdmin = false;
+        try {
             const groupMetadata = await sock.groupMetadata(chatId);
-            const participants = groupMetadata.participants || [];
+            const participant = groupMetadata.participants.find(p => p.id === senderId);
+            isGroupAdmin = participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+        } catch (e) {}
 
-            // If mentions are more than 50% of group members, consider it as tagall
-            const mentionThreshold = Math.ceil(participants.length * 0.5);
+        const userRank = await getUserRank(chatId, senderId, isGroupAdmin);
+        const userLevel = getRankLevel(userRank);
+        if (userLevel >= 2) return false;
 
-            if (mentions.length >= mentionThreshold) {
-
-                const action = antitagSetting.action || 'delete';
-
-                if (action === 'delete') {
-                    // Delete the message
-                    await sock.sendMessage(chatId, {
-                        delete: {
-                            remoteJid: chatId,
-                            fromMe: false,
-                            id: message.key.id,
-                            participant: senderId
-                        }
-                    });
-
-                    // Send warning
-                    await sock.sendMessage(chatId, {
-                        text: `⚠️ *تم اكتشاف منشن للكل!*`
-                    }, { quoted: message });
-
-                } else if (action === 'kick') {
-                    // First delete the message
-                    await sock.sendMessage(chatId, {
-                        delete: {
-                            remoteJid: chatId,
-                            fromMe: false,
-                            id: message.key.id,
-                            participant: senderId
-                        }
-                    });
-
-                    // Then kick the user
-                    await sock.groupParticipantsUpdate(chatId, [senderId], "remove");
-
-                    // Send notification
-                    const usernames = [`@${senderId.split('@')[0]}`];
-                    await sock.sendMessage(chatId, {
-                        text: `🚫 *تم اكتشاف منشن للكل!*\n\n${usernames.join(', ')} تم طرده لعمل منشن لجميع الأعضاء.`,
-                        mentions: [senderId]
-                    }, { quoted: message });
-                }
+        await sock.sendMessage(chatId, {
+            delete: {
+                remoteJid: chatId,
+                fromMe: false,
+                id: message.key.id,
+                participant: senderId
             }
+        });
+
+        await sock.sendMessage(chatId, {
+            text: `*↢ المستخدم〖 @${senderId.split('@')[0]} 〗*\n*↢ عـذراً ممنوع التاك.*`,
+            mentions: [senderId]
+        });
+
+        const count = addTagViolation(chatId, senderId);
+        if (count >= 10) {
+            const expiresAt = Date.now() + 3 * 24 * 60 * 60 * 1000;
+            await addRestriction(chatId, senderId, expiresAt);
+            resetTagViolations(chatId, senderId);
+            const expireDate = formatDate(new Date(expiresAt));
+            await sock.sendMessage(chatId, {
+                text: `*↢ المستخدم〖 @${senderId.split('@')[0]} 〗*\n*↢ بسبب تكرارك لارسال التاك تم تقييدك حتى「${expireDate}」*`,
+                mentions: [senderId]
+            });
         }
+
+        return true;
     } catch (error) {
         console.error('Error in tag detection:', error);
+        return false;
     }
 }
 

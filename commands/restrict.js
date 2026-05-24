@@ -5,7 +5,7 @@ const { getUserRank, getRankLevel } = require('../lib/ranks');
 async function restrictCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -31,7 +31,7 @@ async function restrictCommand(sock, chatId, message, senderId) {
         } else if (message.message?.extendedTextMessage?.contextInfo?.participant) {
             userToRestrict = message.message.extendedTextMessage.contextInfo.participant;
         } else {
-            await sock.sendMessage(chatId, { text: '❌ يرجى الرد على رسالة المستخدم أو عمل منشن له!' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: '*↢ يرجى الرد على رسالة المستخدم أو عمل منشن له!*' }, { quoted: message });
             return;
         }
         
@@ -41,7 +41,7 @@ async function restrictCommand(sock, chatId, message, senderId) {
         
         if (targetLevel >= senderLevel && !message.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: '❌ لا يمكنك تقييد شخص برتبة أعلى أو مساوية لك!'
+                text: '*↢ لا يمكنك تقييد شخص برتبة أعلى أو مساوية لك!*'
             }, { quoted: message });
             return;
         }
@@ -68,7 +68,7 @@ async function restrictCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in restrictCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في تقييد المستخدم!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في تقييد المستخدم!*' }, { quoted: message });
     }
 }
 

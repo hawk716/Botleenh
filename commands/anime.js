@@ -108,11 +108,11 @@ async function sendAnimu(sock, chatId, message, type) {
         return;
     }
 
-    await sock.sendMessage(
-        chatId,
-        { text: '❌ فشل في تحميل الأنمي.' },
-        { quoted: message }
-    );
+        await sock.sendMessage(
+            chatId,
+            { text: '*↢ فشل في تحميل الأنمي.*' },
+            { quoted: message }
+        );
 }
 
 async function animeCommand(sock, chatId, message, args) {

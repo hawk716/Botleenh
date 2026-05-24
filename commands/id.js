@@ -78,14 +78,19 @@ async function idCommand(sock, chatId, message, senderId) {
         const participant = groupMetadata.participants.find(p => p.id === targetUser);
         
         let userName = targetUser.split('@')[0];
-        try {
-            const contactInfo = await sock.onWhatsApp(targetUser);
-            if (contactInfo && contactInfo[0] && contactInfo[0].notify) {
-                userName = contactInfo[0].notify;
-            }
-        } catch (e) {}
+        
+        if (targetUser === senderId && message.pushName) {
+            userName = message.pushName;
+        } else {
+            try {
+                const contactName = await sock.getName(targetUser);
+                if (contactName) {
+                    userName = contactName;
+                }
+            } catch (e) {}
+        }
 
-        const phoneNumber = targetUser.split('@')[0];
+        const phoneNumber = targetUser.split('@')[0].replace(/[:.]/g, '');
         const userId = phoneNumber.slice(-8);
         
         const userRank = await getUserRank(chatId, targetUser);

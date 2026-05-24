@@ -5,11 +5,9 @@ const isAdmin = require('../lib/isAdmin');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 
 async function unbanCommand(sock, chatId, message, senderId) {
-    console.log('🔓 بدء تنفيذ أمر إلغاء الحظر');
-
     if (!chatId.endsWith('@g.us')) {
         await sock.sendMessage(chatId, { 
-            text: '⚠️ هذا الأمر يعمل فقط في المجموعات!'
+            text: '*↢ هذا الأمر يعمل فقط في المجموعات!*'
         }, { quoted: message });
         return;
     }
@@ -42,7 +40,7 @@ async function unbanCommand(sock, chatId, message, senderId) {
 
     if (!userToUnban) {
         await sock.sendMessage(chatId, { 
-            text: '❌ الرجاء عمل منشن للمستخدم أو الرد على رسالته لإلغاء حظره!'
+            text: '*↢ الرجاء عمل منشن للمستخدم أو الرد على رسالته لإلغاء حظره!*'
         }, { quoted: message });
         return;
     }
@@ -93,7 +91,6 @@ async function unbanCommand(sock, chatId, message, senderId) {
         }
 
         fs.writeFileSync(bannedFilePath, JSON.stringify(bannedData, null, 2), 'utf8');
-        console.log('✅ تم إلغاء حظر المستخدم بنجاح');
 
         await sock.sendMessage(chatId, { 
             text: `*↢ الطيـب @${userNumber}*\n*↢ تـم الـغاء حظـره*`,
@@ -101,9 +98,9 @@ async function unbanCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
 
     } catch (error) {
-        console.error('❌ خطأ في إلغاء الحظر:', error);
+        console.error('خطأ في إلغاء الحظر:', error);
         await sock.sendMessage(chatId, { 
-            text: `❌ فشل إلغاء الحظر!\n\nالخطأ: ${error.message}`
+            text: `*↢ فشل إلغاء الحظر!*`
         }, { quoted: message });
     }
 }

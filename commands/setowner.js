@@ -1,15 +1,14 @@
 
 const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
-const isAdmin = require('../lib/isAdmin');
 
 async function setOwnerCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
-        // Check if sender is bot or group owner
+        // Check if sender is bot or has required level
         const botJid = sock.user.id.split(':')[0] + '@s.whatsapp.net';
         const isBotSender = senderId === botJid || message.key.fromMe;
         
@@ -23,10 +22,10 @@ async function setOwnerCommand(sock, chatId, message, senderId) {
             const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
             const senderLevel = getRankLevel(senderRank);
             
-            // Allow مالك or WhatsApp admins to use this command
+            // Only مالك (level 4) can set owner
             if (senderLevel < 4) {
                 await sock.sendMessage(chatId, { 
-                    text: '*↢ هـذا الامـر يخـص〖 المشرفين 〗*'
+                    text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*'
                 }, { quoted: message });
                 return;
             }
@@ -40,7 +39,7 @@ async function setOwnerCommand(sock, chatId, message, senderId) {
         } else if (message.message?.extendedTextMessage?.contextInfo?.participant) {
             userToPromote = message.message.extendedTextMessage.contextInfo.participant;
         } else {
-            await sock.sendMessage(chatId, { text: '❌ يرجى الرد على رسالة المستخدم أو عمل منشن له!' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: '*↢ يرجى الرد على رسالة المستخدم أو عمل منشن له!*' }, { quoted: message });
             return;
         }
         
@@ -52,19 +51,16 @@ async function setOwnerCommand(sock, chatId, message, senderId) {
         sock.recentManualActions.set(actionKey, Date.now());
         setTimeout(() => sock.recentManualActions.delete(actionKey), 3000);
 
-        // Promote in WhatsApp
-        await sock.groupParticipantsUpdate(chatId, [userToPromote], "promote");
-        
-        // Set rank
+        // Only set rank - don't promote in WhatsApp
         await setUserRank(chatId, userToPromote, 'مالك');
         
         await sock.sendMessage(chatId, { 
-            text: `*↫ ابشـر لاتهـون رفعـته مالـك*\n*↫ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
+            text: `*↢ ابشـر لاتهـون رفعـته مالـك*\n*↢ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
             mentions: [userToPromote]
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setOwnerCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في رفع المستخدم!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
     }
 }
 

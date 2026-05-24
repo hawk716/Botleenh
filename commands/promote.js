@@ -1,8 +1,8 @@
 
-const { isAdmin } = require('../lib/isAdmin');
+const { getUserRank, getRankLevel } = require('../lib/ranks');
 const { setUserRank } = require('../lib/ranks');
 
-async function promoteCommand(sock, chatId, mentionedJids, message) {
+async function promoteCommand(sock, chatId, mentionedJids, message, senderId) {
     let userToPromote = [];
     
     if (mentionedJids && mentionedJids.length > 0) {
@@ -14,8 +14,22 @@ async function promoteCommand(sock, chatId, mentionedJids, message) {
     
     if (userToPromote.length === 0) {
         await sock.sendMessage(chatId, { 
-            text: 'يرجى عمل منشن للمستخدم أو الرد على رسالته لترقيته!'
-        });
+            text: '*↢ يرجى عمل منشن للمستخدم أو الرد على رسالته لترقيته!*'
+        }, { quoted: message });
+        return;
+    }
+
+    // Permission check - level 4 (مالك) only
+    const groupMetadata = await sock.groupMetadata(chatId);
+    const senderParticipant = groupMetadata.participants.find(p => p.id === senderId);
+    const isWhatsAppAdmin = senderParticipant && senderParticipant.admin;
+    const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
+    const senderLevel = getRankLevel(senderRank);
+
+    if (senderLevel < 4 && !message.key.fromMe) {
+        await sock.sendMessage(chatId, { 
+            text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*' 
+        }, { quoted: message });
         return;
     }
 
@@ -28,21 +42,20 @@ async function promoteCommand(sock, chatId, mentionedJids, message) {
         sock.recentManualActions.set(actionKey, Date.now());
         setTimeout(() => sock.recentManualActions.delete(actionKey), 3000);
         
-        await sock.groupParticipantsUpdate(chatId, userToPromote, "promote");
-        
-        await setUserRank(chatId, userToPromote[0], 'مالك');
+        // Only call setUserRank - don't promote in WhatsApp (to avoid double promotion)
+        await setUserRank(chatId, userToPromote[0], 'ادمن');
         
         const usernames = userToPromote.map(jid => `@${jid.split('@')[0]}`);
         
-        const promotionMessage = `*↢ تهنـى يـا 「 ${usernames.join(', ')} 」*\n*↢ رفعتـك مالك*`;
+        const promotionMessage = `*↢ تهنـى يـا 「 ${usernames.join(', ')} 」*\n*↢ رفعتـك ادمن*`;
         
         await sock.sendMessage(chatId, { 
             text: promotionMessage,
             mentions: userToPromote
-        });
+        }, { quoted: message });
     } catch (error) {
         console.error('Error in promote command:', error);
-        await sock.sendMessage(chatId, { text: 'فشل عملية الترقية!'});
+        await sock.sendMessage(chatId, { text: '*↢ فشل عملية الترقية!*'}, { quoted: message });
     }
 }
 

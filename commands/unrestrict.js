@@ -1,11 +1,12 @@
 
 const { removeRestriction } = require('../lib/restrictions');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
+const { resetViolations, resetTagViolations } = require('../lib/antilink');
 
 async function unrestrictCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -31,19 +32,39 @@ async function unrestrictCommand(sock, chatId, message, senderId) {
         } else if (message.message?.extendedTextMessage?.contextInfo?.participant) {
             userToUnrestrict = message.message.extendedTextMessage.contextInfo.participant;
         } else {
-            await sock.sendMessage(chatId, { text: '❌ يرجى الرد على رسالة المستخدم أو عمل منشن له!' }, { quoted: message });
+            // Try to extract user ID from command text
+            const text = message.message?.conversation || message.message?.extendedTextMessage?.text || '';
+            const cleanedText = text.replace(/الغاء التقييد|الغاء التقيد|الغاء_التقييد|الغاء_التقيد/gi, '').trim();
+            if (cleanedText) {
+                // Check if it looks like a JID (contains @)
+                if (cleanedText.includes('@')) {
+                    userToUnrestrict = cleanedText.replace(/\s/g, '');
+                } else {
+                    // Assume it's a phone number, construct JID
+                    const number = cleanedText.replace(/[^0-9]/g, '');
+                    if (number) {
+                        userToUnrestrict = `${number}@s.whatsapp.net`;
+                    }
+                }
+            }
+        }
+        
+        if (!userToUnrestrict) {
+            await sock.sendMessage(chatId, { text: '*↢ يرجى الرد على رسالة المستخدم أو عمل منشن له أو إرسال ايدي المستخدم!*' }, { quoted: message });
             return;
         }
         
         await removeRestriction(chatId, userToUnrestrict);
+        resetViolations(chatId, userToUnrestrict);
+        resetTagViolations(chatId, userToUnrestrict);
         
         await sock.sendMessage(chatId, { 
-            text: `*↢ تـم الغاء تقـيده*\n*↢ المستخـدم @${userToUnrestrict.split('@')[0]}*`,
+            text: `*↢ المستخـدم「 @${userToUnrestrict.split('@')[0]} 」*\n*↢ تـم الغاء تقـيده*`,
             mentions: [userToUnrestrict]
         }, { quoted: message });
     } catch (error) {
         console.error('Error in unrestrictCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في إلغاء التقييد!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في إلغاء التقييد!*' }, { quoted: message });
     }
 }
 

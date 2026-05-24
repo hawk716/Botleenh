@@ -1,135 +1,24 @@
-const { handleWelcome } = require('../lib/welcome');
+const { handleWelcome, sendWelcome } = require('../lib/welcome');
 const { isWelcomeOn } = require('../lib/index');
-const fetch = require('node-fetch');
+const { setJoinDate } = require('../lib/members');
+const { getUserRank } = require('../lib/ranks');
 
 async function welcomeCommand(sock, chatId, message, match) {
-    // Check if it's a group
     if (!chatId.endsWith('@g.us')) {
         await sock.sendMessage(chatId, { text: 'هذا الأمر يمكن استخدامه في المجموعات فقط.' });
         return;
     }
-
-    // Extract match from message
-    const text = message.message?.conversation || 
+    const text = message.message?.conversation ||
                 message.message?.extendedTextMessage?.text || '';
     const matchText = text.split(' ').slice(1).join(' ');
-
     await handleWelcome(sock, chatId, message, matchText);
 }
 
 async function handleJoinEvent(sock, id, participants) {
-    // Check if welcome is enabled for this group
-    const isWelcomeEnabled = await isWelcomeOn(id);
-    if (!isWelcomeEnabled) return;
-
-    // Get group metadata
-    const groupMetadata = await sock.groupMetadata(id);
-    const groupName = groupMetadata.subject;
-    const groupDesc = groupMetadata.desc || 'لا يوجد وصف متاح';
-
-    // Send welcome message for each new participant
-    for (const participant of participants) {
-        try {
-            const user = participant.split('@')[0];
-            
-            // Get user's display name
-            let displayName = user; // Default to phone number
-            try {
-                const contact = await sock.getBusinessProfile(participant);
-                if (contact && contact.name) {
-                    displayName = contact.name;
-                } else {
-                    // Try to get from group participants
-                    const groupParticipants = groupMetadata.participants;
-                    const userParticipant = groupParticipants.find(p => p.id === participant);
-                    if (userParticipant && userParticipant.name) {
-                        displayName = userParticipant.name;
-                    }
-                }
-            } catch (nameError) {
-                console.log('Could not fetch display name, using phone number');
-            }
-            
-            // Get user profile picture
-            let profilePicUrl = `https://img.pyrocdn.com/dbKUgahg.png`; // Default avatar
-            try {
-                const profilePic = await sock.profilePictureUrl(participant, 'image');
-                if (profilePic) {
-                    profilePicUrl = profilePic;
-                }
-            } catch (profileError) {
-                console.log('Could not fetch profile picture, using default');
-            }
-            
-            // Construct API URL for welcome image
-            const apiUrl = `https://api.some-random-api.com/welcome/img/2/gaming3?type=join&textcolor=green&username=${encodeURIComponent(displayName)}&guildName=${encodeURIComponent(groupName)}&memberCount=${groupMetadata.participants.length}&avatar=${encodeURIComponent(profilePicUrl)}`;
-            
-            // Fetch the welcome image
-            const response = await fetch(apiUrl);
-            if (response.ok) {
-                const imageBuffer = await response.buffer();
-                
-                // Get current time
-                const now = new Date();
-                const timeString = now.toLocaleString('en-US', {
-                    month: '2-digit',
-                    day: '2-digit', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
-                });
-
-                // Send welcome image with stylish caption
-                await sock.sendMessage(id, {
-                    image: imageBuffer,
-                    caption: `╭╼━≪•عــضــو جــديــد•≫━╾╮\n┃مــرحــبــاً: @${displayName} 👋\n┃عدد الأعضاء: #${groupMetadata.participants.length}\n┃الـــوقـــت: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* أهلاً بك في *${groupName}*! 🎉\n*وصــف الـمـجـمـوعـة*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`,
-                    mentions: [participant]
-                });
-            } else {
-                // Get current time for fallback
-                const now = new Date();
-                const timeString = now.toLocaleString('en-US', {
-                    month: '2-digit',
-                    day: '2-digit', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
-                });
-
-                // Fallback to text message if API fails
-                const welcomeMessage = `╭╼━≪•عــضــو جــديــد•≫━╾╮\n┃مــرحــبــاً: @${displayName} 👋\n┃عدد الأعضاء: #${groupMetadata.participants.length}\n┃الـــوقـــت: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${displayName}* أهلاً بك في *${groupName}*! 🎉\n*وصــف الـمـجـمـوعـة*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
-                await sock.sendMessage(id, {
-                    text: welcomeMessage,
-                    mentions: [participant]
-                });
-            }
-        } catch (error) {
-            console.error('Error sending welcome message:', error);
-            // Fallback to text message
-            const user = participant.split('@')[0];
-            
-            // Get current time for error fallback
-            const now = new Date();
-            const timeString = now.toLocaleString('en-US', {
-                month: '2-digit',
-                day: '2-digit', 
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
-            });
-
-            const welcomeMessage = `╭╼━≪•عــضــو جــديــد•≫━╾╮\n┃مــرحــبــاً: @${user} 👋\n┃عدد الأعضاء: #${groupMetadata.participants.length}\n┃الـــوقـــت: ${timeString}⏰\n╰━━━━━━━━━━━━━━━╯\n\n*@${user}* أهلاً بك في *${groupName}*! 🎉\n*وصــف الـمـجـمـوعـة*\n${groupDesc}\n\n> *ᴘᴏᴡᴇʀᴇᴅ ʙʏ Knight Bot*`;
-            await sock.sendMessage(id, {
-                text: welcomeMessage,
-                mentions: [participant]
-            });
-        }
+    for (const p of participants) {
+        const participant = typeof p === 'object' ? (p.id || p.jid || String(p)) : p;
+        setJoinDate(id, participant);
+        await sendWelcome(sock, id, participant);
     }
 }
 

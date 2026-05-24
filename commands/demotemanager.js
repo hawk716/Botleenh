@@ -4,7 +4,7 @@ const { removeUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 async function demoteManagerCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -39,7 +39,7 @@ async function demoteManagerCommand(sock, chatId, message, senderId) {
         } else if (message.message?.extendedTextMessage?.contextInfo?.participant) {
             userToDemote = message.message.extendedTextMessage.contextInfo.participant;
         } else {
-            await sock.sendMessage(chatId, { text: '❌ يرجى الرد على رسالة المستخدم أو عمل منشن له!' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: '*↢ يرجى الرد على رسالة المستخدم أو عمل منشن له!*' }, { quoted: message });
             return;
         }
         
@@ -52,19 +52,16 @@ async function demoteManagerCommand(sock, chatId, message, senderId) {
             return;
         }
         
-        // Demote in WhatsApp
-        await sock.groupParticipantsUpdate(chatId, [userToDemote], "demote");
-        
-        // Remove rank
+        // Remove rank only (no WhatsApp demotion)
         await removeUserRank(chatId, userToDemote);
         
         await sock.sendMessage(chatId, { 
-            text: `*↫ تم تنزيله من رتبة مدير*\n*↫ المستخدم「 @${userToDemote.split('@')[0]} 」*`,
+            text: `*↢ تم تنزيله من رتبة مدير*\n*↢ المستخدم「 @${userToDemote.split('@')[0]} 」*`,
             mentions: [userToDemote]
         }, { quoted: message });
     } catch (error) {
         console.error('Error in demoteManagerCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في تنزيل المستخدم!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في تنزيل المستخدم!*' }, { quoted: message });
     }
 }
 

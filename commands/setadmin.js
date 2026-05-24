@@ -4,7 +4,7 @@ const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 async function setAdminCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -30,7 +30,7 @@ async function setAdminCommand(sock, chatId, message, senderId) {
         } else if (message.message?.extendedTextMessage?.contextInfo?.participant) {
             userToPromote = message.message.extendedTextMessage.contextInfo.participant;
         } else {
-            await sock.sendMessage(chatId, { text: '❌ يرجى الرد على رسالة المستخدم أو عمل منشن له!' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: '*↢ يرجى الرد على رسالة المستخدم أو عمل منشن له!*' }, { quoted: message });
             return;
         }
         
@@ -46,12 +46,12 @@ async function setAdminCommand(sock, chatId, message, senderId) {
         setTimeout(() => sock.recentManualActions.delete(actionKey), 3000);
         
         await sock.sendMessage(chatId, { 
-            text: `*↫ ابشـر لاتهـون رفعـته ادمـن*\n*↫ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
+            text: `*↢ ابشـر لاتهـون رفعـته ادمـن*\n*↢ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
             mentions: [userToPromote]
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setAdminCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في رفع المستخدم!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
     }
 }
 

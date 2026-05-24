@@ -1,6 +1,6 @@
 
 const wordban = require('../lib/wordban');
-const { getRank } = require('../lib/ranks');
+const { getUserRank } = require('../lib/ranks');
 
 async function banWord(sock, chatId, message) {
     const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
@@ -66,18 +66,25 @@ async function showBanList(sock, chatId, message) {
 }
 
 async function checkMessage(sock, chatId, senderId, message, text) {
-    const rank = await getRank(chatId, senderId);
-    if (['owner', 'manager', 'admin'].includes(rank)) return false;
+    let isGroupAdmin = false;
+    try {
+        const groupMetadata = await sock.groupMetadata(chatId);
+        const participant = groupMetadata.participants.find(p => p.id === senderId);
+        isGroupAdmin = participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+    } catch (e) {}
+
+    const rank = await getUserRank(chatId, senderId, isGroupAdmin);
+    if (['مالك', 'مدير', 'ادمن'].includes(rank)) return false;
 
     const banned = wordban.check(chatId, text);
     if (banned) {
         await sock.sendMessage(chatId, { delete: message.key });
-        
-        if (wordban.shouldWarn(chatId, senderId)) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ لـقد استخدمت كلمة محظورة وتم حذف رسالتك.*'
-            });
-        }
+
+        await sock.sendMessage(chatId, {
+            text: `*↫ تــم حذف الرسالة، بسبب انها تحتوي على كلمة ممنوعه*`
+        });
+
+        await wordban.checkAndRestrict(sock, chatId, senderId, banned);
         return true;
     }
     return false;

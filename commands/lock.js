@@ -117,6 +117,29 @@ async function handleLockDetection(sock, chatId, message, senderId) {
         const quotedParticipant = message.key.participant || senderId;
         const messageContent = message.message[messageType];
 
+        const typeNameMap = {
+            [LOCK_TYPES.IMAGES]: 'الصور',
+            [LOCK_TYPES.VIDEOS]: 'الفيديو',
+            [LOCK_TYPES.GIFS]: 'المتحركه',
+            [LOCK_TYPES.STICKERS]: 'الملصقات',
+            [LOCK_TYPES.FILES]: 'الملفات',
+            [LOCK_TYPES.AUDIO]: 'الصوت',
+            [LOCK_TYPES.VOICE]: 'الفويس',
+            [LOCK_TYPES.CONTACTS]: 'الجهات',
+            [LOCK_TYPES.FORWARDS]: 'التوجيه',
+            [LOCK_TYPES.EDITS]: 'التعديل',
+            [LOCK_TYPES.MEDIA]: 'الوسائط',
+            [LOCK_TYPES.ALL]: 'الكل'
+        };
+
+        const sendWarning = async (typeKey) => {
+            const name = typeNameMap[typeKey] || typeKey;
+            await sock.sendMessage(chatId, {
+                text: `*↢ المستخدم〖 @${senderId.split('@')[0]} 〗*\n*↢ عـذراً ممنوع ${name}.*`,
+                mentions: [senderId]
+            });
+        };
+
         const deleteMessage = async () => {
             try {
                 await sock.sendMessage(chatId, {
@@ -156,8 +179,19 @@ async function handleLockDetection(sock, chatId, message, senderId) {
             const isMediaLocked = await getLock(chatId, LOCK_TYPES.MEDIA);
             const isTypeLocked = await getLock(chatId, mappedType);
 
-            if (isAllLocked || isMediaLocked || isTypeLocked) {
+            if (isAllLocked) {
                 await deleteMessage();
+                await sendWarning(LOCK_TYPES.ALL);
+                return;
+            }
+            if (isMediaLocked) {
+                await deleteMessage();
+                await sendWarning(LOCK_TYPES.MEDIA);
+                return;
+            }
+            if (isTypeLocked) {
+                await deleteMessage();
+                await sendWarning(mappedType);
                 return;
             }
         }
@@ -168,8 +202,14 @@ async function handleLockDetection(sock, chatId, message, senderId) {
         if (contextInfo?.isForwarded) {
             const isForwardLocked = await getLock(chatId, LOCK_TYPES.FORWARDS);
             
-            if (isForwardLocked || isAllLocked) {
+            if (isForwardLocked) {
                 await deleteMessage();
+                await sendWarning(LOCK_TYPES.FORWARDS);
+                return;
+            }
+            if (isAllLocked) {
+                await deleteMessage();
+                await sendWarning(LOCK_TYPES.ALL);
                 return;
             }
         }
@@ -190,6 +230,7 @@ async function handleLockDetection(sock, chatId, message, senderId) {
             } catch (e) {
                 console.error('Failed to delete edited message:', e);
             }
+            await sendWarning(isEditLocked ? LOCK_TYPES.EDITS : LOCK_TYPES.ALL);
             return;
         }
 
@@ -198,7 +239,6 @@ async function handleLockDetection(sock, chatId, message, senderId) {
         if ((isPinLocked || isAllLocked) && message.message?.protocolMessage?.type === 14) {
             try {
                 const pinnedMsgKey = message.message.protocolMessage.key;
-                // إلغاء التثبيت
                 await sock.sendMessage(chatId, {
                     delete: {
                         remoteJid: chatId,
@@ -210,6 +250,7 @@ async function handleLockDetection(sock, chatId, message, senderId) {
             } catch (e) {
                 console.error('Failed to unpin:', e);
             }
+            await sendWarning(isPinLocked ? LOCK_TYPES.PINS : LOCK_TYPES.ALL);
             return;
         }
 

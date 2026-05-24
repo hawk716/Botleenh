@@ -1,8 +1,9 @@
-
 const fs = require('fs');
 const path = require('path');
 
 const subscriptionPath = path.join(__dirname, '../data/subscriptions.json');
+
+let pendingSubscriptionRequest = null;
 
 function loadSubscriptions() {
     try {
@@ -27,223 +28,200 @@ function saveSubscriptions(data) {
     }
 }
 
-const subscriptionStates = new Map();
+const subscriptionCommands = ['تفعيل الاشتراك', 'تفعيل_الاشتراك', 'اضف اشتراك', 'اضف_اشتراك', 'حذف اشتراك', 'حذف_الاشتراك', 'عرض الاشتراك', 'عرض_الاشتراك'];
 
 async function handleSubscriptionManagement(sock, chatId, message, senderId, cleanMessage, isSenderAdmin) {
     const subscriptions = loadSubscriptions();
-    const state = subscriptionStates.get(chatId);
-
-    const subscriptionCommands = ['اضف اشتراك', 'اضف_اشتراك', 'حذف اشتراك', 'حذف_اشتراك', 'عرض الاشتراك', 'عرض_الاشتراك'];
     const isSubscriptionCommand = subscriptionCommands.includes(cleanMessage);
-    const isWaitingForInput = state && state.senderId === senderId;
-
-    if (!isSubscriptionCommand && !isWaitingForInput) {
+    
+    if (!isSubscriptionCommand) {
         return false;
     }
-
-    if (isSubscriptionCommand && !isSenderAdmin && !message.key.fromMe) {
-        await sock.sendMessage(chatId, { 
-            text: '*↢ هـذا الامـر يخـص〖 الادمن 〗*' 
-        }, { quoted: message });
-        return true;
-    }
-
-    if (cleanMessage === 'اضف اشتراك' || cleanMessage === 'اضف_اشتراك') {
-        subscriptionStates.set(chatId, { step: 'waiting_link', senderId });
-        await sock.sendMessage(chatId, { 
-            text: '*↢ ارسل رابط المجموعة المراد اضافتها كاشتراك اجباري.*' 
-        }, { quoted: message });
-        return true;
-    }
-
-    // Waiting for link
-    if (state && state.step === 'waiting_link' && state.senderId === senderId) {
-        const linkMatch = message.message?.conversation?.match(/chat\.whatsapp\.com\/([a-zA-Z0-9]+)/i) ||
-                          message.message?.extendedTextMessage?.text?.match(/chat\.whatsapp\.com\/([a-zA-Z0-9]+)/i);
-        
-        if (!linkMatch) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ رابط غير صالح، ارسل رابط مجموعة واتساب.*' 
-            }, { quoted: message });
+    
+    // Handle delete subscription
+    if (cleanMessage === 'حذف اشتراك' || cleanMessage === 'حذف_الاشتراك') {
+        if (!isSenderAdmin && !message.key.fromMe) {
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر للمشرفين فقط*' });
             return true;
         }
-
-        const inviteCode = linkMatch[1];
-        const fullLink = `https://chat.whatsapp.com/${inviteCode}`;
-
-        try {
-            // Join the group to verify and check if bot is admin
-            let targetGroupId;
+        const deletedGroupName = subscriptions[chatId]?.groupName || '';
+        delete subscriptions[chatId];
+        saveSubscriptions(subscriptions);
+        await sock.sendMessage(chatId, { text: `*↫ تـم الغاء الاشتراك الإجباري*\n*للمجموعـة:* ${deletedGroupName}` });
+        return true;
+    }
+    
+    // Handle view subscription
+    if (cleanMessage === 'عرض الاشتراك' || cleanMessage === 'عرض_الاشتراك') {
+        if (subscriptions[chatId]) {
+            const sub = subscriptions[chatId];
+            await sock.sendMessage(chatId, { text: `*↫الاشتـراك الإجباري مفعل ✅*\n*للمجموعـة:* ${sub.groupName}\n*رابط الإنضـمام:* ${sub.inviteLink || 'غير متوفر'}` });
+        } else {
+            await sock.sendMessage(chatId, { text: '*↫ الاشتـراك الإجباري غير مفعل*' });
+        }
+        return true;
+    }
+    
+    // Handle enable subscription
+    if (cleanMessage === 'تفعيل الاشتراك' || cleanMessage === 'تفعيل_الاشتراك' || 
+        cleanMessage === 'اضف اشتراك' || cleanMessage === 'اضف_اشتراك') {
+        
+        // "اضف اشتراك" - just request, don't activate
+        if (cleanMessage === 'اضف اشتراك' || cleanMessage === 'اضف_اشتراك') {
+            return await requestSubscription(sock, chatId, senderId);
+        }
+        
+        // "تفعيل الاشتراك" - check pending request first
+        if (pendingSubscriptionRequest) {
             try {
-                const result = await sock.groupAcceptInvite(inviteCode);
-                targetGroupId = result;
-            } catch (e) {
-                // Already in group, extract ID from error or try to find it
-                const groups = await sock.groupFetchAllParticipating();
-                for (const [gid, gdata] of Object.entries(groups)) {
-                    if (gdata.inviteCode === inviteCode) {
-                        targetGroupId = gid;
-                        break;
-                    }
+                // Get invite code from CURRENT group (where bot IS admin, not target group)
+                let inviteLink = '';
+                try {
+                    const inviteCode = await sock.groupInviteCode(chatId);
+                    inviteLink = `https://chat.whatsapp.com/${inviteCode}`;
+                } catch (e) {
+                    console.log(`[SUB] Could not get invite code from current group: ${e.message}`);
                 }
-            }
-
-            if (!targetGroupId) {
-                await sock.sendMessage(chatId, { 
-                    text: '*↢ فشل الانضمام للمجموعة، تأكد من صلاحية الرابط.*' 
-                }, { quoted: message });
-                subscriptionStates.delete(chatId);
+                
+                subscriptions[pendingSubscriptionRequest.targetChatId] = {
+                    groupId: pendingSubscriptionRequest.targetChatId,
+                    groupName: pendingSubscriptionRequest.groupName,
+                    inviteLink: inviteLink,
+                    requiredGroupId: chatId,
+                    addedBy: senderId,
+                    addedAt: Date.now()
+                };
+                saveSubscriptions(subscriptions);
+                
+                await sock.sendMessage(chatId, {
+                    text: `*↫ تـم تفعيـل الاشتراك الإجباري*\n*للمجموعـة:* ${pendingSubscriptionRequest.groupName}\n*رابط الإنضـمام:* ${inviteLink || 'غير متوفر'}`
+                });
+                
+                pendingSubscriptionRequest = null;
+                return true;
+                
+            } catch (err) {
+                console.log(`[SUB] Error: ${err.message}`);
+                pendingSubscriptionRequest = null;
+                await sock.sendMessage(chatId, { text: '*↢ خطأ في تفعيل الاشتراك، يرجى المحاولة مرة أخرى*' });
                 return true;
             }
-
-            // Check if bot is admin
-            const groupMetadata = await sock.groupMetadata(targetGroupId);
+        }
+        
+        // No pending - enable for THIS group
+        try {
+            const groupMetadata = await sock.groupMetadata(chatId);
             const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
             const botParticipant = groupMetadata.participants.find(p => p.id === botId);
-
-            if (!botParticipant || !botParticipant.admin) {
-                await sock.sendMessage(chatId, { 
-                    text: '*↢ عـذراً البوت ليس مشرفاً قم برفعه مشرف اولاً.*' 
-                }, { quoted: message });
-                subscriptionStates.delete(chatId);
+            
+            if (!botParticipant) {
+                await sock.sendMessage(chatId, { text: '*↢ البوت ليس عضواً في هذه المجموعة*\nأضف البوت أولاً ثم أرسل الأمر' });
                 return true;
             }
-
-            // Add subscription
-            if (!subscriptions[chatId]) {
-                subscriptions[chatId] = [];
+            
+            if (!botParticipant.admin) {
+                await sock.sendMessage(chatId, { text: '*↢ البوت ليس مشرفاً في هذه المجموعة*\nارفع البوت إلى مشرف ثم أرسل الأمر' });
+                return true;
             }
-
-            const subData = {
-                link: fullLink,
-                groupId: targetGroupId,
+            
+            let inviteLink = '';
+            try {
+                const inviteCode = await sock.groupInviteCode(chatId);
+                inviteLink = `https://chat.whatsapp.com/${inviteCode}`;
+            } catch (e) {}
+            
+            subscriptions[chatId] = {
+                groupId: chatId,
                 groupName: groupMetadata.subject,
+                inviteLink: inviteLink,
+                requiredGroupId: chatId,
                 addedBy: senderId,
                 addedAt: Date.now()
             };
-
-            subscriptions[chatId].push(subData);
             saveSubscriptions(subscriptions);
-            subscriptionStates.delete(chatId);
-
-            await sock.sendMessage(chatId, { 
-                text: '*↢ تـم اضافة المجموعة كاشتراك اجباري*\n*↢ لـن يتمكن الاعضاء من ارسال رسائل في القروب الا بعد الاشتراك بها*' 
-            }, { quoted: message });
-
-        } catch (error) {
-            console.error('Error adding subscription:', error);
-            await sock.sendMessage(chatId, { 
-                text: '*↢ حدث خطأ أثناء اضافة الاشتراك.*' 
-            }, { quoted: message });
-            subscriptionStates.delete(chatId);
-        }
-        return true;
-    }
-
-    // حذف اشتراك
-    if (cleanMessage === 'حذف اشتراك' || cleanMessage === 'حذف_اشتراك') {
-        const groupSubs = subscriptions[chatId] || [];
-        
-        if (groupSubs.length === 0) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ لا توجد اشتراكات مضافة.*' 
-            }, { quoted: message });
+            
+            await sock.sendMessage(chatId, {
+                text: `*↫ تـم تفعيـل الاشتراك الإجباري*\n*للمجموعـة:* ${groupMetadata.subject}\n*رابط الإنضـمام:* ${inviteLink || 'غير متوفر'}`
+            });
+            return true;
+            
+        } catch (err) {
+            console.log(`[SUB] Error: ${err.message}`);
+            await sock.sendMessage(chatId, { text: '*↢ خطأ*' });
             return true;
         }
-
-        let text = '*↢ قائمـة الاشتـراك الاجبـاري*\n*ٴ┈─┈─┈─┈─┈─┈─┈─┈─*\n';
-        const numbers = ['𝟭', '𝟮', '𝟯', '𝟰', '𝟱', '𝟲', '𝟳', '𝟴', '𝟵', '𝟭𝟬'];
-        
-        groupSubs.forEach((sub, index) => {
-            text += `${numbers[index] || (index + 1)} - ${sub.link}\n`;
-        });
-        
-        text += '\n*↢ ارسـل رقـم القروب المراد حذفه من الاشتراك الاجباري.*';
-        
-        await sock.sendMessage(chatId, { 
-            text,
-            mentions: []
-        }, { quoted: message, linkPreview: false });
-        
-        subscriptionStates.set(chatId, { step: 'waiting_delete_number', senderId });
-        return true;
     }
-
-    // Delete subscription by number
-    if (state && state.step === 'waiting_delete_number' && state.senderId === senderId) {
-        const number = parseInt(cleanMessage);
-        const groupSubs = subscriptions[chatId] || [];
-        
-        if (isNaN(number) || number < 1 || number > groupSubs.length) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ رقم غير صالح.*' 
-            }, { quoted: message });
-            return true;
-        }
-
-        groupSubs.splice(number - 1, 1);
-        subscriptions[chatId] = groupSubs;
-        saveSubscriptions(subscriptions);
-        subscriptionStates.delete(chatId);
-
-        await sock.sendMessage(chatId, { 
-            text: '*↢ تم حذف القروب بنجاح... ☑️*' 
-        }, { quoted: message });
-        return true;
-    }
-
-    // عرض الاشتراك
-    if (cleanMessage === 'عرض الاشتراك' || cleanMessage === 'عرض_الاشتراك') {
-        const groupSubs = subscriptions[chatId] || [];
-        
-        if (groupSubs.length === 0) {
-            await sock.sendMessage(chatId, { 
-                text: '*↢ لا توجد اشتراكات مضافة.*' 
-            }, { quoted: message });
-            return true;
-        }
-
-        let text = '*↢ قائمـة الاشتـراك الاجبـاري*\n*ٴ┈─┈─┈─┈─┈─┈─┈─┈─*\n';
-        const numbers = ['𝟭', '𝟮', '𝟯', '𝟰', '𝟱', '𝟲', '𝟳', '𝟴', '𝟵', '𝟭𝟬'];
-        
-        groupSubs.forEach((sub, index) => {
-            text += `${numbers[index] || (index + 1)} - ${sub.link}\n`;
-        });
-        
-        await sock.sendMessage(chatId, { 
-            text,
-            mentions: []
-        }, { quoted: message, linkPreview: false });
-        return true;
-    }
-
+    
     return false;
 }
 
-// Check if user is subscribed to required groups
+async function requestSubscription(sock, chatId, senderId) {
+    try {
+        const groupMetadata = await sock.groupMetadata(chatId);
+        const botId = sock.user.id.split(':')[0] + '@s.whatsapp.net';
+        const botParticipant = groupMetadata.participants.find(p => p.id === botId);
+        
+        // Try to get invite code now if bot is member and admin
+        let inviteLink = '';
+        if (botParticipant && botParticipant.admin) {
+            try {
+                const inviteCode = await sock.groupInviteCode(chatId);
+                inviteLink = `https://chat.whatsapp.com/${inviteCode}`;
+            } catch (e) {
+                console.log(`[SUB] Could not get invite code: ${e.message}`);
+            }
+        }
+        
+        pendingSubscriptionRequest = {
+            targetChatId: chatId,
+            groupName: groupMetadata.subject,
+            inviteLink: inviteLink, // Store now if available
+            requestTime: Date.now()
+        };
+        
+        await sock.sendMessage(chatId, {
+            text: `*↢ ارفـع البوت مشرف في أي مجموعة، ثم ارسل 'تفعيل الاشتراك'*\n\n*ملاحظة:* _يجب ان يكون البوت مشرفاً في المجموعة._`
+        });
+        return true;
+    } catch (err) {
+        console.log(`[SUB] Error requesting subscription: ${err.message}`);
+        await sock.sendMessage(chatId, { text: '*↢ خطأ في جلب معلومات المجموعة*' });
+        return true;
+    }
+}
+
 async function checkUserSubscription(sock, chatId, senderId) {
     const subscriptions = loadSubscriptions();
-    const groupSubs = subscriptions[chatId] || [];
+    const sub = subscriptions[chatId];
     
-    if (groupSubs.length === 0) {
+    console.log(`[SUB-CHECK] chatId: ${chatId}, senderId: ${senderId}`);
+    console.log(`[SUB-CHECK] subscriptions:`, Object.keys(subscriptions));
+    console.log(`[SUB-CHECK] sub for this chat:`, sub);
+
+    if (!sub) {
         return { subscribed: true };
     }
 
-    for (const sub of groupSubs) {
-        try {
-            const groupMetadata = await sock.groupMetadata(sub.groupId);
-            const isMember = groupMetadata.participants.some(p => p.id === senderId);
-            
-            if (!isMember) {
-                return { 
-                    subscribed: false, 
-                    link: sub.link,
-                    groupName: sub.groupName 
-                };
-            }
-        } catch (error) {
-            console.error('Error checking subscription:', error);
+    try {
+        // Check if user is in the REQUIRED group (the one with the invite link)
+        const requiredGroupId = sub.requiredGroupId || sub.groupId;
+        console.log(`[SUB-CHECK] Checking membership in required group: ${requiredGroupId}`);
+        
+        const groupMetadata = await sock.groupMetadata(requiredGroupId);
+        const isMember = groupMetadata.participants.some(p => p.id === senderId);
+        
+        console.log(`[SUB-CHECK] isMember: ${isMember}`);
+
+        if (!isMember) {
+            return {
+                subscribed: false,
+                groupId: requiredGroupId,
+                groupName: sub.groupName,
+                inviteLink: sub.inviteLink || `https://chat.whatsapp.com/${requiredGroupId}`
+            };
         }
+    } catch (error) {
+        console.error('Error checking subscription:', error);
     }
 
     return { subscribed: true };
@@ -252,5 +230,5 @@ async function checkUserSubscription(sock, chatId, senderId) {
 module.exports = {
     handleSubscriptionManagement,
     checkUserSubscription,
-    loadSubscriptions
+    requestSubscription
 };

@@ -7,7 +7,7 @@ const { getUserRank, getRankLevel } = require('../lib/ranks');
 async function banCommand(sock, chatId, message, senderId) {
     if (!chatId.endsWith('@g.us')) {
         await sock.sendMessage(chatId, { 
-            text: '⚠️ هذا الأمر يعمل فقط في المجموعات!'
+            text: '*↢ هذا الأمر يعمل فقط في المجموعات!*'
         }, { quoted: message });
         return;
     }
@@ -40,7 +40,7 @@ async function banCommand(sock, chatId, message, senderId) {
 
     if (!userToBan) {
         await sock.sendMessage(chatId, { 
-            text: 'يرجى عمل منشن للمستخدم أو الرد على رسالته لحظره!'
+            text: '*↢ يرجى عمل منشن للمستخدم أو الرد على رسالته لحظره!*'
         }, { quoted: message });
         return;
     }
@@ -74,19 +74,19 @@ async function banCommand(sock, chatId, message, senderId) {
             fs.writeFileSync(bannedFilePath, JSON.stringify(bannedData, null, 2), 'utf8');
 
             await sock.sendMessage(chatId, { 
-                text: `⇜ تم حظرته\n⇜ المستخدم ↤︎ @${userToBan.split('@')[0]}`,
+                text: `*↢ تم حظرته*\n*↢ المستخدم ↢ @${userToBan.split('@')[0]}*`,
                 mentions: [userToBan]
             }, { quoted: message });
         } else {
             await sock.sendMessage(chatId, { 
-                text: `*- مـا يحتاج محظور مسـبقاً.*\n*↫ المستخدم: @${userToBan.split('@')[0]}*`,
+                text: `*↢ مـا يحتاج محظور مسـبقاً.*\n*↢ المستخدم: @${userToBan.split('@')[0]}*`,
                 mentions: [userToBan]
             }, { quoted: message });
         }
     } catch (error) {
         console.error('Error in ban command:', error);
         await sock.sendMessage(chatId, { 
-            text: 'فشل حظر المستخدم!'
+            text: '*↢ فشل حظر المستخدم!*'
         }, { quoted: message });
     }
 }

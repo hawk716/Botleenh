@@ -2,6 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
+const { getToggle, TOGGLE_TYPES } = require('../lib/toggleSystem');
 
 const repliesPath = path.join(__dirname, '../data/replies.json');
 
@@ -107,7 +108,7 @@ async function handleReplyProcess(sock, chatId, message, senderId, userMessage) 
         pendingReplies.delete(key);
         
         await sock.sendMessage(chatId, { 
-            text: `*↢ تـم إضافة الرد بنجاح،✅*\n*↢الكـلمة: ${pending.keyword}*` 
+            text: `*↢ تـم إضافة الرد بنجاح، ☑️*\n*↢الكـلمة: ${pending.keyword}*` 
         }, { quoted: message });
         return true;
     }
@@ -148,7 +149,7 @@ async function deleteReplyCommand(sock, chatId, message, senderId, userMessage) 
     delete replies[chatId][keyword];
     saveReplies(replies);
 
-    await sock.sendMessage(chatId, { text: `✅ تم حذف الرد: ${keyword}` }, { quoted: message });
+    await sock.sendMessage(chatId, { text: `*↢ تـم حذف الرد بنجاح، ☑️*\n*↢الكـلمة: ${keyword}*` }, { quoted: message });
 }
 
 async function listRepliesCommand(sock, chatId, message) {
@@ -161,7 +162,7 @@ async function listRepliesCommand(sock, chatId, message) {
     const groupReplies = replies[chatId] || {};
 
     if (Object.keys(groupReplies).length === 0) {
-        await sock.sendMessage(chatId, { text: '❌ لا توجد ردود مخصصة في هذه المجموعة!' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↫ لا تــوجد ردود مضـافه*' }, { quoted: message });
         return;
     }
 
@@ -183,11 +184,29 @@ async function listRepliesCommand(sock, chatId, message) {
     await sock.sendMessage(chatId, { text: list }, { quoted: message });
 }
 
-async function checkReply(sock, chatId, userMessage) {
+async function checkReply(sock, chatId, userMessage, senderId) {
     const replies = loadReplies();
     const groupReplies = replies[chatId] || {};
 
     if (groupReplies[userMessage]) {
+        // Check if replies feature is enabled
+        const isRepliesEnabled = await getToggle(chatId, TOGGLE_TYPES.REPLIES);
+        
+        if (!isRepliesEnabled) {
+            // Get sender info for permission check
+            const groupMetadata = await sock.groupMetadata(chatId);
+            const senderParticipant = groupMetadata.participants.find(p => p.id === senderId);
+            const isWhatsAppAdmin = senderParticipant && senderParticipant.admin;
+            const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
+            const senderLevel = getRankLevel(senderRank);
+            
+            // Only allow مدير/مالك/ادمن to use replies when disabled
+            if (senderLevel < 2) {
+                await sock.sendMessage(chatId, { text: '*↢ الردود معطله من〖 المالك 〗*' });
+                return true;
+            }
+        }
+        
         const reply = groupReplies[userMessage];
         
         if (typeof reply === 'string') {

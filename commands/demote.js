@@ -1,37 +1,26 @@
 
-const isAdmin = require('../lib/isAdmin');
-const { getUserRank, removeUserRank, getRankLevel } = require('../lib/ranks');
+const { getUserRank, getRankLevel, removeUserRank } = require('../lib/ranks');
 
-async function demoteCommand(sock, chatId, mentionedJids, message, specifiedRank = null) {
+async function demoteCommand(sock, chatId, mentionedJids, message, senderId, specifiedRank = null) {
     try {
         if (!chatId.endsWith('@g.us')) {
             await sock.sendMessage(chatId, { 
-                text: 'هذا الأمر يمكن استخدامه في المجموعات فقط!'
-            });
+                text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*'
+            }, { quoted: message });
             return;
         }
 
-        try {
-            const adminStatus = await isAdmin(sock, chatId, message.key.participant || message.key.remoteJid);
-            
-            if (!adminStatus.isBotAdmin) {
-                await sock.sendMessage(chatId, { 
-                    text: '❌ خطأ: يرجى جعل البوت مشرف أولاً لاستخدام هذا الأمر.'
-                });
-                return;
-            }
+        // Permission check - level 4 (مالك) only
+        const groupMetadata = await sock.groupMetadata(chatId);
+        const senderParticipant = groupMetadata.participants.find(p => p.id === senderId);
+        const isWhatsAppAdmin = senderParticipant && senderParticipant.admin;
+        const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
+        const senderLevel = getRankLevel(senderRank);
 
-            if (!adminStatus.isSenderAdmin) {
-                await sock.sendMessage(chatId, { 
-                    text: '❌ خطأ: فقط مشرفي المجموعة يمكنهم استخدام أمر التخفيض.'
-                });
-                return;
-            }
-        } catch (adminError) {
-            console.error('Error checking admin status:', adminError);
+        if (senderLevel < 4 && !message.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: '❌ خطأ: يرجى التأكد من أن البوت مشرف في هذه المجموعة.'
-            });
+                text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*'
+            }, { quoted: message });
             return;
         }
 
@@ -45,8 +34,8 @@ async function demoteCommand(sock, chatId, mentionedJids, message, specifiedRank
         
         if (userToDemote.length === 0) {
             await sock.sendMessage(chatId, { 
-                text: '❌ خطأ: يرجى عمل منشن للمستخدم أو الرد على رسالته لتخفيضه!'
-            });
+                text: '*↢ يرجى عمل منشن للمستخدم أو الرد على رسالته لتخفيضه!*'
+            }, { quoted: message });
             return;
         }
 
@@ -59,7 +48,6 @@ async function demoteCommand(sock, chatId, mentionedJids, message, specifiedRank
         setTimeout(() => sock.recentManualActions.delete(actionKey), 3000);
         
         const usernames = userToDemote.map(jid => `@${jid.split('@')[0]}`);
-        const groupMetadata = await sock.groupMetadata(chatId);
         const targetParticipant = groupMetadata.participants.find(p => p.id === userToDemote[0]);
         const isTargetWhatsAppAdmin = targetParticipant && targetParticipant.admin;
         const currentRank = await getUserRank(chatId, userToDemote[0], isTargetWhatsAppAdmin);
@@ -78,15 +66,12 @@ async function demoteCommand(sock, chatId, mentionedJids, message, specifiedRank
                 await sock.sendMessage(chatId, { 
                     text: `*↢ الطيـب「 ${usernames.join(', ')} 」*\n*↢ بالاصل ليس ${targetRank}*`,
                     mentions: userToDemote
-                });
+                }, { quoted: message });
                 return;
             }
         }
         
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        await sock.groupParticipantsUpdate(chatId, userToDemote, "demote");
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
+        // Only remove rank - don't call groupParticipantsUpdate
         await removeUserRank(chatId, userToDemote[0]);
         
         const demotionMessage = `*↢ الطيـب「 ${usernames.join(', ')} 」*\n*↢ تم تنزيله من ${currentRank}*`;
@@ -94,27 +79,12 @@ async function demoteCommand(sock, chatId, mentionedJids, message, specifiedRank
         await sock.sendMessage(chatId, { 
             text: demotionMessage,
             mentions: userToDemote
-        });
+        }, { quoted: message });
     } catch (error) {
         console.error('Error in demote command:', error);
-        if (error.data === 429) {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            try {
-                await sock.sendMessage(chatId, { 
-                    text: '❌ تم الوصول للحد الأقصى. يرجى المحاولة مرة أخرى بعد بضع ثوانٍ.'
-                });
-            } catch (retryError) {
-                console.error('Error sending retry message:', retryError);
-            }
-        } else {
-            try {
-                await sock.sendMessage(chatId, { 
-                    text: '❌ فشل عملية التخفيض. تأكد من أن البوت مشرف وله الصلاحيات الكافية.'
-                });
-            } catch (sendError) {
-                console.error('Error sending error message:', sendError);
-            }
-        }
+        await sock.sendMessage(chatId, { 
+            text: '*↢ فشل عملية التخفيض. تأكد من أن البوت مشرف وله الصلاحيات الكافية.*'
+        }, { quoted: message });
     }
 }
 

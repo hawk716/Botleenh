@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const settings = require('../settings');
 
-const botNumber = '967716213452';
+const botNumber = settings.ownerNumber;
 
 function normalizeNum(jid) {
     return jid.split('@')[0].split(':')[0];

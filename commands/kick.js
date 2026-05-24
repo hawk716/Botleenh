@@ -13,7 +13,7 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
         const senderLevel = getRankLevel(senderRank);
 
         if (!isBotAdmin) {
-            await sock.sendMessage(chatId, { text: 'يرجى جعل البوت مشرف أولاً.' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: '*↢ يرجى جعل البوت مشرف أولاً.*' }, { quoted: message });
             return;
         }
 
@@ -38,7 +38,7 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
     // If no user found through either method
     if (usersToKick.length === 0) {
         await sock.sendMessage(chatId, { 
-            text: 'يرجى عمل منشن للمستخدم أو الرد على رسالته لطرده!'
+            text: '*↢ يرجى عمل منشن للمستخدم أو الرد على رسالته لطرده!*'
         }, { quoted: message });
         return;
     }
@@ -49,7 +49,7 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
     // Check if any of the users to kick is the bot itself
     if (usersToKick.includes(botId)) {
         await sock.sendMessage(chatId, { 
-            text: "لا يمكنني طرد نفسي! 🤖"
+            text: "*↢ لا يمكنني طرد نفسي!*"
         }, { quoted: message });
         return;
     }
@@ -63,14 +63,14 @@ async function kickCommand(sock, chatId, senderId, mentionedJids, message) {
 
         // Send single confirmation message
         await sock.sendMessage(chatId, { 
-            text: `*↢ لعيونك ما يظل ولا ثانية*\n*↢ المستخدم ↫ ${usernames.join(', ')}*`,
+            text: `*↢ لعيونك ما يظل ولا ثانية*\n*↢ المستخدم ↢ ${usernames.join(', ')}*`,
             mentions: usersToKick
-        });
+        }, { quoted: message });
     } catch (error) {
         console.error('Error in kick command:', error);
         await sock.sendMessage(chatId, { 
-            text: 'فشل طرد المستخدم!'
-        });
+            text: '*↢ فشل طرد المستخدم!*'
+        }, { quoted: message });
     }
 }
 

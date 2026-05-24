@@ -6,7 +6,7 @@ const { getUserRank, getRankLevel } = require('../lib/ranks');
 async function clearBannedCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -63,7 +63,7 @@ async function clearBannedCommand(sock, chatId, message, senderId) {
     } catch (error) {
         console.error('Error in clearBannedCommand:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء مسح المحظورين!'
+            text: '*↢ حدث خطأ أثناء مسح المحظورين!*'
         }, { quoted: message });
     }
 }

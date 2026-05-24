@@ -19,7 +19,7 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
         initializeWarningsFile();
 
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: 'هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
 
@@ -34,22 +34,22 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
             const { isBotAdmin } = await isAdmin(sock, chatId, senderId);
 
             if (!isBotAdmin) {
-                await sock.sendMessage(chatId, { text: '❌ خطأ: يرجى جعل البوت مشرف أولاً لاستخدام هذا الأمر.' });
+                await sock.sendMessage(chatId, { text: '*↢ خطأ: يرجى جعل البوت مشرف أولاً لاستخدام هذا الأمر.*' }, { quoted: message });
                 return;
             }
 
             if (senderLevel < 2 && !message.key.fromMe) {
-                await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 الادمن 〗*' });
+                await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 الادمن 〗*' }, { quoted: message });
                 return;
             }
         } catch (adminError) {
             console.error('Error checking admin status:', adminError);
-            await sock.sendMessage(chatId, { text: '❌ خطأ: يرجى التأكد من أن البوت مشرف في هذه المجموعة.' });
+            await sock.sendMessage(chatId, { text: '*↢ خطأ: يرجى التأكد من أن البوت مشرف في هذه المجموعة.*' }, { quoted: message });
             return;
         }
 
         if (warnCount < 1 || warnCount > 3) {
-            await sock.sendMessage(chatId, { text: '❌ يجب أن يكون عدد الانذارات من 1 إلى 3 فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ يجب أن يكون عدد الانذارات من 1 إلى 3 فقط!*' }, { quoted: message });
             return;
         }
 
@@ -62,7 +62,7 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
         }
 
         if (!userToWarn) {
-            await sock.sendMessage(chatId, { text: '❌ خطأ: يرجى عمل منشن للمستخدم أو الرد على رسالته لإنذاره!' });
+            await sock.sendMessage(chatId, { text: '*↢ خطأ: يرجى عمل منشن للمستخدم أو الرد على رسالته لإنذاره!*' }, { quoted: message });
             return;
         }
 
@@ -94,14 +94,14 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
                 await sock.sendMessage(chatId, { 
                     text: `*↢ تم اعطائـه ${warnCount} انذار*\n*↢ وصل للحد الاقصى 3 انذارات*\n*↢ جاري طرده...*`,
                     mentions: [userToWarn]
-                });
+                }, { quoted: message });
 
                 await new Promise(resolve => setTimeout(resolve, 1000));
 
                 await sock.sendMessage(chatId, { 
                     text: `*↢ تم طرد @${userToWarn.split('@')[0]} بعد 3 انذارات*`,
                     mentions: [userToWarn]
-                });
+                }, { quoted: message });
 
                 await new Promise(resolve => setTimeout(resolve, 500));
                 await sock.groupParticipantsUpdate(chatId, [userToWarn], "remove");
@@ -117,24 +117,11 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
             }
         } catch (error) {
             console.error('Error in warn command:', error);
-            await sock.sendMessage(chatId, { text: '❌ فشل إنذار المستخدم!' });
+            await sock.sendMessage(chatId, { text: '*↢ فشل إنذار المستخدم!*' }, { quoted: message });
         }
     } catch (error) {
         console.error('Error in warn command:', error);
-        if (error.data === 429) {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            try {
-                await sock.sendMessage(chatId, { text: '❌ تم الوصول للحد الأقصى. يرجى المحاولة مرة أخرى بعد بضع ثوانٍ.' });
-            } catch (retryError) {
-                console.error('Error sending retry message:', retryError);
-            }
-        } else {
-            try {
-                await sock.sendMessage(chatId, { text: '❌ فشل إنذار المستخدم. تأكد من أن البوت مشرف وله الصلاحيات الكافية.' });
-            } catch (sendError) {
-                console.error('Error sending error message:', sendError);
-            }
-        }
+        await sock.sendMessage(chatId, { text: '*↢ فشل إنذار المستخدم. تأكد من أن البوت مشرف وله الصلاحيات الكافية.*' }, { quoted: message });
     }
 }
 

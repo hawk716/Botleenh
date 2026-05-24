@@ -7,7 +7,7 @@ const path = require('path');
 async function clearAdminsCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -49,7 +49,7 @@ async function clearAdminsCommand(sock, chatId, message, senderId) {
         }
     } catch (error) {
         console.error('Error in clearAdminsCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في مسح الادمنيه!' });
+        await sock.sendMessage(chatId, { text: '*↢ فشل في مسح الادمنيه!*' }, { quoted: message });
     }
 }
 

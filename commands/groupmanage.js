@@ -1,6 +1,16 @@
 const fs = require('fs');
 const path = require('path');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { getPinlock, addPinnedMessage, isMessagePinned, removePinnedMessage } = require('../lib/index');
+const { getUserRank, getRankLevel } = require('../lib/ranks');
+
+const rulesStates = new Map();
+
+const defaultRules = `#قوانين المجموعه
+*• ممنوع نشر الروابط بشكل عام  ☑️*
+*• ممنوع العنصرية بكافة انواعها 👍🏻*
+*• ممنوع مشاركة اي محتوى اباحي ⛔*
+*• احترام المشرفين والتعامل بآدب 🤝*`;
 
 async function ensureGroupAndAdmin(sock, chatId, senderId) {
     const isGroup = chatId.endsWith('@g.us');
@@ -27,7 +37,7 @@ async function setGroupDescription(sock, chatId, senderId, text, message) {
     if (!check.ok) return;
     const desc = (text || '').trim();
     if (!desc) {
-        await sock.sendMessage(chatId, { text: '⇜ قم بإرسال الأمر هكذا: تغيير البايو <البايو>' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↫ قـم بإرسال الأمر هكذا: وصف القروب + الوصف*' }, { quoted: message });
         return;
     }
     // WhatsApp limits group description to 512 characters
@@ -36,7 +46,7 @@ async function setGroupDescription(sock, chatId, senderId, text, message) {
     
     try {
         await sock.groupUpdateDescription(chatId, finalDesc);
-        await sock.sendMessage(chatId, { text: '⇜ أبشر تم تحديث البايو' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↫ تــم تحديث صورة الوصف بنجاح ☑️*' }, { quoted: message });
         
         // Notify if description was truncated
         if (desc.length > maxLength) {
@@ -45,6 +55,18 @@ async function setGroupDescription(sock, chatId, senderId, text, message) {
     } catch (e) {
         console.error('Error updating description:', e);
         await sock.sendMessage(chatId, { text: '❌ فشل تحديث البايو' }, { quoted: message });
+    }
+}
+
+async function clearGroupDescription(sock, chatId, senderId, message) {
+    const check = await ensureGroupAndAdmin(sock, chatId, senderId);
+    if (!check.ok) return;
+    try {
+        await sock.groupUpdateDescription(chatId, '');
+        await sock.sendMessage(chatId, { text: '*↫ تــم اعادة تعيين وصف الجروب بنجاح ☑️*' }, { quoted: message });
+    } catch (e) {
+        console.error('Error clearing description:', e);
+        await sock.sendMessage(chatId, { text: '❌ فشل مسح الوصف' }, { quoted: message });
     }
 }
 
@@ -58,7 +80,7 @@ async function setGroupName(sock, chatId, senderId, text, message) {
     }
     try {
         await sock.groupUpdateSubject(chatId, name);
-        await sock.sendMessage(chatId, { text: '⇜ أبشر تم تحديث اسم الجروب' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: `*↫ تــم تحديث اسم الجروب بنجاح ☑️*\n*↫ الاسـم الجديد:* ${name}` }, { quoted: message });
     } catch (e) {
         await sock.sendMessage(chatId, { text: '❌ فشل تحديث اسم المجموعة.' }, { quoted: message });
     }
@@ -68,10 +90,17 @@ async function setGroupPhoto(sock, chatId, senderId, message) {
     const check = await ensureGroupAndAdmin(sock, chatId, senderId);
     if (!check.ok) return;
 
-    const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-    const imageMessage = quoted?.imageMessage || quoted?.stickerMessage;
+    let imageMessage = message.message?.imageMessage || message.message?.stickerMessage;
+
     if (!imageMessage) {
-        await sock.sendMessage(chatId, { text: '⇜ قم أولاً بإرسال *الصورة/الملصق* ثم قم بالرد عليها بتغيير الصورة لتعينها' }, { quoted: message });
+        const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+        imageMessage = quoted?.imageMessage || quoted?.stickerMessage;
+    }
+
+    if (!imageMessage) {
+        await sock.sendMessage(chatId, { 
+            text: '*↫ قم أولاً بإرسال الصوره/الملصق، ثم قم بالرد عليها بـ "صوره القروب" لتعينها.*' 
+        }, { quoted: message });
         return;
     }
     try {
@@ -87,7 +116,7 @@ async function setGroupPhoto(sock, chatId, senderId, message) {
 
         await sock.updateProfilePicture(chatId, { url: imgPath });
         try { fs.unlinkSync(imgPath); } catch (_) {}
-        await sock.sendMessage(chatId, { text: '⇜ أبشر تم تحديث صورة الجروب' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↫ تــم تحديث صورة الجروب بنجاح ☑️*' }, { quoted: message });
     } catch (e) {
         console.error('Error updating group photo:', e);
         await sock.sendMessage(chatId, { text: '❌ فشل تحديث صورة المجموعة.' }, { quoted: message });
@@ -98,29 +127,47 @@ async function setRules(sock, chatId, senderId, text, message) {
     const check = await ensureGroupAndAdmin(sock, chatId, senderId);
     if (!check.ok) return;
 
+    if (!text) {
+        rulesStates.set(chatId, { senderId, waiting: true });
+        return sock.sendMessage(chatId, { text: '*↫ ارسل القوانين التي تريد وضعها*' }, { quoted: message });
+    }
+
+    saveRules(chatId, text);
+    await sock.sendMessage(chatId, { text: '*↫ تـم حفظ القوانين لـ لمجموعه.*' }, { quoted: message });
+}
+
+function saveRules(chatId, text) {
     const dataPath = path.join(__dirname, '../data/grouprules.json');
     let rules = {};
     if (fs.existsSync(dataPath)) {
         rules = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     }
-
     rules[chatId] = text.trim();
     fs.writeFileSync(dataPath, JSON.stringify(rules, null, 2));
-    await sock.sendMessage(chatId, { text: '*↢ تـم تحديث القوانين بنجاح... ☑️*' }, { quoted: message });
+}
+
+async function handleRulesText(sock, chatId, senderId, text) {
+    const state = rulesStates.get(chatId);
+    if (!state || !state.waiting || state.senderId !== senderId) return false;
+
+    saveRules(chatId, text);
+    rulesStates.delete(chatId);
+    await sock.sendMessage(chatId, { text: '*↫ تـم حفظ القوانين لـ لمجموعه.*' });
+    return true;
 }
 
 async function getRules(sock, chatId, message) {
     const dataPath = path.join(__dirname, '../data/grouprules.json');
     if (!fs.existsSync(dataPath)) {
-        return sock.sendMessage(chatId, { text: '*↢ لم يتم اضافة القوانين بعد.*' }, { quoted: message });
+        return sock.sendMessage(chatId, { text: defaultRules }, { quoted: message });
     }
 
     const rules = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
     if (!rules[chatId]) {
-        return sock.sendMessage(chatId, { text: '*↢ لم يتم اضافة القوانين بعد.*' }, { quoted: message });
+        return sock.sendMessage(chatId, { text: defaultRules }, { quoted: message });
     }
 
-    await sock.sendMessage(chatId, { text: `*القوانين:*\n${rules[chatId]}` }, { quoted: message });
+    await sock.sendMessage(chatId, { text: rules[chatId] }, { quoted: message });
 }
 
 async function clearRules(sock, chatId, senderId, message) {
@@ -137,9 +184,16 @@ async function clearRules(sock, chatId, senderId, message) {
 }
 
 async function setNickname(sock, chatId, senderId, text, message) {
+    let isGroupAdmin = false;
+    try {
+        const groupMetadata = await sock.groupMetadata(chatId);
+        const participant = groupMetadata.participants.find(p => p.id === senderId);
+        isGroupAdmin = participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+    } catch (e) {}
+
     const rank = require('../lib/ranks').getRank;
-    const userRank = await rank(chatId, senderId);
-    if (!['owner', 'manager', 'admin'].includes(userRank) && !message.key.fromMe) {
+    const userRank = await rank(chatId, senderId, isGroupAdmin);
+    if (!['مالك', 'مدير', 'ادمن'].includes(userRank) && !message.key.fromMe) {
         return sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 الادمن 〗فقط.*' }, { quoted: message });
     }
 
@@ -190,7 +244,50 @@ async function pinMessage(sock, chatId, message) {
     if (!quoted?.stanzaId) {
         return;
     }
-    await sock.sendMessage(chatId, { pin: quoted.stanzaId });
+
+    const pinlock = await getPinlock(chatId);
+
+    if (pinlock && !pinlock.enabled) {
+        await sock.sendMessage(chatId, { text: '*↢ تـم تثبيت الرسالة لمدة 𝟑𝟎 يوم بنجاح... ☑️*' }, { quoted: message });
+        return;
+    }
+
+    if (pinlock && pinlock.enabled) {
+        let isGroupAdmin = false;
+        try {
+            const groupMetadata = await sock.groupMetadata(chatId);
+            const participant = groupMetadata.participants.find(p => p.id === message.key.participant);
+            isGroupAdmin = participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
+        } catch (e) {}
+
+        const userRank = await getUserRank(chatId, message.key.participant, isGroupAdmin);
+        const userLevel = getRankLevel(userRank);
+        if (userLevel < 2) {
+            try {
+                await sock.sendMessage(chatId, { delete: message.key });
+            } catch (e) {}
+            await sock.sendMessage(chatId, {
+                text: `*↢ المستخدم〖 @${message.key.participant.split('@')[0]} 〗*\n*↢ عـذراً ممنوع التثبيت.*`,
+                mentions: [message.key.participant]
+            });
+            return;
+        }
+    }
+
+    const botJid = sock.user?.id?.split(':')[0] + '@s.whatsapp.net';
+    const isFromMe = quoted.participant === botJid;
+    await sock.sendMessage(chatId, {
+        pin: {
+            remoteJid: chatId,
+            fromMe: isFromMe,
+            id: quoted.stanzaId,
+            participant: quoted.participant
+        },
+        type: 1,
+        time: 2592000
+    });
+    await addPinnedMessage(chatId, quoted.stanzaId);
+    await sock.sendMessage(chatId, { text: '*↢ تـم تثبيت الرسالة لمدة 𝟑𝟎 يوم بنجاح... ☑️*' }, { quoted: message });
 }
 
 async function unpinMessage(sock, chatId, message) {
@@ -198,21 +295,42 @@ async function unpinMessage(sock, chatId, message) {
     if (!quoted?.stanzaId) {
         return;
     }
-    await sock.sendMessage(chatId, { unpin: quoted.stanzaId });
+
+    const pinned = await isMessagePinned(chatId, quoted.stanzaId);
+    if (!pinned) {
+        await sock.sendMessage(chatId, { text: '*↢ عـذراً الرسالة غير مثبته.*' }, { quoted: message });
+        return;
+    }
+
+    const botJid = sock.user?.id?.split(':')[0] + '@s.whatsapp.net';
+    const isFromMe = quoted.participant === botJid;
+    await sock.sendMessage(chatId, {
+        pin: {
+            remoteJid: chatId,
+            fromMe: isFromMe,
+            id: quoted.stanzaId,
+            participant: quoted.participant
+        },
+        type: 0
+    });
+    await removePinnedMessage(chatId, quoted.stanzaId);
+    await sock.sendMessage(chatId, { text: '*↢ تـم الغاء تثبيت الرسالة بنجاح... ☑️*' }, { quoted: message });
 }
 
 async function unpinAll(sock, chatId, message) {
     await sock.sendMessage(chatId, { unpinAll: true });
-    await sock.sendMessage(chatId, { text: '*↢ تـم الغاء تثبيت جميع الرسائل بنجاح... ☑️*' }, { quoted: message });
+    await sock.sendMessage(chatId, { text: '*↢ تـم الغاء تثبيت جميع الرسائل المثبته بنجاح... ☑️*' }, { quoted: message });
 }
 
 module.exports = {
     setGroupDescription,
+    clearGroupDescription,
     setGroupName,
     setGroupPhoto,
     setRules,
     getRules,
     clearRules,
+    handleRulesText,
     setNickname,
     getNickname,
     pinMessage,

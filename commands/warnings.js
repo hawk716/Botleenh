@@ -67,7 +67,7 @@ async function warningsCommand(sock, chatId, message, mentionedJidList, quotedPa
     // If no user specified
     if (!userToCheck) {
         await sock.sendMessage(chatId, { 
-            text: '⚠️ يرجى عمل منشن لمستخدم أو الرد على رسالته للتحقق من إنذاراته.' 
+            text: '*↢ يرجى عمل منشن لمستخدم أو الرد على رسالته للتحقق من إنذاراته.*' 
         }, { quoted: message });
         return;
     }

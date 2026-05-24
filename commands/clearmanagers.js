@@ -6,7 +6,7 @@ const { getUserRank, getRankLevel } = require('../lib/ranks');
 async function clearManagersCommand(sock, chatId, message, senderId) {
     try {
         if (!chatId.endsWith('@g.us')) {
-            await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط!' });
+            await sock.sendMessage(chatId, { text: '*↢ هذا الأمر يمكن استخدامه في المجموعات فقط!*' }, { quoted: message });
             return;
         }
         
@@ -59,7 +59,7 @@ async function clearManagersCommand(sock, chatId, message, senderId) {
     } catch (error) {
         console.error('Error in clearManagersCommand:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء مسح رتب المدراء!'
+            text: '*↢ حدث خطأ أثناء مسح رتب المدراء!*'
         }, { quoted: message });
     }
 }

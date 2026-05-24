@@ -1,0 +1,914 @@
+LEEN COMMANDS AUDIT REPORT
+==========================
+
+Audit started at: Tue May 19 06:07:43 AM UTC 2026
+
+Files to audit:
+ai.js
+alive.js
+anime.js
+antibadword.js
+anticall.js
+antidelete.js
+antilink.js
+antitag.js
+arabic_news.js
+attp.js
+autoread.js
+autostatus.js
+autotyping.js
+ban.js
+callowner.js
+character.js
+chatbot.js
+checkrank.js
+choose.js
+clearadmins.js
+clearallranks.js
+clearban.js
+clearbanned.js
+clear.js
+clearmanagers.js
+clearowners.js
+clearrestricted.js
+clearsession.js
+cleartmp.js
+clearvips.js
+cmdlock.js
+compliment.js
+createimage.js
+customcommands.js
+dare.js
+delete.js
+demoteadmin.js
+demote.js
+demotemanager.js
+demoteme.js
+demoteowner.js
+demotevip.js
+eightball.js
+emojimix.js
+facebook.js
+fact.js
+flirt.js
+fun.js
+gemini.js
+gif.js
+github.js
+goodbye.js
+goodnight.js
+gpt.js
+groupinfo.js
+grouplink.js
+groupmanage.js
+hangman.js
+help.js
+hidetag.js
+id.js
+igs.js
+imagine.js
+img-blur.js
+instagram.js
+insult.js
+joke.js
+kick.js
+kickme.js
+lock.js
+lyrics.js
+meme.js
+mention.js
+menu1.js
+menu2.js
+menu3.js
+menu4.js
+menu6.js
+misc.js
+mutehim.js
+mute.js
+news.js
+owner.js
+pair.js
+pies.js
+ping.js
+play.js
+pmblocker.js
+promote.js
+quote.js
+rankstats.js
+remini.js
+removebg.js
+replies.js
+resetlink.js
+restrict.js
+roseday.js
+setadmin.js
+setmanager.js
+setowner.js
+setpp.js
+settings.js
+setvip.js
+shayari.js
+ship.js
+showowners.js
+showranks.js
+simage.js
+simp.js
+song.js
+sora.js
+spotify.js
+ss.js
+staff.js
+sticker-alt.js
+stickercrop.js
+sticker.js
+stickertelegram.js
+stupid.js
+subscription.js
+sudo.js
+tagall.js
+tag.js
+tagnotadmin.js
+take.js
+textmaker.js
+tictactoe.js
+tiktok.js
+toggle.js
+togglesettings.js
+topmembers.js
+translate.js
+trivia.js
+truth.js
+tts.js
+unban.js
+unmute.js
+unrestrict.js
+update.js
+url.js
+video.js
+viewonce.js
+warnings.js
+warn.js
+wasted.js
+weatherdetailed.js
+weather.js
+welcome.js
+wordban.js
+zodiac-age.js
+zodiac.js
+
+=== Checking ai.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking alive.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking anime.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking antibadword.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking anticall.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking antidelete.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking antilink.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking antitag.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking arabic_news.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking attp.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking autoread.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking autostatus.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking autotyping.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking ban.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking callowner.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking character.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking chatbot.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking checkrank.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking choose.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking clearadmins.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking clearallranks.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking clearban.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking clearbanned.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking clear.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking clearmanagers.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking clearowners.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking clearrestricted.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking clearsession.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking cleartmp.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking clearvips.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking cmdlock.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking compliment.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking createimage.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking customcommands.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking dare.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking delete.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking demoteadmin.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking demote.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking demotemanager.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking demoteme.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking demoteowner.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking demotevip.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking eightball.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking emojimix.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking facebook.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking fact.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking flirt.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking fun.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking gemini.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking gif.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking github.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking goodbye.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking goodnight.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking gpt.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking groupinfo.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking grouplink.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking groupmanage.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking hangman.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking help.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking hidetag.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking id.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking igs.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking imagine.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking img-blur.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking instagram.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking insult.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking joke.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking kick.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking kickme.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking lock.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking lyrics.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking meme.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking mention.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking menu1.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking menu2.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking menu3.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking menu4.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking menu6.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking misc.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking mutehim.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking mute.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking news.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking owner.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking pair.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking pies.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking ping.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking play.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking pmblocker.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking promote.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking quote.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking rankstats.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking remini.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking removebg.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking replies.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking resetlink.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking restrict.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking roseday.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking setadmin.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking setmanager.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking setowner.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking setpp.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking settings.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking setvip.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking shayari.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking ship.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking showowners.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking showranks.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking simage.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking simp.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking song.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking sora.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking spotify.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking ss.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking staff.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking sticker-alt.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking stickercrop.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking sticker.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking stickertelegram.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking stupid.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking subscription.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking sudo.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking tagall.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking tag.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking tagnotadmin.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking take.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking textmaker.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking tictactoe.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking tiktok.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking toggle.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking togglesettings.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking topmembers.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking translate.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking trivia.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking truth.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking tts.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking unban.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking unmute.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking unrestrict.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking update.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+✅ Has permission checks
+
+=== Checking url.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking video.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking viewonce.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking warnings.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking warn.js ===
+✅ Uses *↢ prefix
+✅ No old emoji patterns
+✅ Has permission checks
+
+=== Checking wasted.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking weatherdetailed.js ===
+❌ Missing *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking weather.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking welcome.js ===
+❌ Missing *↢ prefix
+✅ No old emoji patterns
+ℹ️  No explicit sudo/owner checks
+
+=== Checking wordban.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking zodiac-age.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+=== Checking zodiac.js ===
+✅ Uses *↢ prefix
+⚠️  Contains old emoji patterns (❌ or ↫)
+ℹ️  No explicit sudo/owner checks
+
+Audit completed at: Tue May 19 06:07:44 AM UTC 2026
