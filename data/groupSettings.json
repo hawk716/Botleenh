@@ -1,0 +1,50 @@
+{
+  "120363403730534165@g.us": {
+    "ban_enabled": true,
+    "download_enabled": true,
+    "link_enabled": true,
+    "kickme_enabled": false,
+    "demoteme_enabled": false,
+    "mention_enabled": true,
+    "games_enabled": true,
+    "menus_enabled": true,
+    "mutehim_enabled": true,
+    "callowner_enabled": true
+  },
+  "120363422381460940@g.us": {
+    "ban_enabled": true,
+    "download_enabled": true,
+    "link_enabled": true,
+    "kickme_enabled": false,
+    "demoteme_enabled": false,
+    "mention_enabled": true,
+    "games_enabled": true,
+    "menus_enabled": true,
+    "mutehim_enabled": true,
+    "callowner_enabled": true
+  },
+  "120363425110232090@g.us": {
+    "ban_enabled": true,
+    "download_enabled": true,
+    "link_enabled": true,
+    "kickme_enabled": false,
+    "demoteme_enabled": false,
+    "mention_enabled": true,
+    "games_enabled": true,
+    "menus_enabled": true,
+    "mutehim_enabled": true,
+    "callowner_enabled": true
+  },
+  "120363425191962018@g.us": {
+    "ban_enabled": true,
+    "download_enabled": true,
+    "link_enabled": true,
+    "kickme_enabled": false,
+    "demoteme_enabled": false,
+    "mention_enabled": true,
+    "games_enabled": true,
+    "menus_enabled": true,
+    "mutehim_enabled": true,
+    "callowner_enabled": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "120363422381460940@g.us": {
+    "welcome": false
+  },
+  "120363425110232090@g.us": {
+    "promote": true,
+    "id": true,
+    "demoteme": true,
+    "ban": false,
+    "replies": false
+  }
+}

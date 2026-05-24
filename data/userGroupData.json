@@ -1,0 +1,50 @@
+{
+  "users": [],
+  "groups": [],
+  "antilink": {
+    "120363422381460940@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
+    "120363425110232090@g.us": {
+      "enabled": true,
+      "action": "delete"
+    }
+  },
+  "antibadword": {},
+  "warnings": {},
+  "sudo": [],
+  "welcome": {
+    "120363422381460940@g.us": {
+      "enabled": true,
+      "message": "عاملِ الناسَ بخلقٍ تكن سيّداً، فالناسُ لا تملكها إلا الأخلاقُ\n\n*حيّاك الله* #الاسم\n*• وقت دخولك ↤︎* #الوقت\n*• بـتاريخ ↤︎* #التاريخ"
+    },
+    "120363425110232090@g.us": {
+      "enabled": true
+    }
+  },
+  "goodbye": {},
+  "chatbot": {},
+  "autoReaction": false,
+  "replies": {},
+  "promote_restriction": {},
+  "id_system": {},
+  "antitag": {
+    "120363425110232090@g.us": {
+      "enabled": true,
+      "action": "delete"
+    }
+  },
+  "pinnedMessages": {
+    "120363425110232090@g.us": [
+      "ACEFF343A367D21C16A7C8A27B09E1FA",
+      "3EB057E79E363FB3BB0F90",
+      "3EB0502BCC143C3C42A0A1"
+    ]
+  },
+  "pinlock": {
+    "120363425110232090@g.us": {
+      "enabled": false
+    }
+  }
+}
