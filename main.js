@@ -1703,7 +1703,7 @@ if (originalCommand) {
             case cleanMessage === 'تيك توك' || cleanMessage.startsWith('تيك توك ') || normalizedCleanMessage === 'تيك_توك' || normalizedCleanMessage.startsWith('تيك_توك_'):
                 await tiktokCommand(sock, chatId, message);
                 break;
-            case cleanMessage === 'جبتي' || cleanMessage.startsWith('جبتي ') || normalizedCleanMessage === 'جبتي' || normalizedCleanMessage.startsWith('جبتي_'):
+            case cleanMessage === 'ميتا' || cleanMessage.startsWith('ميتا ') || normalizedCleanMessage === 'ميتا' || normalizedCleanMessage.startsWith('ميتا_'):
                 await gptCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'جيمني' || cleanMessage.startsWith('جيمني ') || normalizedCleanMessage === 'جيمني' || normalizedCleanMessage.startsWith('جيمني_'):

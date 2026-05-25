@@ -1,81 +1,98 @@
 const axios = require('axios');
 
+const NVIDIA_TOKEN = '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';
+const NVIDIA_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
+
+const MODELS = [
+    'meta/llama-4-maverick-17b-128e-instruct',
+    'meta/llama-3.2-90b-vision-instruct',
+    'google/gemma-3n-e4b-it',
+    'upstage/solar-10.7b-instruct',
+    'google/gemma-3n-e2b-it'
+];
+
+async function callNvidia(model, messages, maxTokens = 500) {
+    const res = await axios.post(NVIDIA_URL, {
+        model,
+        messages,
+        max_tokens: maxTokens,
+        temperature: 0.7
+    }, {
+        headers: {
+            'Authorization': `Bearer ${NVIDIA_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        timeout: 30000
+    });
+    return res.data?.choices?.[0]?.message?.content || '';
+}
+
 async function gptCommand(sock, chatId, message) {
     try {
-        const text = message.message?.conversation || message.message?.extendedTextMessage?.text;
-        
+        const text = message.message?.conversation || message.message?.extendedTextMessage?.text || '';
+
         if (!text) {
-            return await sock.sendMessage(chatId, { 
-                text: "يرجى تقديم سؤال بعد جبتي\n\nمثال: .جبتي اكتب كود html بسيط"
-            }, {
-                quoted: message
-            });
+            return await sock.sendMessage(chatId, {
+                text: "يرجى تقديم سؤال بعد ميتا\n\nمثال: ميتا اكتب كود html بسيط"
+            }, { quoted: message });
         }
 
-        // Get the query after جبتي
-        const query = text.replace(/^\.?جبتي\s*/i, '').trim();
+        const query = text.replace(/^\.?ميتا\s*/i, '').trim();
 
         if (!query) {
-            return await sock.sendMessage(chatId, { 
-                text: "يرجى تقديم سؤال بعد جبتي\n\nمثال: .جبتي اكتب كود html بسيط"
-            }, {quoted: message});
+            return await sock.sendMessage(chatId, {
+                text: "يرجى تقديم سؤال بعد ميتا\n\nمثال: ميتا اكتب كود html بسيط"
+            }, { quoted: message });
         }
 
-        try {
-            // Show processing message
-            await sock.sendMessage(chatId, {
-                react: { text: '🤖', key: message.key }
-            });
-
-            // Multiple GPT APIs for fallback - sii3.top
-            const models = ['gpt-5', 'gpt-4o', 'gpt-4.1', 'o3'];
-            
-            for (const model of models) {
-                try {
-                    const response = await axios.get(`https://sii3.top/api/openai.php?${model}=${encodeURIComponent(query)}`, { 
-                        timeout: 25000 
-                    });
-                    
-                    const answer = response.data?.response || response.data?.result;
-                    
-                    if (answer && typeof answer === 'string' && answer.length > 0) {
-                        await sock.sendMessage(chatId, {
-                            text: answer
-                        }, {
-                            quoted: message
-                        });
-                        return;
-                    }
-                } catch (e) {
-                    console.log(`GPT API failed (${model}): ${e.message}`);
-                    continue;
-                }
-            }
-            
-            throw new Error('All GPT APIs failed');
-        } catch (error) {
-            console.error('GPT API Error:', error);
-            await sock.sendMessage(chatId, {
-                text: "❌ فشل في الحصول على رد. يرجى المحاولة لاحقاً.",
-                contextInfo: {
-                    mentionedJid: [message.key.participant || message.key.remoteJid],
-                    quotedMessage: message.message
-                }
-            }, {
-                quoted: message
-            });
-        }
-    } catch (error) {
-        console.error('GPT Command Error:', error);
+        // Show thinking reaction
         await sock.sendMessage(chatId, {
-            text: "❌ حدث خطأ. يرجى المحاولة لاحقاً.",
-            contextInfo: {
-                mentionedJid: [message.key.participant || message.key.remoteJid],
-                quotedMessage: message.message
-            }
-        }, {
-            quoted: message
+            react: { text: '🧠', key: message.key }
         });
+
+        // Build messages payload
+        const userMessages = [{ role: 'user', content: query }];
+
+        let lastError = '';
+
+        for (const model of MODELS) {
+            try {
+                console.log(`[META] Trying model: ${model}`);
+                const reply = await callNvidia(model, userMessages);
+                if (reply && reply.trim()) {
+                    // Show success reaction
+                    await sock.sendMessage(chatId, {
+                        react: { text: '🤖', key: message.key }
+                    });
+                    await sock.sendMessage(chatId, {
+                        text: reply,
+                        contextInfo: {
+                            forwardingScore: 1,
+                            isForwarded: true,
+                            forwardedNewsletterMessageInfo: {
+                                newsletterJid: '120363161513685998@newsletter',
+                                newsletterName: 'KnightBot MD',
+                                serverMessageId: -1
+                            }
+                        }
+                    }, { quoted: message });
+                    return;
+                }
+            } catch (e) {
+                lastError = e.message;
+                console.log(`[META] Model ${model} failed: ${e.message?.substring(0, 80)}`);
+            }
+        }
+
+        throw new Error(lastError || 'All models failed');
+    } catch (error) {
+        console.error('[META] Error:', error.message?.substring(0, 100));
+        await sock.sendMessage(chatId, {
+            react: { text: '❌', key: message.key }
+        });
+        await sock.sendMessage(chatId, {
+            text: "❌ فشل في الحصول على رد من ميتا. يرجى المحاولة لاحقاً."
+        }, { quoted: message });
     }
 }
 
