@@ -5,10 +5,13 @@ const { writeExifImg, writeExifVid } = require('../lib/exif');
 
 async function attpCommand(sock, chatId, message) {
     const userMessage = message.message.conversation || message.message.extendedTextMessage?.text || '';
-    const text = userMessage.split(' ').slice(1).join(' ');
+    let text = userMessage;
+    if (text.startsWith('.attp')) text = text.slice(5).trim();
+    else if (text.startsWith('نص لملصق')) text = text.slice(8).trim();
+    else if (text.startsWith('نص_لملصق')) { text = text.slice(8).trim(); if (text.startsWith('_')) text = text.slice(1).trim(); }
 
     if (!text) {
-        await sock.sendMessage(chatId, { text: 'من فضلك أدخل النص بعد أمر .attp' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↢ارسل النص بعد الامر لتحويله لملصق*\n*↢ مثال نص لملصق مرحبا*' }, { quoted: message });
         return;
     }
 

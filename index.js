@@ -80,7 +80,7 @@ setInterval(() => {
 let phoneNumber = ""
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
-global.botname = "KNIGHT BOT"
+global.botname = settings.botName
 global.themeemoji = "•"
 global.phoneNumber = settings.ownerNumber
 const pairingCode = process.argv.includes("--pairing-code")
@@ -129,6 +129,13 @@ async function startXeonBotInc() {
 
     store.bind(XeonBotInc.ev)
 
+    // Global duplicate message tracking set
+    const processedMessageIds = new Set();
+    // Periodically clear the set to prevent memory growth (every minute)
+    setInterval(() => {
+        processedMessageIds.clear();
+    }, 60000);
+
     // Message handling
     XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
         try {
@@ -142,6 +149,13 @@ async function startXeonBotInc() {
                     }
                     if (!XeonBotInc.public && !mek.key.fromMe && chatUpdate.type === 'notify') continue
                     if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) continue
+
+                    // Deduplication: skip if we already processed this message ID + remoteJid
+                    const msgKey = mek.key.id + '@' + mek.key.remoteJid;
+                    if (processedMessageIds.has(msgKey)) {
+                        continue;
+                    }
+                    processedMessageIds.add(msgKey);
 
                     await handleMessages(XeonBotInc, { messages: [mek], type: chatUpdate.type }, true)
                 } catch (err) {
@@ -234,9 +248,11 @@ async function startXeonBotInc() {
 
         // Validate the phone number using awesome-phonenumber
         const pn = require('awesome-phonenumber');
-        if (!pn('+' + phoneNumber).isValid()) {
-            console.log(chalk.red('رقم غير صالح. الرجاء إدخال رقمك الدولي الكامل (مثال: 15551234567 للولايات المتحدة، 447911123456 للمملكة المتحدة، إلخ.) بدون + أو مسافات.'));
-            process.exit(1);
+        const fullNumber = '+' + phoneNumber;
+        const parsed = pn(fullNumber);
+        console.log(`[DEBUG] Phone number: ${fullNumber}, parsed valid: ${parsed.isValid()}`);
+        if (!parsed.isValid()) {
+            console.log(chalk.red('رقم غير صالح. سيتم استخدام الرقم من الاعدادات...'));
         }
 
         setTimeout(async () => {
@@ -279,6 +295,13 @@ async function startXeonBotInc() {
                     notify: 'المطور'
                 };
                 console.log(chalk.green(`✅ تم إضافة رقم المطور تلقائياً: ${settings.ownerNumber}`));
+                // Add owner to sudo list automatically
+                const { addSudo, getSudoList } = require('./lib/index');
+                const ownerFullJid = settings.ownerNumber + '@s.whatsapp.net';
+                const sudoList = await getSudoList();
+                if (!sudoList.includes(ownerFullJid)) {
+                    await addSudo(ownerFullJid);
+                }
             } catch (err) {
                 console.log(chalk.red(`⚠️ خطأ في إضافة رقم المطور: ${err.message}`));
             }

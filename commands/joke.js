@@ -1,17 +1,33 @@
-const jokes = [
-    "متى يجي اليوم اللي أدخل فيه البيت... وأسمعها تقول: \"أص! أص! يا أولاد، أبوكم جاء...\" 😢",
-    "مليت، كلما أدخل البيت أسمع: \"جاء الصايع الضايع...\" 🤡🤕",
-    "حكمة اليوم: إذا طعنك صاحبك في الظهر، اطعنه بالمغرب لأن ليل، ظلام... فهمت؟ 😂😹",
-    "تكره نفسك لما تمزح مع واحد عندك له فلوس تجلس خائف على مشاعره أكثر من حبيبتك 🌞🌝💔",
-    "لا تاخد الامور بشكل جدي 😐\nخذها بشكل جدك انت 😒\nجدي ما دخلو بالموضوع احترم نفسك 💔",
-    "كم أرغب بالجلوس في مكان خالي، ولكن خالي الله يهديه مش راضي يقوم 🤣😢",
-    "واحد يقول من الزهق شخبطت على ورقة ونزلت اعطيتها للصيدلاني\nقال الصيدلاني:\nهذا منقطع من فتره، لكن عندنا بديل له 🤣😂"
-];
+let jokes = [];
+try {
+  const data = require('../data/joke.json');
+  const arr = Array.isArray(data) ? data : data.jokes;
+  if (Array.isArray(arr)) jokes = arr.filter((x) => typeof x === 'string' && x.trim().length > 0);
+} catch (e) {
+  jokes = [];
+}
 
-module.exports = async function(sock, chatId, message) {
-    const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
-    
-    await sock.sendMessage(chatId, {
-        text: `*↢ نكتـة اليوم:*\n\n${randomJoke}`
-    }, { quoted: message });
+function pickRandomJoke() {
+  if (!jokes.length) return 'لا توجد نكت متاحة حالياً.';
+  return jokes[Math.floor(Math.random() * jokes.length)];
+}
+
+async function jokeCmd(sock, chatId, msg) {
+  const text = pickRandomJoke();
+  await sock.sendMessage(chatId, { text }, { quoted: msg });
+}
+
+function getJokeCount() {
+  return jokes.length;
+}
+
+function getAllJokes() {
+  return jokes.slice();
+}
+
+module.exports = {
+  jokeCmd,
+  getRandomJoke: pickRandomJoke,
+  getJokeCount,
+  getAllJokes
 };

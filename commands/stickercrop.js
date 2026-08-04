@@ -31,7 +31,7 @@ async function stickercropCommand(sock, chatId, message) {
 
     if (!mediaMessage) {
         await sock.sendMessage(chatId, { 
-            text: 'يرجى الرد على صورة/فيديو/ملصق باستخدام .crop، أو إرسال صورة/فيديو/ملصق مع .crop كتعليق.',
+            text: '*↢قـم بالرد او التعليق على صوره/فيديو لقص ملصق*',
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,

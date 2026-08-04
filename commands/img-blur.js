@@ -37,8 +37,8 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
                 { }
             );
         } else {
-            await sock.sendMessage(chatId, { 
-                text: '❌ يرجى الرد على صورة أو إرسال صورة مع التعليق .blur' 
+            await sock.sendMessage(chatId, {
+                text: '*↢ قــم بالرد او التعليق على صوره لجعلها مموه*'
             }, { quoted: message });
             return;
         }
@@ -60,7 +60,7 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
         // Send the blurred image
         await sock.sendMessage(chatId, {
             image: blurredImage,
-            caption: '*[ ✔ ] تم تمويه الصورة بنجاح*',
+            caption: '*↢ تـم تمويه الصوره بنجاح، ☑️*',
             contextInfo: {
                 forwardingScore: 1,
                 isForwarded: true,

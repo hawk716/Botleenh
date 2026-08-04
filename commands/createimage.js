@@ -6,8 +6,8 @@ async function createImageCommand(sock, chatId, message) {
         const text = message.message?.conversation?.trim() || 
                      message.message?.extendedTextMessage?.text?.trim() || '';
         
-        // Remove the command prefix and trim
-        const imagePrompt = text.replace(/^\.?انشاء\s*/i, '').trim();
+        // Remove command prefix: انشاء OR انشاء صوره OR انشاء صورة
+        const imagePrompt = text.replace(/^\.?(انشاء|انشاء\s+صوره|انشاء\s+صورة)\s*/i, '').trim();
         
         if (!imagePrompt) {
             await sock.sendMessage(chatId, {

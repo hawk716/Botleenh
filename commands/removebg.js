@@ -1,28 +1,41 @@
-const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const { execFile } = require('child_process');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
-const { uploadImage } = require('../lib/uploadImage');
+const axios = require('axios');
 
-async function getQuotedOrOwnImageUrl(sock, message) {
-    // 1) Quoted image (highest priority)
+const SCRIPTS_DIR = path.join(__dirname, '..', 'scripts');
+const PYTHON_SCRIPT = path.join(SCRIPTS_DIR, 'remove_background.py');
+const TEMP_DIR = '/tmp';
+
+async function downloadImageFromMessage(sock, message) {
     const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-    if (quoted?.imageMessage) {
-        const stream = await downloadContentFromMessage(quoted.imageMessage, 'image');
-        const chunks = [];
-        for await (const chunk of stream) chunks.push(chunk);
-        const buffer = Buffer.concat(chunks);
-        return await uploadImage(buffer);
-    }
+    const imgMsg = quoted?.imageMessage || message.message?.imageMessage;
+    if (!imgMsg) return null;
 
-    // 2) Image in the current message
-    if (message.message?.imageMessage) {
-        const stream = await downloadContentFromMessage(message.message.imageMessage, 'image');
-        const chunks = [];
-        for await (const chunk of stream) chunks.push(chunk);
-        const buffer = Buffer.concat(chunks);
-        return await uploadImage(buffer);
-    }
+    const stream = await downloadContentFromMessage(imgMsg, 'image');
+    const chunks = [];
+    for await (const chunk of stream) chunks.push(chunk);
+    return Buffer.concat(chunks);
+}
 
-    return null;
+async function downloadFromUrl(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer', timeout: 30000 });
+    return Buffer.from(response.data);
+}
+
+function runPythonScript(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+        const child = execFile('python3', [PYTHON_SCRIPT, inputPath, '-o', outputPath], {
+            timeout: 120000
+        }, (error, stdout, stderr) => {
+            if (error) {
+                reject(new Error(stderr || error.message));
+            } else {
+                resolve(outputPath);
+            }
+        });
+    });
 }
 
 module.exports = {
@@ -31,83 +44,48 @@ module.exports = {
     category: 'general',
     desc: 'Remove background from images',
     async exec(sock, message, args) {
+        const chatId = message?.key?.remoteJid || '';
+        if (!chatId) return;
+
+        const sendError = async (text) => {
+            try { await sock.sendMessage(chatId, { text }, { quoted: message }); } catch {}
+        };
+
         try {
-            const chatId = message.key.remoteJid;
-            let imageUrl = null;
-            
-            // Check if args contain a URL
+            let imageBuffer = null;
+
             if (args.length > 0) {
                 const url = args.join(' ');
-                if (isValidUrl(url)) {
-                    imageUrl = url;
-                } else {
-                    return sock.sendMessage(chatId, { 
-                        text: '❌ رابط غير صالح.\n\nالاستخدام: `.removebg https://example.com/image.jpg`' 
-                    }, { quoted: message });
-                }
+                imageBuffer = await downloadFromUrl(url);
             } else {
-                // Try to get image from message or quoted message
-                imageUrl = await getQuotedOrOwnImageUrl(sock, message);
-                
-                if (!imageUrl) {
-                    return sock.sendMessage(chatId, { 
-                        text: '📸 *أمر إزالة الخلفية*\n\nالاستخدام:\n• `.removebg <رابط_الصورة>`\n• رد على صورة باستخدام `.removebg`\n• أرسل صورة مع `.removebg`\n\nمثال: `.removebg https://example.com/image.jpg`' 
-                    }, { quoted: message });
+                imageBuffer = await downloadImageFromMessage(sock, message);
+                if (!imageBuffer) {
+                    return sendError('*↢ قــم بالرد او التعليق على صوره لازاله خلفيتها، او ارسال ازاله الخلفيه + رابط الصوره.*');
                 }
             }
 
-        
-            // Call the remove background API
-            const apiUrl = `https://api.siputzx.my.id/api/iloveimg/removebg?image=${encodeURIComponent(imageUrl)}`;
-            
-            const response = await axios.get(apiUrl, {
-                responseType: 'arraybuffer',
-                timeout: 30000, // 30 second timeout
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                }
-            });
+            const inputPath = path.join(TEMP_DIR, `removebg_input_${Date.now()}.png`);
+            const outputPath = path.join(TEMP_DIR, `removebg_output_${Date.now()}.png`);
 
-            if (response.status === 200 && response.data) {
-                // Send the processed image
-                await sock.sendMessage(chatId, {
-                    image: response.data,
-                    caption: '✨ *تم إزالة الخلفية بنجاح!*\n\n𝗣𝗥𝗢𝗖𝗘𝗦𝗦𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧'
-                }, { quoted: message });
-            } else {
-                throw new Error('Failed to process image');
-            }
+            fs.writeFileSync(inputPath, imageBuffer);
+
+            await sock.sendMessage(chatId, { text: '*↢ جاري إزاله الخلفيه بالذكاء الاصطناعي...*' }, { quoted: message });
+
+            await runPythonScript(inputPath, outputPath);
+
+            const resultBuffer = fs.readFileSync(outputPath);
+
+            await sock.sendMessage(chatId, {
+                image: resultBuffer,
+                caption: '*↢ تـم ازاله الخلفيه بنجاح، ☑️*\n*↢ بــواسـطــة↤︎ `𝐋𝐞𝐞𝐧𝐁𝐨𝐓`*'
+            }, { quoted: message });
+
+            try { fs.unlinkSync(inputPath); } catch {}
+            try { fs.unlinkSync(outputPath); } catch {}
 
         } catch (error) {
             console.error('RemoveBG Error:', error.message);
-            
-            let errorMessage = '❌ Failed to remove background.';
-            
-            if (error.response?.status === 429) {
-                errorMessage = '⏰ Rate limit exceeded. Please try again later.';
-            } else if (error.response?.status === 400) {
-                errorMessage = '❌ Invalid image URL or format.';
-            } else if (error.response?.status === 500) {
-                errorMessage = '🔧 Server error. Please try again later.';
-            } else if (error.code === 'ECONNABORTED') {
-                errorMessage = '⏰ Request timeout. Please try again.';
-            } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
-                errorMessage = '🌐 Network error. Please check your connection.';
-            }
-            
-            await sock.sendMessage(chatId, { 
-                text: errorMessage 
-            }, { quoted: message });
+            sendError('❌ *فشل إزالة الخلفية.* تأكد من إرسال صورة صالحة وحاول مرة أخرى.');
         }
     }
 };
-
-// Helper function to validate URL
-function isValidUrl(string) {
-    try {
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}

@@ -7,8 +7,8 @@ async function imagineCommand(sock, chatId, message) {
         const prompt = message.message?.conversation?.trim() || 
                       message.message?.extendedTextMessage?.text?.trim() || '';
         
-        // Remove the command prefix and trim (تخيل = 4 letters + space)
-        const imagePrompt = prompt.replace(/^\.?تخيل\s*/i, '').trim();
+        // Remove command prefix: تخيل OR توليد صوره OR توليد صورة
+        const imagePrompt = prompt.replace(/^\.?(تخيل|توليد\s+صوره|توليد\s+صورة)\s*/i, '').trim();
         
         if (!imagePrompt) {
             await sock.sendMessage(chatId, {

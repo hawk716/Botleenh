@@ -19,10 +19,20 @@ const scheduleFileDeletion = (filePath) => {
     }, 10000); // 5 minutes
 };
 
-const convertStickerToImage = async (sock, quotedMessage, chatId) => {
+const convertStickerToImage = async (sock, message, chatId) => {
     try {
-        const stickerMessage = quotedMessage.stickerMessage;
+        // Get sticker from either the current message or the quoted message
+        let stickerMessage = null;
+        const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
+
+        if (quoted?.stickerMessage) {
+            stickerMessage = quoted.stickerMessage;
+        } else if (message.message?.stickerMessage) {
+            stickerMessage = message.message.stickerMessage;
+        }
+
         if (!stickerMessage) {
+            await sock.sendMessage(chatId, { text: '*↢ قـم بالرد على ملصق لتحويله الى صورة.*' }, { quoted: message });
             return;
         }
 

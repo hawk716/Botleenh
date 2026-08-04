@@ -178,8 +178,6 @@ async function handleChatbotResponse(sock, chatId, message, userMessage, senderI
             isBotMentioned = userMessage.includes(`@${botNumber.split('@')[0]}`);
         }
 
-        if (!isBotMentioned && !isReplyToBot) return;
-
         // Clean the message
         let cleanedMessage = userMessage;
         if (isBotMentioned) {

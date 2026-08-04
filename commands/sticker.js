@@ -30,8 +30,8 @@ async function stickerCommand(sock, chatId, message) {
     const mediaMessage = targetMessage.message?.imageMessage || targetMessage.message?.videoMessage || targetMessage.message?.documentMessage;
 
     if (!mediaMessage) {
-        await sock.sendMessage(chatId, { 
-            text: 'يرجى الرد على صورة/فيديو باستخدام .sticker، أو إرسال صورة/فيديو مع .sticker كتعليق.',
+        await sock.sendMessage(chatId, {
+            text: '*↢قـم بالرد او التعليق على صورة/فيديو لتحويله الى ملصق.*',
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,
@@ -41,7 +41,7 @@ async function stickerCommand(sock, chatId, message) {
                     serverMessageId: -1
                 }
             }
-        },{ quoted: messageToQuote });
+        }, { quoted: messageToQuote });
         return;
     }
 
@@ -210,8 +210,8 @@ async function stickerCommand(sock, chatId, message) {
 
     } catch (error) {
         console.error('Error in sticker command:', error);
-        await sock.sendMessage(chatId, { 
-            text: 'Failed to create sticker! Try again later.',
+        await sock.sendMessage(chatId, {
+            text: '❌ *فشل في إنشاء الملصق!* حاول مرة أخرى.',
             contextInfo: {
                 forwardingScore: 999,
                 isForwarded: true,

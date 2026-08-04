@@ -1,125 +1,92 @@
-const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const { execFile } = require('child_process');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
-const { uploadImage } = require('../lib/uploadImage');
+const axios = require('axios');
 
-async function getQuotedOrOwnImageUrl(sock, message) {
-    // 1) Quoted image (highest priority)
+const SCRIPTS_DIR = path.join(__dirname, '..', 'scripts');
+const PYTHON_SCRIPT = path.join(SCRIPTS_DIR, 'enhance_image.py');
+const TEMP_DIR = '/tmp';
+
+async function downloadImageFromMessage(sock, message) {
     const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-    if (quoted?.imageMessage) {
-        const stream = await downloadContentFromMessage(quoted.imageMessage, 'image');
-        const chunks = [];
-        for await (const chunk of stream) chunks.push(chunk);
-        const buffer = Buffer.concat(chunks);
-        return await uploadImage(buffer);
-    }
+    const imgMsg = quoted?.imageMessage || message.message?.imageMessage;
+    if (!imgMsg) return null;
 
-    // 2) Image in the current message
-    if (message.message?.imageMessage) {
-        const stream = await downloadContentFromMessage(message.message.imageMessage, 'image');
-        const chunks = [];
-        for await (const chunk of stream) chunks.push(chunk);
-        const buffer = Buffer.concat(chunks);
-        return await uploadImage(buffer);
-    }
-
-    return null;
+    const stream = await downloadContentFromMessage(imgMsg, 'image');
+    const chunks = [];
+    for await (const chunk of stream) chunks.push(chunk);
+    return Buffer.concat(chunks);
 }
 
-async function reminiCommand(sock, chatId, message, args) {
-    try {
-        let imageUrl = null;
-        
-        // Check if args contain a URL
-        if (args.length > 0) {
-            const url = args.join(' ');
-            if (isValidUrl(url)) {
-                imageUrl = url;
-            } else {
-                return sock.sendMessage(chatId, { 
-                    text: '❌ رابط غير صالح.\n\nالاستخدام: `.remini https://example.com/image.jpg`' 
-                }, { quoted: message });
-            }
-        } else {
-            // Try to get image from message or quoted message
-            imageUrl = await getQuotedOrOwnImageUrl(sock, message);
-            
-            if (!imageUrl) {
-                return sock.sendMessage(chatId, { 
-                    text: '📸 *أمر تحسين الصورة بالذكاء الاصطناعي*\n\nالاستخدام:\n• `.remini <رابط_الصورة>`\n• رد على صورة باستخدام `.remini`\n• أرسل صورة مع `.remini`\n\nمثال: `.remini https://example.com/image.jpg`' 
-                }, { quoted: message });
-            }
-        }
+async function downloadFromUrl(url) {
+    const response = await axios.get(url, { responseType: 'arraybuffer', timeout: 30000 });
+    return Buffer.from(response.data);
+}
 
-        // Call the Remini API
-        const apiUrl = `https://api.princetechn.com/api/tools/remini?apikey=prince_tech_api_azfsbshfb&url=${encodeURIComponent(imageUrl)}`;
-        
-        const response = await axios.get(apiUrl, {
-            timeout: 60000, // 60 second timeout (AI processing takes longer)
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+function runPythonScript(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+        const child = execFile('python3', [PYTHON_SCRIPT, inputPath, '-o', outputPath], {
+            timeout: 180000
+        }, (error, stdout, stderr) => {
+            if (error) {
+                reject(new Error(stderr || error.message));
+            } else {
+                resolve(outputPath);
             }
         });
+    });
+}
 
+module.exports = {
+    name: 'remini',
+    alias: ['enhance', 'hd', 'تحسين'],
+    category: 'general',
+    desc: 'Enhance image quality using AI',
+    async exec(sock, message, args) {
+        const chatId = message?.key?.remoteJid || '';
+        if (!chatId) return;
 
-        if (response.data && response.data.success && response.data.result) {
-            const result = response.data.result;
-            
-            if (result.image_url) {
-                // Download the enhanced image
-                const imageResponse = await axios.get(result.image_url, {
-                    responseType: 'arraybuffer',
-                    timeout: 30000
-                });
-                
-                if (imageResponse.status === 200 && imageResponse.data) {
-                    // Send the enhanced image
-                    await sock.sendMessage(chatId, {
-                        image: imageResponse.data,
-                        caption: '✨ *تم تحسين الصورة بنجاح!*\n\n𝗘𝗡𝗛𝗔𝗡𝗖𝗘𝗗 𝗕𝗬 𝗞𝗡𝗜𝗚𝗛𝗧-𝗕𝗢𝗧'
-                    }, { quoted: message });
-                } else {
-                    throw new Error('Failed to download enhanced image');
-                }
+        const sendError = async (text) => {
+            try { await sock.sendMessage(chatId, { text }, { quoted: message }); } catch {}
+        };
+
+        try {
+            let imageBuffer = null;
+
+            if (args.length > 0) {
+                const url = args.join(' ');
+                await sock.sendMessage(chatId, { text: '⏳ جاري تحميل الصورة من الرابط...' }, { quoted: message });
+                imageBuffer = await downloadFromUrl(url);
             } else {
-                throw new Error(result.message || 'Failed to enhance image');
+                imageBuffer = await downloadImageFromMessage(sock, message);
+                if (!imageBuffer) {
+                    return sendError('*↢قـم بالرد او التعليق على صوره لتحسينها بالذكاء الاصطناعي، او ارسال تحسين + رابط الصوره.*');
+                }
             }
-        } else {
-            throw new Error('API returned invalid response');
+
+            const inputPath = path.join(TEMP_DIR, `remini_input_${Date.now()}.png`);
+            const outputPath = path.join(TEMP_DIR, `remini_output_${Date.now()}.png`);
+
+            fs.writeFileSync(inputPath, imageBuffer);
+
+            await sock.sendMessage(chatId, { text: '*↢ جاري تحسين الصوره بالذكاء الاصطناعي...*' }, { quoted: message });
+
+            await runPythonScript(inputPath, outputPath);
+
+            const resultBuffer = fs.readFileSync(outputPath);
+
+            await sock.sendMessage(chatId, {
+                image: resultBuffer,
+                caption: '*↢ تـم تحسين صورتك بنجاح، ☑️*\n*↢ بــواسـطــة↤︎ `𝐋𝐞𝐞𝐧𝐁𝐨𝐓`*'
+            }, { quoted: message });
+
+            try { fs.unlinkSync(inputPath); } catch {}
+            try { fs.unlinkSync(outputPath); } catch {}
+
+        } catch (error) {
+            console.error('Remini Error:', error.message);
+            sendError('❌ *فشل تحسين الصورة.* تأكد من إرسال صورة صالحة وحاول مرة أخرى.');
         }
-
-    } catch (error) {
-        console.error('Remini Error:', error.message);
-        
-        let errorMessage = '❌ Failed to enhance image.';
-        
-        if (error.response?.status === 429) {
-            errorMessage = '⏰ Rate limit exceeded. Please try again later.';
-        } else if (error.response?.status === 400) {
-            errorMessage = '❌ Invalid image URL or format.';
-        } else if (error.response?.status === 500) {
-            errorMessage = '🔧 Server error. Please try again later.';
-        } else if (error.code === 'ECONNABORTED') {
-            errorMessage = '⏰ Request timeout. Please try again.';
-        } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
-            errorMessage = '🌐 Network error. Please check your connection.';
-        } else if (error.message.includes('Error processing image')) {
-            errorMessage = '❌ Image processing failed. Please try with a different image.';
-        }
-        
-        await sock.sendMessage(chatId, { 
-            text: errorMessage 
-        }, { quoted: message });
     }
-}
-
-// Helper function to validate URL
-function isValidUrl(string) {
-    try {
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;
-    }
-}
-
-module.exports = { reminiCommand };
+};

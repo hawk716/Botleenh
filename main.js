@@ -1,12 +1,11 @@
 const settings = require('./settings');
 require('./config.js');
+const path = require('path');
 const { isBanned } = require('./lib/isBanned');
 const yts = require('yt-search');
 const { fetchBuffer } = require('./lib/myfunc');
 const fs = require('fs');
-// const path = require('path'); // Already declared above
 
-// دالة لتسجيل السجلات في ملف
 function logToFile(message) {
     const logFile = path.join(__dirname, 'data', 'debug.log');
     const timestamp = new Date().toISOString();
@@ -17,7 +16,6 @@ function logToFile(message) {
 }
 const fetch = require('node-fetch');
 const ytdl = require('ytdl-core');
-const path = require('path');
 const axios = require('axios');
 const ffmpeg = require('fluent-ffmpeg');
 const { isSudo, setPinlock } = require('./lib/index');
@@ -68,6 +66,8 @@ const isAdmin = require('./lib/isAdmin');
 const warnCommand = require('./commands/warn');
 const warningsCommand = require('./commands/warnings');
 const ttsCommand = require('./commands/tts');
+const habibiTTSCommand = require('./commands/habibi-tts');
+const ttsFlow = require('./commands/tts-flow');
 const { tictactoeCommand, handleTicTacToeMove, joinTicTacToeGame } = require('./commands/tictactoe');
 const { incrementMessageCount, topMembers } = require('./commands/topmembers');
 const ownerCommand = require('./commands/owner');
@@ -83,10 +83,16 @@ const memeCommand = require('./commands/meme');
 const tagCommand = require('./commands/tag');
 const tagNotAdminCommand = require('./commands/tagnotadmin');
 const hideTagCommand = require('./commands/hidetag');
-const jokeCommand = require('./commands/joke');
+const { jokeCmd: jokeCommand } = require('./commands/joke');
 const zodiacCommand = require('./commands/zodiac');
 const quoteCommand = require('./commands/quote');
 const factCommand = require('./commands/fact');
+const poetryCommand = require('./commands/poetry');
+const delightCommand = require('./commands/delight');
+const travelCommand = require('./commands/travel');
+const carCommand = require('./commands/car');
+const emojiStickerCommand = require('./commands/emojiSticker');
+const luckNumberCommand = require('./commands/luck');
 const weatherCommand = require('./commands/weather');
 const weatherDetailedCommand = require('./commands/weatherdetailed');
 const newsCommand = require('./commands/news');
@@ -142,6 +148,7 @@ const tiktokCommand = require('./commands/tiktok');
 const songCommand = require('./commands/song');
 const aiCommand = require('./commands/ai');
 const gptCommand = require('./commands/gpt');
+const memory = require('./commands/memory');
 const geminiCommand = require('./commands/gemini');
 const urlCommand = require('./commands/url');
 const { handleTranslateCommand } = require('./commands/translate');
@@ -152,6 +159,7 @@ const { shayariCommand } = require('./commands/shayari');
 const { rosedayCommand } = require('./commands/roseday');
 const imagineCommand = require('./commands/imagine');
 const createImageCommand = require('./commands/createimage');
+const { handleCreenCommand } = require('./commands/creen');
 const { videoCommand } = require('./commands/video');
 const sudoCommand = require('./commands/sudo');
 const { miscCommand, handleHeart } = require('./commands/misc');
@@ -161,9 +169,9 @@ const stickercropCommand = require('./commands/stickercrop');
 const { zodiacCmd, handleZodiacResponse, ageCmd, handleAgeImage, handleAgeTrigger, jokeCmd, pendingZodiac, ageRequests } = require('./commands/zodiac-age');
 const { chooseCommand } = require('./commands/choose');
 const updateCommand = require('./commands/update');
-const { loveCommand, hateCommand, luckCommand, faceCommand, wishCommand, starsCommand, moodCommand, stupidCommand, whoLovesCommand, whoHatesCommand } = require('./commands/fun');
+const { loveCommand, hateCommand, faceCommand, wishCommand, starsCommand, moodCommand, stupidCommand, whoLovesCommand, whoHatesCommand } = require('./commands/fun');
 const removebgCommand = require('./commands/removebg');
-const { reminiCommand } = require('./commands/remini');
+const reminiCommand = require('./commands/remini');
 const { igsCommand } = require('./commands/igs');
 const { anticallCommand, readState: readAnticallState } = require('./commands/anticall');
 const { pmblockerCommand, readState: readPmBlockerState } = require('./commands/pmblocker');
@@ -273,7 +281,8 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         if (isGroup && !message.key.fromMe && !senderIsSudo && !isSubscriptionCommand) {
             const subCheck = await checkUserSubscription(sock, chatId, senderId);
-            if (subCheck && subCheck.remaining && subCheck.remaining <= 0) {
+            console.log(`[SUB-CHECK-RESULT] subCheck:`, subCheck);
+            if (subCheck && subCheck.subscribed === false) {
                 try {
                     await sock.sendMessage(chatId, { delete: message.key });
                 } catch (e) {}
@@ -350,18 +359,18 @@ async function handleMessages(sock, messageUpdate, printLog) {
         }
 
         const isArabicCommand = /^[\u0621-\u064Aa-zA-Z0-9\s\-_]+$/.test(messageWithoutDot) && messageWithoutDot.length <= 200 && messageWithoutDot.length > 0;
+        const isEmojiCommand = cleanMessage.startsWith('.emojimix') || cleanMessage.startsWith('emojimix') || cleanMessage.startsWith('دمج ايموجي') || cleanMessage.startsWith('دمج_ايموجي');
 
         const downloadCommands = ['اغنية', 'فيديو', 'انستقرام', 'انستا', 'فيسبوك', 'تيك توك', 'سبوتيفاي', 'قصص انستا'];
         const isDownloadCommand = downloadCommands.some(cmd => cleanMessage === cmd || cleanMessage.startsWith(cmd + ' '));
         const hasUrlInMessage = /https?:\/\//.test(cleanMessage);
 
-        if (!isArabicCommand && !isDownloadCommand) {
+        if (!isArabicCommand && !isDownloadCommand && !isEmojiCommand && !/^(ميتا|جبتي|مسح المحادثة|لقطه شalth|لقطه_شalth|لقطة شalth|لقطة_شalth)/.test(cleanMessage)) {
             await handleAutotypingForMessage(sock, chatId, userMessage);
 
             if (isGroup) {
                 await handleBadwordDetection(sock, chatId, message, userMessage, senderId);
                 await Antilink(message, sock);
-                await handleChatbotResponse(sock, chatId, message, userMessage, senderId);
 
                 await handleMentionDetection(sock, chatId, message);
                 await handleLockDetection(sock, chatId, message, senderId);
@@ -376,6 +385,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         const originalCommand = getOriginalCommand(cleanMessage, chatId);
         console.log(`[DEBUG] cleanMessage="${cleanMessage}", originalCommand="${originalCommand}"`);
+        console.log(`[DEBUG] isGroup=${isGroup}, senderId=${senderId}, isSudo=${senderIsSudo}`);
         logToFile(`[DEBUG] cleanMessage="${cleanMessage}", originalCommand="${originalCommand}"`);
         console.log(`[DEBUG customCommands] checking: "${cleanMessage}"`);
         logToFile(`[DEBUG customCommands] checking: "${cleanMessage}"`);
@@ -419,7 +429,7 @@ if (originalCommand) {
                 await showTypingAfterCommand(sock, chatId);
                 return;
             } else if (newCmd === 'نكتة' || newCmd === 'نكته') {
-                await jokeCmd(sock, chatId, message);
+                await jokeCommand(sock, chatId, message);
                 await showTypingAfterCommand(sock, chatId);
                 return;
             } else {
@@ -526,6 +536,12 @@ if (originalCommand) {
         if (zodiacCommand.isWaitingForBirthdate && zodiacCommand.isWaitingForBirthdate(senderId)) {
             await zodiacCommand.handleBirthdateInput(sock, chatId, message, senderId, rawText);
             return;
+        }
+
+        // Check if user is in TTS flow (language/dialect/voice selection)
+        if (ttsFlow.isWaiting(senderId)) {
+            const handled = await ttsFlow.handleTtsInput(sock, chatId, message, senderId, userMessage);
+            if (handled) return;
         }
 
         switch (true) {
@@ -683,7 +699,7 @@ if (originalCommand) {
                 break;
             }
             case cleanMessage === 'نكته' || cleanMessage === 'نكتة':
-                await jokeCmd(sock, chatId, message);
+                await jokeCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
             case cleanMessage === 'ايش تختار' || normalizedCleanMessage === 'ايش_تختار':
@@ -695,13 +711,8 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage === 'صورة' || normalizedCleanMessage === 'صورة': {
-                const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
-                if (quotedMessage?.stickerMessage) {
-                    await simageCommand(sock, quotedMessage, chatId);
-                } else {
-                    await sock.sendMessage(chatId, { text: '❌ الرجاء الرد على ملصق بأمر "صورة" لتحويله.' }, { quoted: message });
-                }
+            case cleanMessage === 'صورة' || normalizedCleanMessage === 'صورة' || cleanMessage === 'صوره' || normalizedCleanMessage === 'صوره': {
+                await simageCommand(sock, message, chatId);
                 commandExecuted = true;
                 break;
             }
@@ -840,6 +851,24 @@ if (originalCommand) {
             case cleanMessage === 'نص الى صوت' || cleanMessage.startsWith('نص الى صوت ') || normalizedCleanMessage === 'نص_الى_صوت' || normalizedCleanMessage.startsWith('نص_الى_صوت_'):
                 const text = cleanMessage.replace(/نص الى صوت|نص_الى_صوت/, '').trim();
                 await ttsCommand(sock, chatId, text, message);
+                break;
+            case cleanMessage === 'نص صوتي' || cleanMessage.startsWith('نص صوتي ') || normalizedCleanMessage === 'نص_صوتي' || normalizedCleanMessage.startsWith('نص_صوتي_'):
+                const habibiText = cleanMessage.replace(/نص صوتي|نص_صوتي/g, '').trim();
+                if (!habibiText) {
+                    await sock.sendMessage(chatId, { text: '*↢ يرجى كتابة النص بعد الأمر.*\nمثال: *نص صوتي مرحبا*' }, { quoted: message });
+                } else {
+                    await ttsFlow.startFlow(sock, chatId, senderId, habibiText, message);
+                }
+                commandExecuted = true;
+                break;
+            case cleanMessage === 'نطق النص' || cleanMessage.startsWith('نطق النص ') || normalizedCleanMessage === 'نطق_النص' || normalizedCleanMessage.startsWith('نطق_النص_'):
+                const ntaqText = cleanMessage.replace(/نطق النص|نطق_النص/g, '').trim();
+                if (!ntaqText) {
+                    await sock.sendMessage(chatId, { text: '*↢ يرجى كتابة النص بعد الأمر.*\nمثال: *نطق النص مرحبا*' }, { quoted: message });
+                } else {
+                    await ttsFlow.startFlow(sock, chatId, senderId, ntaqText, message);
+                }
+                commandExecuted = true;
                 break;
             case cleanMessage === 'حذف' || cleanMessage.startsWith('حذف ') || normalizedCleanMessage === 'حذف' || normalizedCleanMessage.startsWith('حذف_'):
                 await deleteCommand(sock, chatId, message, senderId);
@@ -1137,6 +1166,46 @@ if (originalCommand) {
                 await factCommand(sock, chatId, message, message);
                 commandExecuted = true;
                 break;
+            case cleanMessage === 'شعر' || normalizedCleanMessage === 'شعر':
+                await poetryCommand(sock, chatId, message);
+                commandExecuted = true;
+                break;
+            case cleanMessage === 'دلع' || normalizedCleanMessage === 'دلع' || cleanMessage === 'اسم الدلع' || normalizedCleanMessage === 'اسم_الدلع' || cleanMessage.startsWith('دلع ') || cleanMessage.startsWith('اسم الدلع ') || normalizedCleanMessage.startsWith('دلع_') || normalizedCleanMessage.startsWith('اسم_الدلع_'): {
+                const delightArgs = cleanMessage.replace(/^(.?دلع|اسم الدلع|اسم_الدلع)[\s_]*/i, '').trim();
+                await delightCommand(sock, chatId, message, delightArgs);
+                commandExecuted = true;
+                break;
+            }
+            case cleanMessage === "اين ستسافر" || normalizedCleanMessage === "اين_ستسافر" || cleanMessage.startsWith("اين ستسافر ") || normalizedCleanMessage.startsWith("اين_ستسافر_"): {
+                const travelArgs = cleanMessage.replace(/^(.?اين[\s_]ستسافر[\s_]*)/i, "").trim();
+                await travelCommand(sock, chatId, message, travelArgs);
+                commandExecuted = true;
+                break;
+            }
+            case cleanMessage === "سيارتي" || normalizedCleanMessage === "سيارتي" || cleanMessage.startsWith("سيارتي ") || normalizedCleanMessage.startsWith("سيارتي_"): {
+                const carArgs = cleanMessage.replace(/^(.?سيارتي[\s_]*)/i, "").trim();
+                await carCommand(sock, chatId, message, carArgs);
+                commandExecuted = true;
+                break;
+            }
+            case cleanMessage === "ايموجي" || normalizedCleanMessage === "ايموجي" || cleanMessage.startsWith("ايموجي ") || normalizedCleanMessage.startsWith("ايموجي_"): {
+                const emojiArgs = cleanMessage.replace(/^(.?ايموجي[\s_]*)/i, "").trim();
+                await emojiStickerCommand(sock, chatId, message, emojiArgs);
+                commandExecuted = true;
+                break;
+            }
+            case cleanMessage === "ايموجي المناسب" || normalizedCleanMessage === "ايموجي_المناسب" || cleanMessage.startsWith("ايموجي المناسب ") || normalizedCleanMessage.startsWith("ايموجي_المناسب_"): {
+                const emojiArgs = cleanMessage.replace(/^(.?ايموجي[\s_]+المناسب[\s_]*)/i, "").trim();
+                await emojiStickerCommand(sock, chatId, message, emojiArgs);
+                commandExecuted = true;
+                break;
+            }
+            case cleanMessage === "رقم حظي" || normalizedCleanMessage === "رقم_حظي" || cleanMessage.startsWith("رقم حظي ") || normalizedCleanMessage.startsWith("رقم_حظي_"): {
+                const luckArgs = cleanMessage.replace(/^(.?رقم[\s_]حظي[\s_]*)/i, "").trim();
+                await luckNumberCommand(sock, chatId, message, luckArgs);
+                commandExecuted = true;
+                break;
+            }
             case cleanMessage === 'الطقس' || cleanMessage.startsWith('الطقس ') || cleanMessage === 'طقس' || cleanMessage.startsWith('طقس ') || normalizedCleanMessage === 'الطقس' || normalizedCleanMessage.startsWith('الطقس_') || normalizedCleanMessage === 'طقس' || normalizedCleanMessage.startsWith('طقس_'):
                 const cityAr = rawText.replace(/\.?(الطقس|طقس)/, '').trim();
                 if (cityAr) {
@@ -1521,22 +1590,7 @@ if (originalCommand) {
                 await handleChatbotCommand(sock, chatId, message, 'off');
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'شات بوت' || cleanMessage.startsWith('شات بوت ') || normalizedCleanMessage === 'شات_بوت' || normalizedCleanMessage.startsWith('شات_بوت_'):
-                if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                    return;
-                }
 
-                const chatbotAdminStatus = await isAdmin(sock, chatId, senderId);
-                if (!chatbotAdminStatus.isSenderAdmin && !message.key.fromMe) {
-                    await sock.sendMessage(chatId, { text: '❌ فقط المشرفون أو مالك البوت يمكنهم استخدام هذا الأمر' }, { quoted: message });
-                    return;
-                }
-
-                const matchAr = rawText.replace(/\.?(شات بوت|شات_بوت)/, '').trim();
-                await handleChatbotCommand(sock, chatId, message, matchAr);
-                commandExecuted = true;
-                break;
             case cleanMessage === 'تغيير اسم الملصق' || cleanMessage.startsWith('تغيير اسم الملصق ') || normalizedCleanMessage === 'تغيير_اسم_الملصق' || normalizedCleanMessage.startsWith('تغيير_اسم_الملصق_'):
                 const takeArgsAr = rawText.replace(/\.?(تغيير اسم الملصق|تغيير_اسم_الملصق)/, '').trim().split(' ');
                 await takeCommand(sock, chatId, message, takeArgsAr);
@@ -1703,15 +1757,52 @@ if (originalCommand) {
             case cleanMessage === 'تيك توك' || cleanMessage.startsWith('تيك توك ') || normalizedCleanMessage === 'تيك_توك' || normalizedCleanMessage.startsWith('تيك_توك_'):
                 await tiktokCommand(sock, chatId, message);
                 break;
-            case cleanMessage === 'ميتا' || cleanMessage.startsWith('ميتا ') || normalizedCleanMessage === 'ميتا' || normalizedCleanMessage.startsWith('ميتا_'):
+            case cleanMessage === 'ميتا' || cleanMessage.startsWith('ميتا') || normalizedCleanMessage === 'ميتا' || normalizedCleanMessage.startsWith('ميتا'):
                 await gptCommand(sock, chatId, message);
+                break;
+            case cleanMessage === 'جبتي' || cleanMessage.startsWith('جبتي') || normalizedCleanMessage === 'جبتي' || normalizedCleanMessage.startsWith('جبتي'):
+                await gptCommand(sock, chatId, message);
+                break;
+            case cleanMessage === 'مسح المحادثة' || cleanMessage.startsWith('مسح المحادثة') || normalizedCleanMessage === 'مسح_المحادثة' || normalizedCleanMessage.startsWith('مسح_المحادثة'):
+                const userIdForClear = message.key.participant || message.key.remoteJid;
+                memory.clearMemory(userIdForClear);
+                await sock.sendMessage(chatId, {
+                    text: "*↢ تـم إعادة تعين الذاكره للذكاء الاصطناعي.*"
+                }, { quoted: message });
                 break;
             case cleanMessage === 'جيمني' || cleanMessage.startsWith('جيمني ') || normalizedCleanMessage === 'جيمني' || normalizedCleanMessage.startsWith('جيمني_'):
                 await geminiCommand(sock, chatId, message);
                 break;
-            case cleanMessage === 'ذكاء' || cleanMessage.startsWith('ذكاء ') || normalizedCleanMessage === 'ذكاء' || normalizedCleanMessage.startsWith('ذكاء_'):
-                await aiCommand(sock, chatId, message);
+            // أوامر توليد الصور
+            case cleanMessage === 'توليد صوره' || cleanMessage.startsWith('توليد صوره ') || normalizedCleanMessage === 'توليد_صوره' || normalizedCleanMessage.startsWith('توليد_صوره_'):
+            case cleanMessage === 'توليد صورة' || cleanMessage.startsWith('توليد صورة ') || normalizedCleanMessage === 'توليد_صورة' || normalizedCleanMessage.startsWith('توليد_صورة_'):
+                await imagineCommand(sock, chatId, message);
                 break;
+            case cleanMessage === 'انشاء ذكي' || cleanMessage.startsWith('انشاء ذكي ') || normalizedCleanMessage === 'انشاء_ذكي' || cleanMessage.startsWith('انشاء_ذكي_'):
+            case cleanMessage === 'انشاء فيديو ذكي' || cleanMessage.startsWith('انشاء فيديو ذكي ') || normalizedCleanMessage === 'انشاء_فيديو_ذكي' || cleanMessage.startsWith('انشاء_فيديو_ذكي_'):
+                await handleCreenCommand(sock, chatId, message, rawText.replace(/^(\.?(انشاء\s*(?:فيديو|فديو)?\s*ذكي|انشاء_(?:فيديو|فديو)?_ذكي))/i, '').trim());
+                commandExecuted = true;
+                break;
+            case cleanMessage === 'انشاء صوره' || cleanMessage.startsWith('انشاء صوره ') || normalizedCleanMessage === 'انشاء_صوره' || cleanMessage.startsWith('انشاء_صوره_'):
+            case cleanMessage === 'انشاء صورة' || cleanMessage.startsWith('انشاء صورة ') || normalizedCleanMessage === 'انشاء_صورة' || cleanMessage.startsWith('انشاء_صورة_'):
+                if (cleanMessage.startsWith('انشاء ذكي') || cleanMessage.startsWith('انشاء_ذكي')) {
+                    const args = rawText.replace(/^(\.?انشاء\s*ذكي|انشاء_ذكي)/i, '').trim();
+                    await handleCreenCommand(sock, chatId, message, args);
+                } else {
+                    await createImageCommand(sock, chatId, message);
+                }
+                commandExecuted = true;
+                break;
+             case cleanMessage === 'انشاء صوره' || cleanMessage.startsWith('انشاء صوره ') || normalizedCleanMessage === 'انشاء_صوره' || normalizedCleanMessage.startsWith('انشاء_صوره_'):
+             case cleanMessage === 'انشاء صورة' || cleanMessage.startsWith('انشاء صورة ') || normalizedCleanMessage === 'انشاء_صورة' || normalizedCleanMessage.startsWith('انشاء_صورة_'):
+                 if (cleanMessage.startsWith('انشاء ذكي') || cleanMessage.startsWith('انشاء_ذكي')) {
+                     const args = rawText.replace(/^(\.?انشاء\s*ذكي|انشاء_ذكي)/i, '').trim();
+                     await handleCreenCommand(sock, chatId, message, args);
+                 } else {
+                     await createImageCommand(sock, chatId, message);
+                 }
+                 commandExecuted = true;
+                 break;
             case cleanMessage === 'ترجم' || cleanMessage.startsWith('ترجم ') || normalizedCleanMessage === 'ترجم' || normalizedCleanMessage.startsWith('ترجم_'):
                 const translateText = rawText.replace(/\.?(ترجم)/, '').trim();
                 await handleTranslateCommand(sock, chatId, message, translateText);
@@ -1719,6 +1810,10 @@ if (originalCommand) {
             case cleanMessage === 'لقطة شاشة' || cleanMessage.startsWith('لقطة شاشة ') || normalizedCleanMessage === 'لقطة_شاشة' || normalizedCleanMessage.startsWith('لقطة_شاشة_'):
                 const ssUrl = rawText.replace(/\.?(لقطة شاشة|لقطة_شاشة)/, '').trim();
                 await handleSsCommand(sock, chatId, message, ssUrl);
+                break;
+            case cleanMessage === 'لقطه شاشه' || cleanMessage.startsWith('لقطه شاشه ') || normalizedCleanMessage === 'لقطه_شاشه' || normalizedCleanMessage.startsWith('لقطه_شاشه_'):
+                const ssUrl2 = rawText.replace(/\.?(لقطه شاشه|لقطه_شاشه)/, '').trim();
+                await handleSsCommand(sock, chatId, message, ssUrl2);
                 break;
             case cleanMessage === 'تفاعل تلقائي' || cleanMessage.startsWith('تفاعل تلقائي ') || normalizedCleanMessage === 'تفاعل_تلقائي' || normalizedCleanMessage.startsWith('تفاعل_تلقائي_'):
                 const isOwnerOrSudo = message.key.fromMe || senderIsSudo;
@@ -1731,7 +1826,13 @@ if (originalCommand) {
                 await imagineCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'انشاء' || cleanMessage.startsWith('انشاء ') || normalizedCleanMessage === 'انشاء' || normalizedCleanMessage.startsWith('انشاء_'):
-                await createImageCommand(sock, chatId, message);
+                if (cleanMessage.includes('ذكي') || cleanMessage.includes('فيديو ذكي')) {
+                    const args = rawText.replace(/^(\.?انشاء\s*(?:فيديو|فديو|فديو)?\s*ذكي|انشاء_(?:فيديو|فديو)?_ذكي)/i, '').trim();
+                    await handleCreenCommand(sock, chatId, message, args);
+                } else {
+                    await createImageCommand(sock, chatId, message);
+                }
+                commandExecuted = true;
                 break;
             case cleanMessage === 'كتابة تلقائية' || cleanMessage.startsWith('كتابة تلقائية ') || normalizedCleanMessage === 'كتابة_تلقائية' || normalizedCleanMessage.startsWith('كتابة_تلقائية_'):
                 await autotypingCommand(sock, chatId, message);
@@ -1741,7 +1842,7 @@ if (originalCommand) {
                 await autoreadCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'قص الملصق' || normalizedCleanMessage === 'قص_الملصق':
+            case cleanMessage === 'قص ملصق' || normalizedCleanMessage === 'قص_ملصق':
                 await stickercropCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -1753,13 +1854,18 @@ if (originalCommand) {
                 }
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'ازالة الخلفية' || cleanMessage.startsWith('ازالة الخلفية ') || normalizedCleanMessage === 'ازالة_الخلفية' || normalizedCleanMessage.startsWith('ازالة_الخلفية_'):
+            case cleanMessage === 'ازالة الخلفية' || cleanMessage.startsWith('ازالة الخلفية ') || normalizedCleanMessage === 'ازالة_الخلفية' || normalizedCleanMessage.startsWith('ازالة_الخلفية_') ||
+                  cleanMessage === 'ازاله الخلفيه' || cleanMessage.startsWith('ازاله الخلفيه ') || normalizedCleanMessage === 'ازاله_الخلفيه' || normalizedCleanMessage.startsWith('ازاله_الخلفيه_'):
                 await removebgCommand.exec(sock, message, cleanMessage.split(' ').slice(2));
                 break;
             case cleanMessage === 'تحسين' || cleanMessage.startsWith('تحسين ') || normalizedCleanMessage === 'تحسين' || normalizedCleanMessage.startsWith('تحسين_'):
-                await reminiCommand(sock, chatId, message, cleanMessage.split(' ').slice(1));
+                await reminiCommand.exec(sock, message, cleanMessage.split(' ').slice(1));
                 break;
             case cleanMessage === 'فيديو ذكي' || cleanMessage.startsWith('فيديو ذكي ') || normalizedCleanMessage === 'فيديو_ذكي' || normalizedCleanMessage.startsWith('فيديو_ذكي_'):
+                await soraCommand(sock, chatId, message);
+                break;
+            case cleanMessage === 'توليد فيديو' || cleanMessage.startsWith('توليد فيديو ') || normalizedCleanMessage === 'توليد_فيديو' || normalizedCleanMessage.startsWith('توليد_فيديو_'):
+            case cleanMessage === 'انشاء فيديو' || cleanMessage.startsWith('انشاء فيديو ') || normalizedCleanMessage === 'انشاء_فيديو' || normalizedCleanMessage.startsWith('انشاء_فيديو_'):
                 await soraCommand(sock, chatId, message);
                 break;
 
@@ -1911,7 +2017,7 @@ if (originalCommand) {
                     commandExecuted = true;
                     break;
                 case cleanMessage === 'نكته' || cleanMessage === 'نكتة':
-                    await jokeCmd(sock, chatId, message);
+                    await jokeCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
                 case cleanMessage === 'ايش تختار' || normalizedCleanMessageAfterTransform === 'ايش_تختار':

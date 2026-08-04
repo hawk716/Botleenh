@@ -1,8 +1,32 @@
 const fetch = require('node-fetch');
 
+// Map Arabic language names to ISO codes
+const LANG_MAP = {
+    'عربي': 'ar',
+    'انجليزي': 'en',
+    'ألماني': 'de',
+    'إيطالي': 'it',
+    'برتغالي': 'pt',
+    'روسي': 'ru',
+    'ياباني': 'ja',
+    'كوري': 'ko',
+    'صيني': 'zh',
+    'فرنسي': 'fr',
+    'هندي': 'hi',
+    'إسباني': 'es',
+    'اسباني': 'es'
+};
+
+function normalizeLang(lang) {
+    const lower = lang.toLowerCase().trim();
+    if (LANG_MAP[lower]) return LANG_MAP[lower];
+    // Already a code?
+    if (/^[a-z]{2}$/.test(lower)) return lower;
+    return null;
+}
+
 async function handleTranslateCommand(sock, chatId, message, match) {
     try {
-        // Show typing indicator
         await sock.presenceSubscribe(chatId);
         await sock.sendPresenceUpdate('composing', chatId);
 
@@ -12,28 +36,44 @@ async function handleTranslateCommand(sock, chatId, message, match) {
         // Check if it's a reply
         const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         if (quotedMessage) {
-            // Get text from quoted message
-            textToTranslate = quotedMessage.conversation || 
-                            quotedMessage.extendedTextMessage?.text || 
-                            quotedMessage.imageMessage?.caption || 
-                            quotedMessage.videoMessage?.caption || 
-                            '';
-
-            // Get language from command
+            textToTranslate = quotedMessage.conversation ||
+                            quotedMessage.extendedTextMessage?.text ||
+                            quotedMessage.imageMessage?.caption ||
+                            quotedMessage.videoMessage?.caption || '';
             lang = match.trim();
         } else {
-            // Parse command arguments for direct message
             const args = match.trim().split(' ');
             if (args.length < 2) {
-                return sock.sendMessage(chatId, {
-                    text: `*مترجم*\n\nالاستخدام:\n1. رد على رسالة بـ: .translate <اللغة> أو .trt <اللغة>\n2. أو اكتب: .translate <النص> <اللغة> أو .trt <النص> <اللغة>\n\nمثال:\n.translate hello ar\n.trt hello ar\n\nرموز اللغات:\nfr - فرنسي\nes - إسباني\nde - ألماني\nit - إيطالي\npt - برتغالي\nru - روسي\nja - ياباني\nko - كوري\nzh - صيني\nar - عربي\nhi - هندي`,
-                    quoted: message
-                });
+                const usage = `_*الاســتــخــدام:*_ 
+*1. ترجم + اللغة ↢بـالرد*
+*2.اكتب↢ترجم + النص + اللغة*
+────────────
+_*مــثال:*_
+• ترجم مرحباً انجليزي
+• ترجم مرحباً en
+────────────
+ _*رمــوز اللغــات:*_ 
+> *ar - عربي | en - انجليزي*
+> *de - ألماني | it - إيطالي*
+> *pt - برتغالي | ru - روسي*
+> *ja - ياباني | ko - كوري*
+> *zh - صيني | fr - فرنسي*
+> *hi - هندي | es - إسباني*`;
+                return sock.sendMessage(chatId, { text: usage }, { quoted: message });
             }
-
-            lang = args.pop(); // Get language code
-            textToTranslate = args.join(' '); // Get text to translate
+            lang = args.pop();
+            textToTranslate = args.join(' ');
         }
+
+        // Normalize language
+        const normalizedLang = normalizeLang(lang);
+        if (!normalizedLang) {
+            return sock.sendMessage(chatId, {
+                text: `*↢ عـذراً لغة غير معروفة.*`,
+                quoted: message
+            });
+        }
+        lang = normalizedLang;
 
         if (!textToTranslate) {
             return sock.sendMessage(chatId, {
@@ -103,7 +143,7 @@ async function handleTranslateCommand(sock, chatId, message, match) {
     } catch (error) {
         console.error('❌ Error in translate command:', error);
         await sock.sendMessage(chatId, {
-            text: '❌ فشلت ترجمة النص. يرجى المحاولة لاحقاً.\n\nالاستخدام:\n1. رد على رسالة بـ: .translate <اللغة> أو .trt <اللغة>\n2. أو اكتب: .translate <النص> <اللغة> أو .trt <النص> <اللغة>',
+            text: '❌ فشلت ترجمة النص. يرجى المحاولة لاحقاً.\n\nالاستخدام:\n1. رد على رسالة بـ: ترجم <اللغة>\n2. أو اكتب: ترجم <النص> <اللغة>',
             quoted: message
         });
     }

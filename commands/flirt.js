@@ -1,23 +1,27 @@
-const fetch = require('node-fetch');
+const fs = require('fs');
+const path = require('path');
+
+const DATA_PATH = path.join(__dirname, '..', 'data', 'ghazal.json');
+
+let ghazalCache = [];
+try {
+    const raw = fs.readFileSync(DATA_PATH, 'utf8');
+    const data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+        ghazalCache = data.filter((item) => item && typeof item.text === 'string' && item.text.trim().length > 0);
+    }
+} catch (e) {
+    ghazalCache = [];
+}
+
+function pickRandomGhazal() {
+    if (!ghazalCache.length) return 'لا توجد بيانات غزل متاحة حالياً.';
+    return ghazalCache[Math.floor(Math.random() * ghazalCache.length)].text.trim();
+}
 
 async function flirtCommand(sock, chatId, message) {
-    try {
-        const shizokeys = 'shizo';
-        const res = await fetch(`https://shizoapi.onrender.com/api/texts/flirt?apikey=${shizokeys}`);
-        
-        if (!res.ok) {
-            throw await res.text();
-        }
-        
-        const json = await res.json();
-        const flirtMessage = json.result;
-
-        // Send the flirt message
-        await sock.sendMessage(chatId, { text: flirtMessage }, { quoted: message });
-    } catch (error) {
-        console.error('Error in flirt command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في الحصول على رسالة الغزل. من فضلك حاول مرة أخرى لاحقًا!' }, { quoted: message });
-    }
+    const text = pickRandomGhazal();
+    await sock.sendMessage(chatId, { text }, { quoted: message });
 }
 
 module.exports = { flirtCommand };

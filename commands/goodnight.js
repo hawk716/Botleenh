@@ -1,48 +1,27 @@
-async function goodnightCommand(sock, chatId, message) {
-    try {
-        // قائمة رسائل تصبح على خير العربية
-        const goodnightMessages = [
-            "تصبح على خير 🌙\nنوم هنيء وأحلام سعيدة",
-            "نوم العوافي ✨\nطابت ليلتك بكل خير",
-            "أحلام سعيدة 🌟\nتصبح على خير وفي أمان الله",
-            "ليلة سعيدة 🌙\nنوم هادئ وأحلام جميلة",
-            "تصبح على ألف خير 💫\nنوم هنيء وراحة بال",
-            "في أمان الله 🌙\nنوم العوافي والراحة",
-            "طابت ليلتك 🌟\nتصبح على خير وترتاح",
-            "نوم هنيء 💤\nأحلام سعيدة وليلة مباركة",
-            "تصبح بخير وعافية 🌙\nنوم هادئ وراحة نفسية",
-            "ليلة مباركة ✨\nتصبح على خير وفي حفظ الرحمن",
-            "نوم الأبرار 🌟\nتصبح على خير يا غالي",
-            "أحلام وردية 🌹\nتصبح على خير وتصحى بكل خير",
-            "ليلة سعيدة وهادئة 🌙\nنوم هنيء ومريح",
-            "تصبح على خير 💫\nوتصحى على خير إن شاء الله",
-            "في رعاية الله 🌟\nنوم هادئ وأحلام جميلة",
-            "طابت ليلتك بالذكر 🌙\nتصبح على خير وطاعة",
-            "نوم العوافي والسعادة ✨\nتصبح بألف خير",
-            "أحلام جميلة كقلبك 💝\nتصبح على خير",
-            "ليلة مليئة بالسكينة 🌙\nنوم هنيء وراحة",
-            "تصبح على خير وسلام 💫\nنوم الهناء والراحة",
-            "في أمان الله وحفظه 🌟\nتصبح على خير",
-            "نوم هادئ ومريح 💤\nأحلام سعيدة يا طيب",
-            "طابت ليلتك بالخير 🌙\nنوم العوافي والبركة",
-            "تصبح بكل خير وعافية ✨\nأحلام جميلة",
-            "ليلة مباركة وهادئة 🌟\nنوم هنيء في رعاية الله",
-            "تصبح على خير يا أجمل الناس 🌹\nنوم هادئ",
-            "أحلام وردية وجميلة 💫\nتصبح على خير",
-            "نوم العافية والسلام 🌙\nتصبح بألف خير",
-            "في حفظ الرحمن ورعايته ✨\nتصبح على خير",
-            "ليلة هادئة ومباركة 🌟\nنوم هنيء وراحة بال"
-        ];
+const fs = require('fs');
+const path = require('path');
 
-        // اختيار رسالة عشوائية
-        const randomMessage = goodnightMessages[Math.floor(Math.random() * goodnightMessages.length)];
+const DATA_PATH = path.join(__dirname, '..', 'data', 'goodnight.json');
 
-        // إرسال الرسالة
-        await sock.sendMessage(chatId, { text: randomMessage }, { quoted: message });
-    } catch (error) {
-        console.error('Error in goodnight command:', error);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ في إرسال الرسالة!' }, { quoted: message });
+let goodnightCache = [];
+try {
+    const raw = fs.readFileSync(DATA_PATH, 'utf8');
+    const data = JSON.parse(raw);
+    if (Array.isArray(data)) {
+        goodnightCache = data.filter((item) => item && typeof item.text === 'string' && item.text.trim().length > 0);
     }
+} catch (e) {
+    goodnightCache = [];
+}
+
+function pickRandomGoodnight() {
+    if (!goodnightCache.length) return 'لا توجد بيانات تصبح على خير متاحة حالياً.';
+    return goodnightCache[Math.floor(Math.random() * goodnightCache.length)].text.trim();
+}
+
+async function goodnightCommand(sock, chatId, message) {
+    const text = pickRandomGoodnight();
+    await sock.sendMessage(chatId, { text }, { quoted: message });
 }
 
 module.exports = { goodnightCommand };

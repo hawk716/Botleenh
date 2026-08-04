@@ -8,12 +8,20 @@ async function soraCommand(sock, chatId, message) {
             message.message?.videoMessage?.caption?.trim() ||
             '';
 
-        // Extract prompt after command keyword or use quoted text
-        const used = (rawText || '').split(/\s+/)[0] || '.sora';
-        const args = rawText.slice(used.length).trim();
+        // Extract prompt after command keyword(s) or use quoted text
+        const prefixes = ['فيديو ذكي', 'توليد فيديو', 'انشاء فيديو', 'sora', '.sora'];
+        let input = rawText;
+        let matched = false;
+        for (const p of prefixes) {
+            if (rawText.toLowerCase().startsWith(p.toLowerCase())) {
+                input = rawText.slice(p.length).trim();
+                matched = true;
+                break;
+            }
+        }
         const quoted = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         const quotedText = quoted?.conversation || quoted?.extendedTextMessage?.text || '';
-        const input = args || quotedText;
+        if (!input) input = quotedText;
 
         if (!input) {
             await sock.sendMessage(chatId, { text: 'قدم وصفاً. مثال: .sora فتاة أنمي بشعر أزرق قصير' }, { quoted: message });

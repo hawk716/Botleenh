@@ -5,25 +5,21 @@ const path = require('path');
 
 async function emojimixCommand(sock, chatId, msg) {
     try {
-        // Get the text after command
-        const text = msg.message?.conversation?.trim() || 
+        const text = msg.message?.conversation?.trim() ||
                     msg.message?.extendedTextMessage?.text?.trim() || '';
-        
-        const args = text.split(' ').slice(1);
-        
-        if (!args[0]) {
-            await sock.sendMessage(chatId, { text: '🎴 مثال: .emojimix 😎+🥰' });
+        let raw = text;
+        if (raw.startsWith('.emojimix')) raw = raw.slice(9).trim();
+        else if (raw.startsWith('دمج ايموجي')) raw = raw.slice(10).trim();
+        else if (raw.startsWith('دمج_ايموجي')) { raw = raw.slice(10).trim(); if (raw.startsWith('_')) raw = raw.slice(1).trim(); }
+
+        const emojis = (raw.match(/\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic})*/gu) || []).filter(Boolean);
+
+        if (emojis.length < 2) {
+            await sock.sendMessage(chatId, { text: '*↢ قم بارسال الايموجي بعد الامر*\n*↢ مثال: 😎 😍' });
             return;
         }
 
-        if (!text.includes('+')) {
-            await sock.sendMessage(chatId, { 
-                text: '✳️ افصل الإيموجي بعلامة *+*\n\n📌 مثال: \n*.emojimix* 😎+🥰' 
-            });
-            return;
-        }
-
-        let [emoji1, emoji2] = args[0].split('+').map(e => e.trim());
+        const [emoji1, emoji2] = emojis;
 
         // Using Tenor API endpoint
         const url = `https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`;
@@ -93,8 +89,8 @@ async function emojimixCommand(sock, chatId, msg) {
 
     } catch (error) {
         console.error('Error in emojimix command:', error);
-        await sock.sendMessage(chatId, { 
-            text: '❌ Failed to mix emojis! Make sure you\'re using valid emojis.\n\nExample: .emojimix 😎+🥰' 
+        await sock.sendMessage(chatId, {
+            text: '❌ *حدث خطأ أثناء دمج الإيموجي! جرب إيموجي مختلفة.*'
         });
     }
 }

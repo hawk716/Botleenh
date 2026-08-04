@@ -9,7 +9,7 @@ async function takeCommand(sock, chatId, message, args) {
         // Check if message is a reply to a sticker
         const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         if (!quotedMessage?.stickerMessage) {
-            await sock.sendMessage(chatId, { text: '❌ رد على ملصق باستخدام .take <اسم الحزمة>' });
+            await sock.sendMessage(chatId, { text: '*↢ قــم بالرد على الملصق الذي تريد تغيير اسمه بالامر + الاسم*\n*↢ مثال تغيير اسم الملصق Leen*' });
             return;
         }
 

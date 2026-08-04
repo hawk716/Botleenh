@@ -1,5 +1,5 @@
 const os = require('os');
-const settings = require('../settings.js');
+const settings = require('../settings');
 
 function formatTime(seconds) {
     const days = Math.floor(seconds / (24 * 60 * 60));
@@ -28,15 +28,13 @@ async function pingCommand(sock, chatId, message) {
         const uptimeInSeconds = process.uptime();
         const uptimeFormatted = formatTime(uptimeInSeconds);
 
-        const botInfo = `
-┏━━〔 🤖 𝐊𝐧𝐢𝐠𝐡𝐭𝐁𝐨𝐭-𝐌𝐃 〕━━┓
-┃ 🚀 السرعة     : ${ping} ms
-┃ ⏱️ وقت التشغيل   : ${uptimeFormatted}
-┃ 🔖 الإصدار  : v${settings.version}
-┗━━━━━━━━━━━━━━━━━━━┛`.trim();
+        const botInfo = `*┏━━〔 🤖 ${settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭'} 〕━━┓*
+*┃ 🚀 السرعة :* ${ping} ms
+*┃ ⏱️ وقت التشغيل :* ${uptimeFormatted}
+*┃ 🔖 الإصدار :* v${settings.version || '0.0.1'}
+*┗━━━━━━━━━━━━━━━┛*`;
 
-        // Reply to the original message with the bot info
-        await sock.sendMessage(chatId, { text: botInfo},{ quoted: message });
+        await sock.sendMessage(chatId, { text: botInfo }, { quoted: message });
 
     } catch (error) {
         console.error('Error in ping command:', error);

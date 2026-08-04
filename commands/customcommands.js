@@ -195,6 +195,10 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
         return true;
     }
 
+    if (validCommands.includes(cleanMessage)) {
+        return false;
+    }
+
     return false;
 }
 

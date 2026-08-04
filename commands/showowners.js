@@ -1,30 +1,26 @@
-
 const { getAllRanks } = require('../lib/ranks');
 
 async function showOwnersCommand(sock, chatId, message) {
     try {
         const allRanks = await getAllRanks(chatId);
-        
         const ownersList = [];
+        const mentions = [];
         let ownerCount = 0;
-        
-        Object.entries(allRanks).forEach(([userId, rank]) => {
+
+        for (const [userId, rank] of Object.entries(allRanks)) {
             if (rank === 'مالك') {
                 ownerCount++;
-                ownersList.push(`*${ownerCount} - @${userId.split('@')[0]}*`);
+                const contactName = await sock.getName(userId).catch(() => userId.split('@')[0]);
+                ownersList.push(`*${ownerCount} -* @${contactName}`);
+                mentions.push(userId);
             }
-        });
-        
+        }
+
         const ownersMessage = `*↢ قائـمة المالكـين*
 *ٴ⋆┄─┄─┄─┄┄─┄─┄─┄⋆*
 ${ownersList.length > 0 ? ownersList.join('\n') : '*↢ لا يوجد مالكين*'}`;
-        
-        const mentions = ownersList.map(owner => {
-            const match = owner.match(/@(\d+)/);
-            return match ? match[1] + '@s.whatsapp.net' : null;
-        }).filter(Boolean);
-        
-        await sock.sendMessage(chatId, { 
+
+        await sock.sendMessage(chatId, {
             text: ownersMessage,
             mentions: mentions
         }, { quoted: message });

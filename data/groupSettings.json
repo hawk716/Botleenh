@@ -58,5 +58,17 @@
     "menus_enabled": true,
     "mutehim_enabled": true,
     "callowner_enabled": true
+  },
+  "155920801779895@lid": {
+    "ban_enabled": true,
+    "download_enabled": true,
+    "link_enabled": true,
+    "kickme_enabled": false,
+    "demoteme_enabled": false,
+    "mention_enabled": true,
+    "games_enabled": true,
+    "menus_enabled": true,
+    "mutehim_enabled": true,
+    "callowner_enabled": true
   }
 }
