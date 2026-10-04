@@ -6,14 +6,18 @@ const axios = require('axios');
 const { execFile } = require('child_process');
 const { igdl } = require('ruhend-scraper');
 const { ttdl: ttdlBtch } = require('btch-downloader');
+const { resolveYtDlp } = require('../lib/ytDlp');
 const settings = require('../settings');
 
-const YT_DLP = '/home/codespace/.python/current/bin/yt-dlp';
+const YT_DLP = resolveYtDlp() || 'yt-dlp';
 const processedMessages = new Set();
 const MAX_SIZE = 100 * 1024 * 1024;
 
 function runYtDlp(args, timeout = 120000) {
     return new Promise((resolve, reject) => {
+        if (!resolveYtDlp()) {
+            return reject(new Error('yt-dlp غير مثبت — نفّذ: npm run install:yt-dlp'));
+        }
         const child = execFile(YT_DLP, args, { timeout, maxBuffer: 10 * 1024 * 1024 }, (err, stdout, stderr) => {
             if (err) {
                 const msg = stderr?.split('\n').find(l => l.startsWith('ERROR:')) || err.message;

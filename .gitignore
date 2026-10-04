@@ -42,6 +42,9 @@ data/replies.json
 codex-nvidia-proxy/
 telegram-compressor/
 
+# ثنائي yt-dlp (يُنزَّل تلقائياً عبر postinstall)
+node_modules/.yt-dlp/
+
 # ملفات تشغيل ومخابر
 --bind
 uvx

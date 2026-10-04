@@ -160,7 +160,7 @@ const { shayariCommand } = require('./commands/shayari');
 const imagineCommand = require('./commands/imagine');
 const createImageCommand = require('./commands/createimage');
 const { handleCreenCommand } = require('./commands/creen');
-const { videoCommand } = require('./commands/video');
+const { videoCommand, isWaiting: isVideoChoiceWaiting, handleChoice: handleVideoChoice } = require('./commands/video');
 const sudoCommand = require('./commands/sudo');
 const { miscCommand, handleHeart } = require('./commands/misc');
 const { animeCommand } = require('./commands/anime');
@@ -582,6 +582,12 @@ if (originalCommand) {
         if (zodiacCommand.isWaitingForBirthdate && zodiacCommand.isWaitingForBirthdate(senderId)) {
             await zodiacCommand.handleBirthdateInput(sock, chatId, message, senderId, rawText);
             return;
+        }
+
+        // اختيار تحميل الفيديو: 1 = كفيديو، 2 = كصوت (بعد بطاقة المعاينة)
+        if (isVideoChoiceWaiting(senderId)) {
+            const handled = await handleVideoChoice(sock, chatId, message, senderId, rawText);
+            if (handled) return;
         }
 
         // Check if user is in TTS flow (language/dialect/voice selection)
