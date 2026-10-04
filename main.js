@@ -1324,7 +1324,7 @@ if (originalCommand) {
                 if (cityAr) {
                     await weatherCommand(sock, chatId, message, cityAr, false);
                 } else {
-                    await sock.sendMessage(chatId, { text: '❌ الرجاء تحديد المدينة، مثال: طقس الرياض' }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*↢ الرجاء تحديد مدينه مثال:*\n*↢ طقس مكه*' }, { quoted: message });
                 }
                 commandExecuted = true;
                 break;
@@ -1333,7 +1333,7 @@ if (originalCommand) {
                 if (cityDetailed) {
                     await weatherCommand(sock, chatId, message, cityDetailed, true);
                 } else {
-                    await sock.sendMessage(chatId, { text: '❌ الرجاء تحديد المدينة، مثال: جو صنعاء' }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*↢ الرجاء تحديد مدينه مثال:*\n*↢ طقس غزة*' }, { quoted: message });
                 }
                 commandExecuted = true;
                 break;
