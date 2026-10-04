@@ -6,7 +6,7 @@ const axios = require('axios');
 const { execFile } = require('child_process');
 const { igdl } = require('ruhend-scraper');
 const { ttdl: ttdlBtch } = require('btch-downloader');
-const { resolveYtDlp } = require('../lib/ytDlp');
+const { resolveYtDlp, cookieArgs } = require('../lib/ytDlp');
 const settings = require('../settings');
 
 const YT_DLP = resolveYtDlp() || 'yt-dlp';
@@ -55,6 +55,7 @@ async function downloadAudioViaYtDlp(url, tmpDir) {
         '--extract-audio', '--audio-format', 'mp3', '--audio-quality', '0',
         '--output', outPath, '--no-warnings', '--no-playlist',
         '--socket-timeout', '15', '--format', 'bestaudio/best',
+        ...cookieArgs(),
         url
     ])
     const files = fs.readdirSync(tmpDir)

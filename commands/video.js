@@ -6,7 +6,7 @@ const axios = require('axios');
 const { execFile } = require('child_process');
 const { igdl } = require('ruhend-scraper');
 const { ttdl: ttdlBtch } = require('btch-downloader');
-const { resolveYtDlp } = require('../lib/ytDlp');
+const { resolveYtDlp, cookieArgs } = require('../lib/ytDlp');
 const settings = require('../settings');
 
 const YT_DLP = resolveYtDlp() || 'yt-dlp';
@@ -55,7 +55,7 @@ function detectPlatform(url) {
 
 async function getInfo(url) {
     try {
-        const out = await runYtDlp(['--dump-json', '--no-download', '--no-warnings', '--socket-timeout', '15', url], 30000)
+        const out = await runYtDlp(['--dump-json', '--no-download', '--no-warnings', '--socket-timeout', '15', ...cookieArgs(), url], 30000)
         return JSON.parse(out)
     } catch {
         return null
@@ -196,6 +196,7 @@ async function downloadViaYtDlp(url, dir) {
         '--output', outPath, '--no-warnings', '--no-playlist',
         '--socket-timeout', '15',
         '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        ...cookieArgs(),
         url
     ])
     return readAndRemove(dir, `v_${ts}`, ['.mp4', '.mkv', '.webm'], MAX_SIZE)
@@ -210,6 +211,7 @@ async function downloadAudioViaYtDlp(url, dir) {
         '--output', outPath, '--no-warnings', '--no-playlist',
         '--socket-timeout', '15',
         '--user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        ...cookieArgs(),
         url
     ])
     return readAndRemove(dir, `a_${ts}`, ['.mp3', '.m4a'], MAX_AUDIO_SIZE)
