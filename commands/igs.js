@@ -59,7 +59,7 @@ async function convertBufferToStickerWebp(inputBuffer, isAnimated, cropSquare) {
     }
 
     await new Promise((resolve, reject) => {
-        exec(ffmpegCommand, (error, _stdout, _stderr) => {
+        exec(ffmpegCommand, { timeout: TIMEOUT_FFMPEG }, (error, _stdout, _stderr) => {
             if (error) return reject(error);
             resolve();
         });
@@ -138,6 +138,39 @@ async function convertBufferToStickerWebp(inputBuffer, isAnimated, cropSquare) {
     return finalBuffer;
 }
 
+// مهلة قصوى لكل عملية خارجية — حتى لا يعلو الأمر بلا رد
+const TIMEOUT_IGDL = 45000;
+const TIMEOUT_FFMPEG = 60000;
+
+function withTimeout(promise, ms, label) {
+    let timer;
+    return Promise.race([
+        promise.finally(() => clearTimeout(timer)),
+        new Promise((_, reject) => {
+            timer = setTimeout(() => {
+                const e = new Error(`تجاوز ${label} مهلة ${Math.round(ms / 1000)} ثانية`);
+                e.code = 'TIMEOUT';
+                reject(e);
+            }, ms);
+        })
+    ]);
+}
+
+// تفسير سبب الفشل بلغة مفهومة بدل رسالة الصيانة العامة
+function explainFailure(err) {
+    const m = (err?.message || '').toLowerCase();
+    if (err?.code === 'TIMEOUT') {
+        return '*↢ تأخر تحميل القصص — حاول مرة أخرى بعد قليل ⚠️*';
+    }
+    if (m.includes('404') || m.includes('invalid url') || m.includes('private post')) {
+        return '*↢ القصة غير متاحة ⚠️*\n*↢ إما انتهت (بعد ٢٤ ساعة) أو حُذفت أو الحساب خاص.*\n*↢ جرّب رابطاً جديداً أو أرسل القصة للخاص ثم أعد المحاولة.*';
+    }
+    if (m.includes('login') || m.includes('401') || m.includes('403')) {
+        return '*↢ انستقرام يطلب تسجيل دخول — استخدم أمر انستقرام مع رابط منشور عام ⚠️*';
+    }
+    return UNDER_MAINTENANCE;
+}
+
 async function fetchBufferFromUrl(url) {
     // Attempt 1: simple arraybuffer with generous limits
     try {
@@ -196,9 +229,16 @@ async function igsCommand(sock, chatId, message, crop = false) {
 
         await sock.sendMessage(chatId, { react: { text: '🔄', key: message.key } });
 
-        const downloadData = await igdl(urlMatch[0]).catch(() => null);
+        let downloadData;
+        try {
+            downloadData = await withTimeout(igdl(urlMatch[0]), TIMEOUT_IGDL, 'استخراج القصة');
+        } catch (e) {
+            console.error('[IGS] فشل الاستخراج:', e?.message?.substring(0, 140));
+            await sock.sendMessage(chatId, { text: explainFailure(e) }, { quoted: message });
+            return;
+        }
         if (!downloadData || !downloadData.data) {
-            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
+            await sock.sendMessage(chatId, { text: explainFailure(new Error('no data')) }, { quoted: message });
             return;
         }
         // Raw items
