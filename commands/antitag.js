@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { setAntitag, getAntitag, removeAntitag } = require('../lib/index');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 const { addRestriction } = require('../lib/restrictions');
@@ -68,7 +69,7 @@ async function handleAntitagCommand(sock, chatId, userMessage, senderId, isSende
 
     } catch (error) {
         console.error('Error in antitag command:', error);
-        await sock.sendMessage(chatId, { text: '*_خطأ في معالجة أمر مكافحة المنشن_*' },{quoted :message});
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE },{quoted :message});
     }
 }
 

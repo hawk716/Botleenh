@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { sleep } = require('../lib/myfunc');
+const settings = require('../settings');
 
 async function pairCommand(sock, chatId, message, q) {
     try {
@@ -10,8 +11,8 @@ async function pairCommand(sock, chatId, message, q) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                        newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                         serverMessageId: -1
                     }
                 }
@@ -29,8 +30,8 @@ async function pairCommand(sock, chatId, message, q) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                        newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                         serverMessageId: -1
                     }
                 }
@@ -48,8 +49,8 @@ async function pairCommand(sock, chatId, message, q) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -62,8 +63,8 @@ async function pairCommand(sock, chatId, message, q) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                        newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                         serverMessageId: -1
                     }
                 }
@@ -85,8 +86,8 @@ async function pairCommand(sock, chatId, message, q) {
                             forwardingScore: 1,
                             isForwarded: true,
                             forwardedNewsletterMessageInfo: {
-                                newsletterJid: '120363161513685998@newsletter',
-                                newsletterName: 'KnightBot MD',
+                                newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                                newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                                 serverMessageId: -1
                             }
                         }
@@ -106,8 +107,8 @@ async function pairCommand(sock, chatId, message, q) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -122,8 +123,8 @@ async function pairCommand(sock, chatId, message, q) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }

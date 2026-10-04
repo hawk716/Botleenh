@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const sharp = require('sharp');
 const fs = require('fs');
 const fsPromises = require('fs/promises');
@@ -53,7 +54,7 @@ const convertStickerToImage = async (sock, message, chatId) => {
         scheduleFileDeletion(outputImagePath);
     } catch (error) {
         console.error('Error converting sticker to image:', error);
-        await sock.sendMessage(chatId, { text: 'حدث خطأ أثناء تحويل الملصق.' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 };
 

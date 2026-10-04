@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 
@@ -29,7 +30,7 @@ async function factsCommand(sock, chatId, message, args = '') {
     } catch (error) {
         console.error('Error in facts command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل في الحصول على الحقيقة. حاول مرة أخرى لاحقاً!' 
+            text: UNDER_MAINTENANCE 
         }, { quoted: message });
     }
 }

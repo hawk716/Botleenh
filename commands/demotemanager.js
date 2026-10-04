@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { removeUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -44,6 +45,14 @@ async function demoteManagerCommand(sock, chatId, message, senderId) {
         }
         
         // Check if user is actually مدير
+
+        // لا يمكن تنزيل البوت نفسه
+        const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+        if (isTargetBot(sock, groupMetadata, userToDemote)) {
+            await rejectBotTarget(sock, chatId, message, { react: false });
+            return;
+        }
+
         const targetRank = await getUserRank(chatId, userToDemote);
         if (targetRank !== 'مدير') {
             await sock.sendMessage(chatId, { 
@@ -61,7 +70,7 @@ async function demoteManagerCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in demoteManagerCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في تنزيل المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

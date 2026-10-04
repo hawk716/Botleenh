@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const isAdmin = require('../lib/isAdmin');  // Move isAdmin to helpers
 
 async function tagAllCommand(sock, chatId, senderId) {
@@ -34,7 +35,7 @@ async function tagAllCommand(sock, chatId, senderId) {
 
     } catch (error) {
         console.error('Error in tagall command:', error);
-        await sock.sendMessage(chatId, { text: 'فشل عمل منشن لجميع الأعضاء.' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

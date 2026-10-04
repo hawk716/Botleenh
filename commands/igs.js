@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { igdl } = require('ruhend-scraper');
 const axios = require('axios');
 const { exec } = require('child_process');
@@ -197,7 +198,7 @@ async function igsCommand(sock, chatId, message, crop = false) {
 
         const downloadData = await igdl(urlMatch[0]).catch(() => null);
         if (!downloadData || !downloadData.data) {
-            await sock.sendMessage(chatId, { text: '❌ فشل جلب الوسائط من رابط انستقرام.' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
             return;
         }
         // Raw items
@@ -265,7 +266,7 @@ async function igsCommand(sock, chatId, message, crop = false) {
 
     } catch (err) {
         console.error('Error in igs command:', err);
-        await sock.sendMessage(chatId, { text: 'فشل إنشاء ملصق من رابط انستقرام.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

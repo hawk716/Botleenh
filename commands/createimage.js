@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 
 async function createImageCommand(sock, chatId, message) {
@@ -45,7 +46,7 @@ async function createImageCommand(sock, chatId, message) {
         } catch (apiError) {
             console.error('Error calling image API:', apiError);
             await sock.sendMessage(chatId, {
-                text: '❌ فشل في إنشاء الصورة. يرجى المحاولة لاحقاً.'
+                text: UNDER_MAINTENANCE
             }, {
                 quoted: message
             });
@@ -54,7 +55,7 @@ async function createImageCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in createimage command:', error);
         await sock.sendMessage(chatId, {
-            text: '❌ حدث خطأ. يرجى المحاولة لاحقاً.'
+            text: UNDER_MAINTENANCE
         }, {
             quoted: message
         });

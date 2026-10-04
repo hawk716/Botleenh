@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
@@ -63,7 +64,7 @@ async function setProfilePicture(sock, chatId, msg) {
     } catch (error) {
         console.error('Error in setpp command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل تحديث صورة البوت!' 
+            text: UNDER_MAINTENANCE 
         });
     }
 }

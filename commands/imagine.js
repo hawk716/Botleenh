@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 const { fetchBuffer } = require('../lib/myfunc');
 
@@ -48,7 +49,7 @@ async function imagineCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in imagine command:', error);
         await sock.sendMessage(chatId, {
-            text: '❌ فشل في توليد الصورة. يرجى المحاولة لاحقاً.'
+            text: UNDER_MAINTENANCE
         }, {
             quoted: message
         });

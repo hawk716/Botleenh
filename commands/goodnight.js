@@ -20,7 +20,8 @@ function pickRandomGoodnight() {
 }
 
 async function goodnightCommand(sock, chatId, message) {
-    const text = pickRandomGoodnight();
+    const goodnightText = pickRandomGoodnight().replace(/^\*+|\*+$/g, '').trim();
+    const text = `*${goodnightText}😴🌃*`;
     await sock.sendMessage(chatId, { text }, { quoted: message });
 }
 

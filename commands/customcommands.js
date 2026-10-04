@@ -68,7 +68,7 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
 
     logToFile(`[CustomCmd] chat=${chatId}, sender=${senderId}, msg="${cleanMessage}", state=${JSON.stringify(state)}`);
 
-    if (cleanMessage === 'تغيير امر' || cleanMessage === 'تغيير_امر') {
+    if (cleanMessage === 'تغيير امر' || cleanMessage === 'تغيير أمر' || cleanMessage === 'تغيير_امر' || cleanMessage === 'تغيير_أمر') {
         commandStates.set(senderId, { step: 'waiting_old_command', chatId });
         await sock.sendMessage(chatId, {
             text: '*↢ تمـام، ارسل امر البوت الذي تريد تغييره.*'
@@ -164,7 +164,7 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
         return true;
     }
 
-    if (cleanMessage === 'الاوامر المضافه' || cleanMessage === 'الاوامر_المضافه') {
+    if (cleanMessage === 'الاوامر المضافه' || cleanMessage === 'الأوامر المضافة' || cleanMessage === 'الاوامر_المضافه' || cleanMessage === 'الأوامر_المضافة') {
         const commands = Object.entries(customCommands);
 
         if (commands.length === 0) {
@@ -187,7 +187,7 @@ async function handleCustomCommandManagement(sock, chatId, message, senderId, cl
         return true;
     }
 
-    if (cleanMessage === 'مسح الاوامر المضافه' || cleanMessage === 'مسح_الاوامر_المضافه') {
+    if (cleanMessage === 'مسح الاوامر المضافه' || cleanMessage === 'مسح الأوامر المضافة' || cleanMessage === 'مسح_الاوامر_المضافه' || cleanMessage === 'مسح_الأوامر_المضافة') {
         saveGroupCustomCommands(chatId, {});
         await sock.sendMessage(chatId, {
             text: '*↢ تم مسح قائمة الاوامر المضافة في هذه المجموعة.*'

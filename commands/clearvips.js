@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { getAllRanks } = require('../lib/ranks');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
@@ -49,7 +50,7 @@ async function clearVipsCommand(sock, chatId, message, senderId) {
         }
     } catch (error) {
         console.error('Error in clearVipsCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في مسح المميزين!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

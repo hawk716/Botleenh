@@ -1,14 +1,16 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const settings = require('../settings');
 
 const channelInfo = {
     contextInfo: {
         forwardingScore: 999,
         isForwarded: true,
         forwardedNewsletterMessageInfo: {
-            newsletterJid: '120363161513685998@newsletter',
-            newsletterName: 'KnightBot MD',
+            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
             serverMessageId: -1
         }
     }
@@ -89,7 +91,7 @@ async function clearSessionCommand(sock, chatId, msg) {
     } catch (error) {
         console.error('Error in clearsession command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل مسح ملفات الجلسة!',
+            text: UNDER_MAINTENANCE,
             ...channelInfo
         });
     }

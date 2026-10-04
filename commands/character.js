@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { channelInfo } = require('../lib/messageConfig');
 
 async function characterCommand(sock, chatId, message) {
@@ -14,7 +15,7 @@ async function characterCommand(sock, chatId, message) {
     
     if (!userToAnalyze) {
         await sock.sendMessage(chatId, { 
-            text: 'من فضلك منشن شخصًا أو رد على رسالته لتحليل شخصيته!', 
+            text: '*↢من فضلك رد على رساله لتنفيذ الامر*', 
             ...channelInfo 
         });
         return;
@@ -51,15 +52,16 @@ async function characterCommand(sock, chatId, message) {
         // Calculate random percentages for each trait
         const traitPercentages = selectedTraits.map(trait => {
             const percentage = Math.floor(Math.random() * 41) + 60; // Random number between 60-100
-            return `${trait}: ${percentage}%`;
+            return `*${trait}: ${percentage}%*`;
         });
 
         // Create character analysis message
-        const analysis = `🔮 *تحليل الشخصية* 🔮\n\n` +
-            `👤 *المستخدم:* ${userToAnalyze.split('@')[0]}\n\n` +
-            `✨ *الصفات الرئيسية:*\n${traitPercentages.join('\n')}\n\n` +
-            `🎯 *التقييم العام:* ${Math.floor(Math.random() * 21) + 80}%\n\n` +
-            `ملاحظة: هذا تحليل ترفيهي ولا يجب أخذه على محمل الجد!`;
+        const userNumber = userToAnalyze.split('@')[0].split(':')[0];
+        const analysis = `*🔮 تحليل الشخصية 🔮*\n\n` +
+            `*المستخدم: @${userNumber} 👤*\n\n` +
+            `*الصفات الرئيسية:*\n` +
+            `${traitPercentages.join('\n')}\n` +
+            `*التقييم العام: ${Math.floor(Math.random() * 21) + 80}% 🎯*`;
 
         // Send the analysis with the user's profile picture
         await sock.sendMessage(chatId, {
@@ -72,7 +74,7 @@ async function characterCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in character command:', error);
         await sock.sendMessage(chatId, { 
-            text: 'فشل تحليل الشخصية! حاول مرة أخرى لاحقًا.',
+            text: UNDER_MAINTENANCE,
             ...channelInfo 
         });
     }

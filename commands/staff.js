@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 async function staffCommand(sock, chatId, msg) {
     try {
         // Get group metadata
@@ -34,7 +35,7 @@ ${listAdmin}`.trim();
 
     } catch (error) {
         console.error('Error in staff command:', error);
-        await sock.sendMessage(chatId, { text: 'فشل الحصول على قائمة المشرفين!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

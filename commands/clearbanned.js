@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const fs = require('fs');
 const path = require('path');
@@ -63,7 +64,7 @@ async function clearBannedCommand(sock, chatId, message, senderId) {
     } catch (error) {
         console.error('Error in clearBannedCommand:', error);
         await sock.sendMessage(chatId, { 
-            text: '*↢ حدث خطأ أثناء مسح المحظورين!*'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const os = require('os');
 const settings = require('../settings');
 
@@ -38,7 +39,7 @@ async function pingCommand(sock, chatId, message) {
 
     } catch (error) {
         console.error('Error in ping command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في الحصول على حالة البوت.' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

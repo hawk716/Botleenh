@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const moment = require('moment-timezone');
 const fetch = require('node-fetch');
 const fs = require('fs');
@@ -5,6 +6,10 @@ const path = require('path');
 
 
 async function githubCommand(sock, chatId, message) {
+  // Only respond if the message is from the bot itself
+  if (!message.key.fromMe) {
+    return;
+  }
   try {
     const res = await fetch('https://api.github.com/repos/mruniquehacker/Knightbot-md');
     if (!res.ok) throw new Error('Error fetching repository data');
@@ -26,7 +31,7 @@ async function githubCommand(sock, chatId, message) {
 
     await sock.sendMessage(chatId, { image: imgBuffer, caption: txt }, { quoted: message });
   } catch (error) {
-    await sock.sendMessage(chatId, { text: '❌ خطأ في جلب معلومات المستودع.' }, { quoted: message });
+    await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
   }
 }
 

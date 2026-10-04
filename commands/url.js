@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const fs = require('fs');
 const path = require('path');
@@ -85,14 +86,14 @@ async function urlCommand(sock, chatId, message) {
         }
 
         if (!url) {
-            await sock.sendMessage(chatId, { text: '❌ فشل رفع الوسائط.' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
             return;
         }
 
         await sock.sendMessage(chatId, { text: `URL: ${url}` }, { quoted: message });
     } catch (error) {
         console.error('[URL] error:', error?.message || error);
-        await sock.sendMessage(chatId, { text: '❌ فشل تحويل الوسائط إلى رابط.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

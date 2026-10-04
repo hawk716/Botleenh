@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 const fs = require('fs');
@@ -48,7 +49,7 @@ async function clearRestrictedCommand(sock, chatId, message, senderId) {
         }
     } catch (error) {
         console.error('Error in clearRestrictedCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في مسح المقيدين!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

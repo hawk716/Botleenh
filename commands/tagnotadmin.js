@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const isAdmin = require('../lib/isAdmin');
 
 async function tagNotAdminCommand(sock, chatId, senderId, message) {
@@ -35,7 +36,7 @@ async function tagNotAdminCommand(sock, chatId, senderId, message) {
         await sock.sendMessage(chatId, { text, mentions: nonAdmins }, { quoted: message });
     } catch (error) {
         console.error('Error in tagnotadmin command:', error);
-        await sock.sendMessage(chatId, { text: 'فشل عمل منشن للأعضاء غير المشرفين.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

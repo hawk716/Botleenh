@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const gTTS = require('gtts');
 const fs = require('fs');
 const path = require('path');
@@ -61,7 +62,7 @@ async function habibiTTSCommand(sock, chatId, message, text) {
                         console.error('gTTS fallback error:', saveErr);
                         const sendOpts = message?.key ? { quoted: message } : {};
                         await sock.sendMessage(chatId, {
-                            text: '❌ تعذر إنشاء الصوت. يتطلب Habibi-TTS بيئة CUDA.\nاستخدم *نص الى صوت* كبديل.'
+                            text: UNDER_MAINTENANCE
                         }, sendOpts);
                         return;
                     }
@@ -95,7 +96,7 @@ async function habibiTTSCommand(sock, chatId, message, text) {
         console.error('❌ Error in Habibi TTS command:', error);
         const sendOpts = message?.key ? { quoted: message } : {};
         await sock.sendMessage(chatId, {
-            text: '❌ حدث خطأ أثناء إنشاء الصوت.'
+            text: UNDER_MAINTENANCE
         }, sendOpts);
     }
 }

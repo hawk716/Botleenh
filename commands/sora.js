@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 
 async function soraCommand(sock, chatId, message) {
@@ -44,7 +45,7 @@ async function soraCommand(sock, chatId, message) {
 
     } catch (error) {
         console.error('[SORA] error:', error?.message || error);
-        await sock.sendMessage(chatId, { text: 'فشل في توليد الفيديو. جرب وصفاً مختلفاً لاحقاً.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

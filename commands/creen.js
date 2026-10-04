@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { execFile } = require('child_process');
 const path = require('path');
 const fs = require('fs');
@@ -56,7 +57,7 @@ async function handleCreenCommand(sock, chatId, message, rawArgs) {
         const latest = files.length > 0 ? path.join(outputDir, files[0]) : null;
         if (!latest || !fs.existsSync(latest)) {
             return sock.sendMessage(chatId, {
-                text: '*↢ تعذر الحصول على النتيجة، قد يكون الخدمة محظورة أو الوصف غير صالح.*',
+                text: UNDER_MAINTENANCE,
                 quoted: message,
             });
         }
@@ -81,7 +82,7 @@ async function handleCreenCommand(sock, chatId, message, rawArgs) {
     } catch (error) {
         console.error('Creen Error:', error.message);
         await sock.sendMessage(chatId, {
-            text: '*↢ تعذر الاتصال بـ Creen.ai، تحقق من أن Playwright مثبت و-hybrid يعمل.*',
+            text: UNDER_MAINTENANCE,
             quoted: message,
         });
     }

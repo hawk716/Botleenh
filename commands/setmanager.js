@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
 async function setManagerCommand(sock, chatId, message, senderId) {
@@ -17,9 +18,9 @@ async function setManagerCommand(sock, chatId, message, senderId) {
             const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
             const senderLevel = getRankLevel(senderRank);
             
-            if (senderLevel < 4) {
+            if (senderLevel < 3) {
                 await sock.sendMessage(chatId, { 
-                    text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*'
+                    text: '*↢ عذراً الامر يخص〖 المدير〗 فما فوق.*'
                 }, { quoted: message });
                 return;
             }
@@ -52,7 +53,7 @@ async function setManagerCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setManagerCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

@@ -19,8 +19,13 @@ function pickRandomGhazal() {
     return ghazalCache[Math.floor(Math.random() * ghazalCache.length)].text.trim();
 }
 
+function formatGhazal(text) {
+    const cleanText = text.trim().replace(/^\*+|\*+$/g, '').trim();
+    return `*${cleanText} 🤍🥹*`;
+}
+
 async function flirtCommand(sock, chatId, message) {
-    const text = pickRandomGhazal();
+    const text = formatGhazal(pickRandomGhazal());
     await sock.sendMessage(chatId, { text }, { quoted: message });
 }
 

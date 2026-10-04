@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { getUserRank, hasPermission } = require('../lib/ranks');
 const { setCmdLock, getCmdLock, removeCmdLock } = require('../lib/cmdLockSystem');
 
@@ -76,7 +77,7 @@ async function handleCmdLockCommand(sock, chatId, userMessage, senderId, isSende
 
     } catch (error) {
         console.error('Error in cmdlock command:', error);
-        await sock.sendMessage(chatId, { text: '*_خطأ في معالجة أمر قفل الأوامر_*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

@@ -1,6 +1,8 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { downloadMediaMessage } = require('@whiskeysockets/baileys');
 const axios = require('axios');
 const sharp = require('sharp');
+const settings = require('../settings');
 
 async function blurCommand(sock, chatId, message, quotedMessage) {
     try {
@@ -65,8 +67,8 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }
@@ -75,7 +77,7 @@ async function blurCommand(sock, chatId, message, quotedMessage) {
     } catch (error) {
         console.error('Error in blur command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل تمويه الصورة. حاول مرة أخرى لاحقاً.' 
+            text: UNDER_MAINTENANCE 
         }, { quoted: message });
     }
 }

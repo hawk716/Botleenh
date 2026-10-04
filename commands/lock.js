@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 const { 
     setLock, 
@@ -8,18 +9,6 @@ const {
 
 async function handleLockCommand(sock, chatId, userMessage, senderId, isSenderAdmin, message) {
     try {
-        const groupMetadata = await sock.groupMetadata(chatId);
-        const senderParticipant = groupMetadata.participants.find(p => p.id === senderId);
-        const isWhatsAppAdmin = senderParticipant && senderParticipant.admin;
-        const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
-        const senderLevel = getRankLevel(senderRank);
-
-        // مدير or higher (level >= 3) can use this
-        if (senderLevel < 3 && !message.key.fromMe) {
-            await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 مدير 〗*' }, { quoted: message });
-            return;
-        }
-
         const args = userMessage.trim().split(' ');
         const command = args[0];
         const lockType = args[1];
@@ -51,30 +40,47 @@ async function handleLockCommand(sock, chatId, userMessage, senderId, isSenderAd
             await sock.sendMessage(chatId, { text: usage }, { quoted: message });
             return;
         }
-        const username = `@${senderId.split('@')[0]}`;
-        const isLock = command === 'قفل';
 
+        // Check if lock type is valid FIRST - if invalid, silently ignore
         const lockTypeMap = {
-            'الصور': LOCK_TYPES.IMAGES,
-            'الفيديو': LOCK_TYPES.VIDEOS,
-            'المتحركه': LOCK_TYPES.GIFS,
-            'الملصقات': LOCK_TYPES.STICKERS,
-            'الملفات': LOCK_TYPES.FILES,
-            'الصوت': LOCK_TYPES.AUDIO,
-            'الفويس': LOCK_TYPES.VOICE,
-            'التثبيت': LOCK_TYPES.PINS,
-            'الجهات': LOCK_TYPES.CONTACTS,
-            'التوجيه': LOCK_TYPES.FORWARDS,
-            'التعديل': LOCK_TYPES.EDITS,
-            'الوسائط': LOCK_TYPES.MEDIA,
-            'الكل': LOCK_TYPES.ALL
+            'الصور': 'IMAGES',
+            'الفيديو': 'VIDEOS',
+            'المتحركه': 'GIFS',
+            'المتحركة': 'GIFS',
+            'الملصقات': 'STICKERS',
+            'الملفات': 'FILES',
+            'الصوت': 'AUDIO',
+            'الفويس': 'VOICE',
+            'التثبيت': 'PINS',
+            'الجهات': 'CONTACTS',
+            'التوجيه': 'FORWARDS',
+            'التوجيهه': 'FORWARDS',
+            'التوجيهة': 'FORWARDS',
+            'التعديل': 'EDITS',
+            'الوسائط': 'MEDIA',
+            'الكل': 'ALL'
         };
 
         const mappedType = lockTypeMap[lockType];
-        
         if (!mappedType) {
+            return; // Silently ignore invalid lock types
+        }
+
+        // مدير or higher (level >= 3) can use this
+        const groupMetadata = await sock.groupMetadata(chatId);
+        const senderParticipant = groupMetadata.participants.find(p => p.id === senderId);
+        const isWhatsAppAdmin = senderParticipant && senderParticipant.admin;
+        const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
+        const senderLevel = getRankLevel(senderRank);
+
+        // مدير or higher (level >= 3) can use this
+        if (senderLevel < 3 && !message.key.fromMe) {
+            await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 مدير 〗*' }, { quoted: message });
             return;
         }
+
+        const username = `@${senderId.split('@')[0]}`;
+        const isLock = command === 'قفل';
 
         if (isLock) {
             await setLock(chatId, mappedType);
@@ -92,7 +98,7 @@ async function handleLockCommand(sock, chatId, userMessage, senderId, isSenderAd
 
     } catch (error) {
         console.error('Error in lock command:', error);
-        await sock.sendMessage(chatId, { text: '*_خطأ في معالجة أمر القفل_*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

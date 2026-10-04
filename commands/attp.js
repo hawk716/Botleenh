@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -23,7 +24,7 @@ async function attpCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, { sticker: webpBuffer }, { quoted: message });
     } catch (error) {
         console.error('Error generating local sticker:', error);
-        await sock.sendMessage(chatId, { text: 'فشل في إنشاء الملصق محليًا.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

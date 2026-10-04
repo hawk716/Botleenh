@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const fs = require('fs');
 const path = require('path');
@@ -202,7 +203,7 @@ async function checkReply(sock, chatId, userMessage, senderId) {
             
             // Only allow مدير/مالك/ادمن to use replies when disabled
             if (senderLevel < 2) {
-                await sock.sendMessage(chatId, { text: '*↢ الردود معطله من〖 المالك 〗*' });
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
                 return true;
             }
         }

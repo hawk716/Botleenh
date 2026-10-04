@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -25,7 +26,7 @@ async function setOwnerCommand(sock, chatId, message, senderId) {
             // Only مالك (level 4) can set owner
             if (senderLevel < 4) {
                 await sock.sendMessage(chatId, { 
-                    text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*'
+                    text: '*↢ عذراً الامر يخص〖 مالك〗فقط.*'
                 }, { quoted: message });
                 return;
             }
@@ -51,16 +52,42 @@ async function setOwnerCommand(sock, chatId, message, senderId) {
         sock.recentManualActions.set(actionKey, Date.now());
         setTimeout(() => sock.recentManualActions.delete(actionKey), 3000);
 
-        // Only set rank - don't promote in WhatsApp
+        // لا يمكن رفع البوت نفسه إلى رتبة مالك
+        const groupMetaForBotCheck = await sock.groupMetadata(chatId);
+        const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+        if (isTargetBot(sock, groupMetaForBotCheck, userToPromote)) {
+            await rejectBotTarget(sock, chatId, message, { react: false });
+            return;
+        }
+
+        // Set rank
         await setUserRank(chatId, userToPromote, 'مالك');
+        // Promote to WhatsApp admin if not admin already
+        const groupMetadata = await sock.groupMetadata(chatId);
         
+        // Use the constant BOT_JID from our admin check system
+    const { isBotAdminIn } = require('../lib/botAdminCheck');
+        const isBotAdmin = isBotAdminIn(sock, groupMetadata);
+        
+        const targetWhatsApp = groupMetadata.participants.find(p => p.id === userToPromote);
+        if (isBotAdmin && targetWhatsApp && !targetWhatsApp.admin) {
+            try {
+                await sock.groupParticipantsUpdate(chatId, [userToPromote], "promote");
+            } catch(e) {
+                console.error('[SETOWNER PROMOTE ERROR]', e);
+            }
+        } else if (!isBotAdmin) {
+            console.log('[SETOWNER] Bot is not admin, skipping WhatsApp promotion');
+        } else if (targetWhatsApp && targetWhatsApp.admin) {
+            console.log('[SETOWNER] User already admin, skipping WhatsApp promotion');
+        }
         await sock.sendMessage(chatId, { 
-            text: `*↢ ابشـر لاتهـون رفعـته مالـك*\n*↢ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
+            text: `*↢ ابشـر لاتهـون رفعـته مالكـاً*\n*↢ الحلـو「 @${userToPromote.split('@')[0]} 」*`,
             mentions: [userToPromote]
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setOwnerCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 /**
  * Knight Bot - A WhatsApp Bot
  * Autoread Command - Automatically read all messages
@@ -5,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const settings = require('../settings');
 
 // Path to store the configuration
 const configPath = path.join(__dirname, '..', 'data', 'autoread.json');
@@ -27,11 +29,11 @@ async function autoreadCommand(sock, chatId, message) {
                 contextInfo: {
                     forwardingScore: 1,
                     isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
-                        serverMessageId: -1
-                    }
+forwardedNewsletterMessageInfo: {
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
+                    serverMessageId: -1
+                }
                 }
             });
             return;
@@ -59,8 +61,8 @@ async function autoreadCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -77,13 +79,13 @@ async function autoreadCommand(sock, chatId, message) {
 
         // Send confirmation message
         await sock.sendMessage(chatId, {
-            text: `✅ القراءة التلقائية ${config.enabled ? 'مفعلة' : 'معطلة'}!`,
+            text: UNDER_MAINTENANCE,
             contextInfo: {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }
@@ -92,13 +94,13 @@ async function autoreadCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in autoread command:', error);
         await sock.sendMessage(chatId, {
-            text: '❌ خطأ في معالجة الأمر!',
+            text: UNDER_MAINTENANCE,
             contextInfo: {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }

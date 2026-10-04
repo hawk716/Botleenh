@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { isFeatureEnabled } = require('../lib/groupSettings');
 
@@ -13,7 +14,7 @@ async function kickmeCommand(sock, chatId, message, senderId) {
         // Check if kickme feature is enabled
         if (!isFeatureEnabled(chatId, 'kickme_enabled')) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ امـر اطردني معطل من قبل المدراء*'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
             return;
         }
@@ -43,7 +44,7 @@ async function kickmeCommand(sock, chatId, message, senderId) {
     } catch (error) {
         console.error('Error in kickme command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء تنفيذ الأمر!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

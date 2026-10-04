@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
@@ -137,7 +138,7 @@ async function handleChatbotCommand(sock, chatId, message, match) {
 
     if (lower === 'تعطيل') {
         if (!(await isChatbotOn(chatId))) {
-            return sock.sendMessage(chatId, { text: '⚠️ المحادثة الذكية *معطلة بالفعل*.', quoted: message });
+            return sock.sendMessage(chatId, { text: UNDER_MAINTENANCE, quoted: message });
         }
         await removeChatbot(chatId);
         return sock.sendMessage(chatId, { text: '✅ تم *تعطيل* المحادثة الذكية AI لهذه المجموعة.', quoted: message });

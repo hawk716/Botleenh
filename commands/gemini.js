@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 async function geminiCommand(sock, chatId, message) {
@@ -77,7 +78,7 @@ async function geminiCommand(sock, chatId, message) {
         } catch (error) {
             console.error('Gemini API Error:', error);
             await sock.sendMessage(chatId, {
-                text: "❌ فشل في الحصول على رد. يرجى المحاولة لاحقاً.",
+                text: UNDER_MAINTENANCE,
                 contextInfo: {
                     mentionedJid: [message.key.participant || message.key.remoteJid],
                     quotedMessage: message.message
@@ -89,7 +90,7 @@ async function geminiCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Gemini Command Error:', error);
         await sock.sendMessage(chatId, {
-            text: "❌ حدث خطأ. يرجى المحاولة لاحقاً.",
+            text: UNDER_MAINTENANCE,
             contextInfo: {
                 mentionedJid: [message.key.participant || message.key.remoteJid],
                 quotedMessage: message.message

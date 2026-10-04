@@ -2,6 +2,7 @@ const settings = require('./settings');
 require('./config.js');
 const path = require('path');
 const { isBanned } = require('./lib/isBanned');
+const { isBotCommand } = require('./lib/commandWords');
 const yts = require('yt-search');
 const { fetchBuffer } = require('./lib/myfunc');
 const fs = require('fs');
@@ -35,6 +36,7 @@ const unrestrictCommand = require('./commands/unrestrict');
 
 const demoteManagerCommand = require('./commands/demotemanager');
 const demoteAdminCommand = require('./commands/demoteadmin');
+const demoteOwnerCommand = require('./commands/demoteowner');
 const setVipCommand = require('./commands/setvip');
 const demoteVipCommand = require('./commands/demotevip');
 const clearAllRanksCommand = require('./commands/clearallranks');
@@ -114,9 +116,8 @@ const aliveCommand = require('./commands/alive');
 const blurCommand = require('./commands/img-blur');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
-const githubCommand = require('./commands/github');
+
 const { handleAntiBadwordCommand, handleBadwordDetection } = require('./lib/antibadword');
-const antibadwordCommand = require('./commands/antibadword');
 const { handleChatbotCommand, handleChatbotResponse } = require('./commands/chatbot');
 const takeCommand = require('./commands/take');
 const { flirtCommand } = require('./commands/flirt');
@@ -156,7 +157,6 @@ const { handleSsCommand } = require('./commands/ss');
 const { addCommandReaction, handleAreactCommand } = require('./lib/reactions');
 const { goodnightCommand } = require('./commands/goodnight');
 const { shayariCommand } = require('./commands/shayari');
-const { rosedayCommand } = require('./commands/roseday');
 const imagineCommand = require('./commands/imagine');
 const createImageCommand = require('./commands/createimage');
 const { handleCreenCommand } = require('./commands/creen');
@@ -187,6 +187,7 @@ const { isFeatureEnabled } = require('./lib/groupSettings');
 const { handleCustomCommandManagement, getOriginalCommand } = require('./commands/customcommands');
 const { handleSubscriptionManagement, checkUserSubscription, requestSubscription } = require('./commands/subscription');
 const { handleWelcome, handleWelcomeText, sendWelcome, handleGoodbye } = require('./lib/welcome');
+const { requireBotAdmin } = require('./lib/botAdminCheck');
 const wordban = require('./commands/wordban');
 const { getToggle, TOGGLE_TYPES } = require('./lib/toggleSystem');
 const idCommand = require('./commands/id');
@@ -203,7 +204,7 @@ const antideleteArabic = require('./commands/antidelete');
 // Global settings
 global.packname = settings.packname;
 global.author = settings.author;
-global.channelLink = "https://whatsapp.com/channel/0029Va90zAnIHphOuO8Msp3A";
+global.channelLink = "https://whatsapp.com/channel/120363400425238128";
 global.ytch = "Mr Unique Hacker";
 
 // Channel info removed - see vop.js for future use
@@ -230,10 +231,31 @@ async function handleMessages(sock, messageUpdate, printLog) {
             return;
         }
 
-        const senderId = message.key.participant || message.key.remoteJid;
-        console.log(`[Message Handler] senderId: ${senderId}, isGroup: ${chatId.endsWith('@g.us')}`);
-        const isGroup = chatId.endsWith('@g.us');
+const senderId = message.key.participant || message.key.remoteJid;
+console.log(`[Message Handler] senderId: ${senderId}, isGroup: ${chatId.endsWith('@g.us')}`);
+const isGroup = chatId.endsWith('@g.us');
+// lazy assign مالك أساسي للمجموعات القديمة التي أُضيف لها البوت قبل تفعيل الميزة
+if (isGroup) {
+            try{
+                const {getPrimaryOwner,setPrimaryOwner}=require('./lib/primaryOwner');
+                if(!getPrimaryOwner(chatId)){
+                    const meta=await sock.groupMetadata(chatId);
+                    const norm=s=>s?s.split('@')[0].split(':')[0]:'';
+                    const senderIsAdmin=meta.participants.some(p=>norm(p.id)===norm(senderId) && p.admin);
+                    console.log(`[PRIMARY-OWNER-CHECK] senderIsAdmin=${senderIsAdmin} sender=${senderId} participants=${meta.participants.map(p=>p.id+':'+p.admin).join(',')}`);
+                    if(senderIsAdmin){
+                        setPrimaryOwner(chatId, senderId);
+                        console.log(`[PRIMARY-OWNER] assigned ${getPrimaryOwner(chatId)} for ${chatId}`);
+                    } else {
+                        console.log(`[PRIMARY-OWNER] not assigned — sender not admin`);
+                    }
+                }
+            }catch(e){ console.log('[PRIMARY-OWNER-ERR]', e.message); }
+        }
         const senderIsSudo = await isSudo(senderId);
+        const configuredBotNumber = String(settings.ownerNumber || '').replace(/\D/g, '');
+        const senderNumber = String(senderId || '').split('@')[0].split(':')[0].replace(/\D/g, '');
+        const senderIsConfiguredBot = Boolean(configuredBotNumber && senderNumber && senderNumber === configuredBotNumber);
 
         const userMessage = (
             message.message?.conversation?.trim() ||
@@ -251,7 +273,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
 
         const normalizedMessage = userMessage.replace(/\s+/g, '_');
 
-        const arabicCommands = ['الاوامر', 'م1', 'م2', 'م3', 'م4', 'م5', 'م6', '1', '2', '3', '4', '5', '6', 'رفع', 'تنزيل', 'حظر', 'طرد', 'كتم', 'اسئلة', 'أسئلة'];
+        const arabicCommands = ['الاوامر', 'م1', 'م2', 'م3', 'م4', 'م5', 'م6', '1', '2', '3', '4', '5', '6', 'حظر', 'طرد', 'كتم', 'اسئلة', 'أسئلة'];
         if (arabicCommands.some(cmd => userMessage.includes(cmd))) {
             console.log(`📝 Command used in ${isGroup ? 'group' : 'private'}: ${userMessage}`);
         }
@@ -294,18 +316,40 @@ async function handleMessages(sock, messageUpdate, printLog) {
             }
         }
 
-        const isUnbanCommand = cleanMessage?.startsWith('الغاء حظر') ||
-                              cleanMessage?.startsWith('الغاء_حظر') ||
-                              cleanMessage?.startsWith('الغاء الحظر') ||
-                              cleanMessage?.startsWith('الغاء_الحظر');
+        const KNOWN_CMD_RE = /^(الاوامر|م[1-6]|[1-6]|احصائيات|كشف|المالك|الرتبه|الايدي|رفع|تنزيل|طرد|حظر|الغاء|كتم|فك|تثبيت|منشن|انذار|مسح|فتح|قفل|ترحيب|وداع|رابط|مميز|ادمن|مدير|مالك|تفعيل|تعطيل|القوانين|الترقيه|ايدي|استعادة|تغيير|تغير|انستا|انستجرام|تيك|فيسبوك|اغنية|اغنيه|فيديو|ملصق|ترجم|خيال|لعبه|بنك|زواج|طلاق|توب|نسبه|شخصيه|ورد|حكمه|شعر|ميمز|طقس|اخبار|يوتيوب|سبوتيفاي|ذكاء|ترجمه|صوره|ستيكر|حظررابط|انتي|زخرفه|اقتباس|حظ|ابراج|نكت|حب|كره|حظي|حظه|حظة|وجهي|وجهه|وجهة|امنيتي|امنيته|نجومي|نجومه|نجومة|مزاجي|مزاجه|مزاجة|غبائي|غبائه|غباءة|من يحبني|من يكرهني|برجي|برجه|عمري|عمره|عمرة|نكته|نكتة|ايش تختار|اكس او|الرجل المشنوق|خمن|اسئلة|أسئلة|مجاملة|اهانة|الكرة السحرية|كلمات الاغنية|جرأة|صراحة|شعر|حب|كره|لعبة|ترفيه|x|o|اكس|حجر|ورقة|مقص|دلع|نكته|نكتة|يوم الورد|ميزاج|مزاج|حظ|حظك|برج|ابراج|زودياك|بينغ|بنق|تمويه|تموية|قائمة المنع|مسح قائمة المنع|صوره القروب|معلومات المجموعة|معلومات المجموعه|عرض مرة|عرض مره|قصص انستا|قصص انستقرام|انشاء صوره|انشاء صورة|لقطة شاشة|لقطه شاشه|ازالة الخلفية|ازاله الخلفيه|اخبار عربية|اخبار عربيه|تغيير اسم الملصق|تغير اسم الملصق|تغيير امر|الاوامر المضافه|الأوامر المضافة|مسح الاوامر المضافه|مسح الأوامر المضافة|المتحركة|التوجيهة|التوجيهه)/;
+        // نستثني رسائل البوت نفسه (fromMe) لتجنب حلقة لا نهائية.
+        // المحظور: لا تُحذف رسائله، بل نرد عليه فقط عند محاولة استخدام أي أمر.
+        if (!message.key.fromMe && isBanned(senderId, chatId)) {
+            console.log('[BANNED-CHECK] banned user:', senderId, 'in chat:', chatId, '| text:', cleanMessage);
 
-        if (isBanned(senderId) && !isUnbanCommand) {
-            if (Math.random() < 0.1) {
+            // إن لم يكن البوت مشرفاً في هذه المجموعة فلا داعي لرسالة الحظر
+            // (رسالة الحظر توحي بأن البوت يعمل) — نطلب من المشرف تعيينه أولاً
+            if (!(await requireBotAdmin(sock, chatId, message))) return;
+
+            if (isBotCommand(userMessage)) {
                 await sock.sendMessage(chatId, {
-                    text: '❌ أنت محظور من استخدام البوت. اتصل بمسؤول لإلغاء الحظر.'
+                    text: '*↢ عذراً لقد قام احـد المـشـرفين بــحـظـرك مـن اسـتخـدام البــوت في هذه المـجمـوعه*'
                 });
             }
             return;
+        }
+
+        // ── وكيل الذكاء الاصطناعي ────────────────────────────────────────────
+        // يُشغَّل ببادئة «لين» أو «leen» في بداية الرسالة.
+        // وإذا وُجد طلب معلق لنفس المستخدم ونفس المجموعة، فأي رسالة لاحقة
+        // (ببادئة أو بدونها) تُعامل كاستمرار له حتى يكتمل الفهم أو تنتهي المهلة.
+        // ناتجه يُمرَّر إلى switch الموجود بالأسفل، فتعمل كل الفحوص كما هي.
+        if (!message.key.fromMe) {
+            const ai = require('./lib/aiAgent');
+            const det = ai.detectPrefix(rawText);
+            const pendFirst = ai.getPending(chatId, senderId);
+            if (pendFirst) {
+                const handled = await handleAiRequest(sock, chatId, message, senderId, det.triggered ? det.query : rawText, rawText, true);
+                if (handled) return;
+            } else if (det.triggered) {
+                const handled = await handleAiRequest(sock, chatId, message, senderId, det.query, rawText, false);
+                if (handled) return;
+            }
         }
 
         if (isGroup && await isRestricted(chatId, senderId)) {
@@ -480,8 +524,8 @@ if (originalCommand) {
             } catch (e) { }
         }
 
-        const adminCommands = ['قفل', 'فتح', 'حظر', 'الغاء_الحظر', 'الغاء الحظر', 'رفع', 'تنزيل', 'طرد', 'منشن_الكل', 'منشن الكل', 'منشن_الاعضاء', 'منشن الاعضاء', 'منشن_مخفي', 'منشن مخفي', 'منع_الروابط', 'منع الروابط', 'منع_التاك', 'منع التاك', 'تغيير_الوصف', 'تغيير الوصف', 'تغيير_الاسم', 'تغيير الاسم', 'تغيير_الصورة', 'تغيير الصورة'];
-        const ownerCommands = ['الوضع', 'حالة_تلقائية', 'حالة تلقائية', 'منع_الحذف', 'منع الحذف', 'مسح_المؤقت', 'مسح المؤقت', 'تغيير_صورة_البوت', 'تغيير صورة البوت', 'مسح_الجلسة', 'مسح الجلسة', 'تفاعل_تلقائي', 'تفاعل تلقائي', 'كتابة_تلقائية', 'كتابة تلقائية', 'قراءة_تلقائية', 'قراءة تلقائية', 'حظر_الخاص', 'حظر الخاص'];
+        const adminCommands = ['قفل', 'فتح', 'حظر', 'الغاء_الحظر', 'الغاء الحظر', 'طرد', 'منشن_الكل', 'منشن الكل', 'منشن_الاعضاء', 'منشن الاعضاء', 'منشن_مخفي', 'منشن مخفي', 'منع_الروابط', 'منع الروابط', 'منع_التاك', 'منع التاك', 'تغيير_الوصف', 'تغيير الوصف', 'تغيير_الاسم', 'تغيير الاسم', 'تغيير_الصورة', 'تغيير الصورة'];
+        const ownerCommands = ['الوضع', 'حالة_تلقائية', 'حالة تلقائية', 'مسح_المؤقت', 'مسح المؤقت', 'تغيير_صورة_البوت', 'تغيير صورة البوت', 'مسح_الجلسة', 'مسح الجلسة', 'تفاعل_تلقائي', 'تفاعل تلقائي', 'كتابة_تلقائية', 'كتابة تلقائية', 'قراءة_تلقائية', 'قراءة تلقائية', 'حظر_الخاص', 'حظر الخاص'];
 
         const isOwnerCommand = ownerCommands.some(cmd => cleanMessage === cmd || normalizedCleanMessage === cmd || cleanMessage.startsWith(cmd + ' ') || normalizedCleanMessage.startsWith(cmd.replace(/\s/g, '_') + '_'));
 
@@ -544,6 +588,18 @@ if (originalCommand) {
             if (handled) return;
         }
 
+        // حماية شاملة تُفحص داخل الـ switch (أول case) حتى لا تعترض الرسائل العادية مثل "الوو"
+
+        // فحص واحد شامل قبل كل أوامر الـ switch
+        if (isGroup) {
+            // نحدد هل الرسالة فعلاً أمر بوت (وليس كلام عادي مثل "الوو")
+            // نعتبرها أمر إذا طابقت أي case في الـ switch — نبنيها كمجموعة prefixes للأوامر الحقيقية
+            const knownCmd = KNOWN_CMD_RE.test(cleanMessage);
+            if (knownCmd) {
+                if (!(await requireBotAdmin(sock, chatId, message))) return;
+            }
+        }
+
         switch (true) {
             case cleanMessage === 'الاوامر':
                 await helpCommand(sock, chatId, message, global.channelLink);
@@ -564,6 +620,10 @@ if (originalCommand) {
                 break;
             case cleanMessage === 'الرتبه' || normalizedCleanMessage === 'الرتبه':
                 await checkRankCommand(sock, chatId, message);
+                commandExecuted = true;
+                break;
+            case cleanMessage === 'رتبتي' || normalizedCleanMessage === 'رتبتي':
+                await checkRankCommand(sock, chatId, message, true);
                 commandExecuted = true;
                 break;
             case cleanMessage === 'الايدي' || cleanMessage.startsWith('الايدي ') || normalizedCleanMessage === 'الايدي' || normalizedCleanMessage.startsWith('الايدي_'):
@@ -653,11 +713,11 @@ if (originalCommand) {
                 await hateCommand(sock, chatId, message, senderId);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'حظي' || cleanMessage === 'حظه' || normalizedCleanMessage === 'حظي' || normalizedCleanMessage === 'حظه':
+            case cleanMessage === 'حظي' || cleanMessage === 'حظه' || cleanMessage === 'حظة' || normalizedCleanMessage === 'حظي' || normalizedCleanMessage === 'حظه' || normalizedCleanMessage === 'حظة':
                 await luckCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'وجهي' || cleanMessage === 'وجهه' || normalizedCleanMessage === 'وجهي' || normalizedCleanMessage === 'وجهه':
+            case cleanMessage === 'وجهي' || cleanMessage === 'وجهه' || cleanMessage === 'وجهة' || normalizedCleanMessage === 'وجهي' || normalizedCleanMessage === 'وجهه' || normalizedCleanMessage === 'وجهة':
                 await faceCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -665,15 +725,15 @@ if (originalCommand) {
                 await wishCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'نجومي' || cleanMessage === 'نجومه' || normalizedCleanMessage === 'نجومي' || normalizedCleanMessage === 'نجومه':
+            case cleanMessage === 'نجومي' || cleanMessage === 'نجومه' || cleanMessage === 'نجومة' || normalizedCleanMessage === 'نجومي' || normalizedCleanMessage === 'نجومه' || normalizedCleanMessage === 'نجومة':
                 await starsCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'مزاجي' || cleanMessage === 'مزاجه' || normalizedCleanMessage === 'مزاجي' || normalizedCleanMessage === 'مزاجه':
+            case cleanMessage === 'مزاجي' || cleanMessage === 'مزاجه' || cleanMessage === 'مزاجة' || normalizedCleanMessage === 'مزاجي' || normalizedCleanMessage === 'مزاجه' || normalizedCleanMessage === 'مزاجة':
                 await moodCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'غبائي' || cleanMessage === 'غبائه' || normalizedCleanMessage === 'غبائي' || normalizedCleanMessage === 'غبائه':
+            case cleanMessage === 'غبائي' || cleanMessage === 'غبائه' || cleanMessage === 'غباءة' || normalizedCleanMessage === 'غبائي' || normalizedCleanMessage === 'غبائه' || normalizedCleanMessage === 'غباءة':
                 await stupidCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -689,7 +749,7 @@ if (originalCommand) {
                 await zodiacCmd(sock, chatId, message, senderId);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'عمري' || cleanMessage === 'عمره': {
+            case cleanMessage === 'عمري' || cleanMessage === 'عمره' || cleanMessage === 'عمرة': {
                 let gLink = '';
                 if (isGroup) {
                     try { gLink = await sock.groupInviteCode(chatId).then(c => 'https://chat.whatsapp.com/' + c); } catch(e) {}
@@ -702,7 +762,7 @@ if (originalCommand) {
                 await jokeCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'ايش تختار' || normalizedCleanMessage === 'ايش_تختار':
+            case cleanMessage === 'ايش تختار' || cleanMessage === 'إيش تختار' || normalizedCleanMessage === 'ايش_تختار' || normalizedCleanMessage === 'إيش_تختار':
                 await chooseCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -944,7 +1004,7 @@ if (originalCommand) {
                 }
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'المالك' || normalizedCleanMessage === 'المالك':
+            case cleanMessage === 'المالك' || normalizedCleanMessage === 'المالك' || cleanMessage === 'مالك' || normalizedCleanMessage === 'مالك' || cleanMessage === 'المطور' || normalizedCleanMessage === 'المطور':
                 await ownerCommand(sock, chatId);
                 break;
             case cleanMessage === 'منشن الكل' || normalizedCleanMessage === 'منشن_الكل':
@@ -1090,8 +1150,55 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage.startsWith('قفل ') && !cleanMessage.startsWith('قفل امر') && cleanMessage !== 'قفل الروابط' && cleanMessage !== 'قفل التاك' && cleanMessage !== 'قفل القروب' && cleanMessage !== 'قفل التثبيت':
-            case normalizedCleanMessage.startsWith('قفل_') && !normalizedCleanMessage.startsWith('قفل_امر') && normalizedCleanMessage !== 'قفل_الروابط' && normalizedCleanMessage !== 'قفل_التاك' && normalizedCleanMessage !== 'قفل_القروب' && normalizedCleanMessage !== 'قفل_التثبيت':
+            case cleanMessage === 'قفل الحذف' || normalizedCleanMessage === 'قفل_الحذف' || cleanMessage === 'فتح الحذف' || normalizedCleanMessage === 'فتح_الحذف':
+                {
+                    if (!isGroup) {
+                        await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    if (!isBotAdmin) {
+                        await sock.sendMessage(chatId, { text: '❌ يجب أن يكون البوت مشرفاً أولاً.' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    if (!message.key.fromMe && !senderIsSudo) {
+                        await sock.sendMessage(chatId, { text: 'المالك/المشرف فقط يمكنه استخدام قفل/فتح الحذف.' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    const isLockDel = cleanMessage === 'قفل الحذف' || normalizedCleanMessage === 'قفل_الحذف';
+                    await handleAntideleteCommand(sock, chatId, message, isLockDel ? 'تفعيل' : 'تعطيل');
+                    commandExecuted = true;
+                }
+                break;
+
+            case cleanMessage === 'قفل السب' || normalizedCleanMessage === 'قفل_السب' || cleanMessage === 'فتح السب' || normalizedCleanMessage === 'فتح_السب':
+                {
+                    if (!isGroup) {
+                        await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    if (!isBotAdmin) {
+                        await sock.sendMessage(chatId, { text: '❌ يجب أن يكون البوت مشرفاً أولاً.' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    const rankBad = await getUserRank(chatId, senderId, isSenderAdmin);
+                    if (getRankLevel(rankBad) < 2 && !message.key.fromMe && !senderIsSudo) {
+                        await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 الادمن 〗*' }, { quoted: message });
+                        commandExecuted = true;
+                        break;
+                    }
+                    const isLockBad = cleanMessage === 'قفل السب' || normalizedCleanMessage === 'قفل_السب';
+                    await handleAntiBadwordCommand(sock, chatId, message, isLockBad ? 'on' : 'off');
+                    commandExecuted = true;
+                }
+                break;
+
+            case cleanMessage.startsWith('قفل ') && !cleanMessage.startsWith('قفل امر') && cleanMessage !== 'قفل الروابط' && cleanMessage !== 'قفل التاك' && cleanMessage !== 'قفل القروب' && cleanMessage !== 'قفل التثبيت' && cleanMessage !== 'قفل الحذف' && cleanMessage !== 'قفل السب':
+            case normalizedCleanMessage.startsWith('قفل_') && !normalizedCleanMessage.startsWith('قفل_امر') && normalizedCleanMessage !== 'قفل_الروابط' && normalizedCleanMessage !== 'قفل_التاك' && normalizedCleanMessage !== 'قفل_القروب' && normalizedCleanMessage !== 'قفل_التثبيت' && normalizedCleanMessage !== 'قفل_الحذف' && normalizedCleanMessage !== 'قفل_السب':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
                     return;
@@ -1100,8 +1207,8 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage.startsWith('فتح ') && !cleanMessage.startsWith('فتح امر') && cleanMessage !== 'فتح الروابط' && cleanMessage !== 'فتح التاك' && cleanMessage !== 'فتح القروب' && cleanMessage !== 'فتح التثبيت':
-            case normalizedCleanMessage.startsWith('فتح_') && !normalizedCleanMessage.startsWith('فتح_امر') && normalizedCleanMessage !== 'فتح_الروابط' && normalizedCleanMessage !== 'فتح_التاك' && normalizedCleanMessage !== 'فتح_القروب' && normalizedCleanMessage !== 'فتح_التثبيت':
+            case cleanMessage.startsWith('فتح ') && !cleanMessage.startsWith('فتح امر') && cleanMessage !== 'فتح الروابط' && cleanMessage !== 'فتح التاك' && cleanMessage !== 'فتح القروب' && cleanMessage !== 'فتح التثبيت' && cleanMessage !== 'فتح الحذف' && cleanMessage !== 'فتح السب':
+            case normalizedCleanMessage.startsWith('فتح_') && !normalizedCleanMessage.startsWith('فتح_امر') && normalizedCleanMessage !== 'فتح_الروابط' && normalizedCleanMessage !== 'فتح_التاك' && normalizedCleanMessage !== 'فتح_القروب' && normalizedCleanMessage !== 'فتح_التثبيت' && normalizedCleanMessage !== 'فتح_الحذف' && normalizedCleanMessage !== 'فتح_السب':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر للمجموعات فقط.' }, { quoted: message });
                     return;
@@ -1162,7 +1269,7 @@ if (originalCommand) {
                 await quoteCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'حقيقة' || normalizedCleanMessage === 'حقيقة':
+            case cleanMessage === 'حقيقة' || cleanMessage === 'حقيقه' || normalizedCleanMessage === 'حقيقة' || normalizedCleanMessage === 'حقيقه':
                 await factCommand(sock, chatId, message, message);
                 commandExecuted = true;
                 break;
@@ -1176,7 +1283,7 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
             }
-            case cleanMessage === "اين ستسافر" || normalizedCleanMessage === "اين_ستسافر" || cleanMessage.startsWith("اين ستسافر ") || normalizedCleanMessage.startsWith("اين_ستسافر_"): {
+            case cleanMessage === "اين ستسافر" || cleanMessage === "أين ستسافر" || normalizedCleanMessage === "اين_ستسافر" || normalizedCleanMessage === "أين_ستسافر" || cleanMessage.startsWith("اين ستسافر ") || cleanMessage.startsWith("أين ستسافر ") || normalizedCleanMessage.startsWith("اين_ستسافر_") || normalizedCleanMessage.startsWith("أين_ستسافر_"): {
                 const travelArgs = cleanMessage.replace(/^(.?اين[\s_]ستسافر[\s_]*)/i, "").trim();
                 await travelCommand(sock, chatId, message, travelArgs);
                 commandExecuted = true;
@@ -1228,7 +1335,7 @@ if (originalCommand) {
                 await newsCommand(sock, chatId);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'اخبار عربية' || normalizedCleanMessage === 'اخبار_عربية':
+            case cleanMessage === 'اخبار عربية' || cleanMessage === 'اخبار عربيه' || normalizedCleanMessage === 'اخبار_عربية' || normalizedCleanMessage === 'اخبار_عربيه':
                 await arabicNewsCommand(sock, chatId);
                 commandExecuted = true;
                 break;
@@ -1290,7 +1397,7 @@ if (originalCommand) {
                 await insultCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'الكرة السحرية' || cleanMessage.startsWith('الكرة السحرية ') || cleanMessage === 'الكرة السحرية' || normalizedCleanMessage === 'الكرة_السحرية' || normalizedCleanMessage.startsWith('الكرة_السحرية_'):
+            case cleanMessage === 'الكرة السحرية' || cleanMessage === 'الكره السحريه' || cleanMessage.startsWith('الكرة السحرية ') || cleanMessage.startsWith('الكره السحريه ') || normalizedCleanMessage === 'الكرة_السحرية' || normalizedCleanMessage === 'الكره_السحريه' || normalizedCleanMessage.startsWith('الكرة_السحرية_') || normalizedCleanMessage.startsWith('الكره_السحريه_'):
                 {
                     const quotedMessage = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
                     let questionAr = '';
@@ -1300,10 +1407,10 @@ if (originalCommand) {
                                     quotedMessage.extendedTextMessage?.text?.trim() ||
                                     '';
                     } else {
-                        if (rawText.includes('الكرة السحرية')) {
-                            questionAr = rawText.split('الكرة السحرية')[1] || '';
-                        } else if (rawText.includes('الكرة_السحرية')) {
-                            questionAr = rawText.split('الكرة_السحرية')[1] || '';
+                        const magicBallKeys = ['الكرة السحرية', 'الكره السحريه', 'الكرة_السحرية', 'الكره_السحريه'];
+                        const matchedBallKey = magicBallKeys.find((k) => rawText.includes(k));
+                        if (matchedBallKey) {
+                            questionAr = rawText.split(matchedBallKey)[1] || '';
                         }
                         questionAr = questionAr.trim();
                     }
@@ -1312,16 +1419,16 @@ if (originalCommand) {
                     commandExecuted = true;
                 }
                 break;
-            case cleanMessage === 'كلمات الاغنية' || cleanMessage.startsWith('كلمات الاغنية ') || normalizedCleanMessage === 'كلمات_الاغنية' || normalizedCleanMessage.startsWith('كلمات_الاغنية_'):
-                const songTitleAr = rawText.replace(/\.?(كلمات الاغنية|كلمات_الاغنية)/, '').trim();
+            case cleanMessage === 'كلمات الاغنية' || cleanMessage === 'كلمات الاغنيه' || cleanMessage.startsWith('كلمات الاغنية ') || cleanMessage.startsWith('كلمات الاغنيه ') || normalizedCleanMessage === 'كلمات_الاغنية' || normalizedCleanMessage === 'كلمات_الاغنيه' || normalizedCleanMessage.startsWith('كلمات_الاغنية_') || normalizedCleanMessage.startsWith('كلمات_الاغنيه_'):
+                const songTitleAr = rawText.replace(/\.?(كلمات الاغنية|كلمات الاغنيه|كلمات_الاغنية|كلمات_الاغنيه)/, '').trim();
                 await lyricsCommand(sock, chatId, songTitleAr, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'جرأة' || normalizedCleanMessage === 'جرأة':
+            case cleanMessage === 'جرأة' || cleanMessage === 'جرأه' || normalizedCleanMessage === 'جرأة' || normalizedCleanMessage === 'جرأه':
                 await dareCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'صراحة' || normalizedCleanMessage === 'صراحة':
+            case cleanMessage === 'صراحة' || cleanMessage === 'صراحه' || normalizedCleanMessage === 'صراحة' || normalizedCleanMessage === 'صراحه':
                 await truthCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -1331,10 +1438,6 @@ if (originalCommand) {
                 break;
             case cleanMessage === 'شعر' || normalizedCleanMessage === 'شعر':
                 await shayariCommand(sock, chatId, message);
-                commandExecuted = true;
-                break;
-            case cleanMessage === 'يوم الورد' || normalizedCleanMessage === 'يوم_الورد':
-                await rosedayCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
             case cleanMessage === 'محطم' || cleanMessage.startsWith('محطم ') || normalizedCleanMessage === 'محطم' || normalizedCleanMessage.startsWith('محطم_'):
@@ -1352,65 +1455,63 @@ if (originalCommand) {
             case cleanMessage === 'مسح' || normalizedCleanMessage === 'مسح':
                 if (isGroup) await clearCommand(sock, chatId);
                 break;
-            case cleanMessage === 'رفع' || cleanMessage.startsWith('رفع ') || normalizedCleanMessage === 'رفع' || normalizedCleanMessage.startsWith('رفع_'):
+            case cleanMessage === 'رفع مالك' || cleanMessage.startsWith('رفع مالك ') || normalizedCleanMessage === 'رفع_مالك' || normalizedCleanMessage.startsWith('رفع_مالك_'):
                 if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
-                    await sock.sendMessage(chatId, {
-                        text: '*↢ امـر الرفع معطل من قبل المالك*'
-                    }, { quoted: message, contextInfo: {} });
-                    commandExecuted = true;
-                    break;
+                    await sock.sendMessage(chatId, { text: '*↢ امـر الرفع معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
                 }
-                if (cleanMessage === 'رفع مالك' || cleanMessage.startsWith('رفع مالك ') ||
-                    normalizedCleanMessage === 'رفع_مالك' || normalizedCleanMessage.startsWith('رفع_مالك_')) {
-                    await setOwnerCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else if (cleanMessage === 'رفع مدير' || cleanMessage.startsWith('رفع مدير ') ||
-                    normalizedCleanMessage === 'رفع_مدير' || normalizedCleanMessage.startsWith('رفع_مدير_')) {
-                    await setManagerCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else if (cleanMessage === 'رفع ادمن' || cleanMessage.startsWith('رفع ادمن ') ||
-                    normalizedCleanMessage === 'رفع_ادمن' || normalizedCleanMessage.startsWith('رفع_ادمن_')) {
-                    await setAdminCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else if (cleanMessage === 'رفع مميز' || cleanMessage.startsWith('رفع مميز ') ||
-                    normalizedCleanMessage === 'رفع_مميز' || normalizedCleanMessage.startsWith('رفع_مميز_')) {
-                    await setVipCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else {
-                    const mentionedJidListPromote = message.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
-                    await promoteCommand(sock, chatId, mentionedJidListPromote, message, senderId);
-                    commandExecuted = true;
-                }
-                break;
-            case cleanMessage === 'تنزيل' || cleanMessage.startsWith('تنزيل ') || normalizedCleanMessage === 'تنزيل' || normalizedCleanMessage.startsWith('تنزيل_'):
+                await setOwnerCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'رفع مدير' || cleanMessage.startsWith('رفع مدير ') || normalizedCleanMessage === 'رفع_مدير' || normalizedCleanMessage.startsWith('رفع_مدير_'):
                 if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
-                    await sock.sendMessage(chatId, {
-                        text: '*↢ امـر التنزيل معطل من قبل المالك*'
-                    }, { quoted: message, contextInfo: {} });
-                    commandExecuted = true;
-                    break;
+                    await sock.sendMessage(chatId, { text: '*↢ امـر الرفع معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
                 }
-                if (cleanMessage === 'تنزيل مدير' || cleanMessage.startsWith('تنزيل مدير ') ||
-                    normalizedCleanMessage === 'تنزيل_مدير' || normalizedCleanMessage.startsWith('تنزيل_مدير_')) {
-                    await demoteManagerCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else if (cleanMessage === 'تنزيل ادمن' || cleanMessage.startsWith('تنزيل ادمن ') ||
-                    normalizedCleanMessage === 'تنزيل_ادمن' || normalizedCleanMessage.startsWith('تنزيل_ادمن_')) {
-                    await demoteAdminCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else if (cleanMessage === 'تنزيل مميز' || cleanMessage.startsWith('تنزيل مميز ') ||
-                    normalizedCleanMessage === 'تنزيل_مميز' || normalizedCleanMessage.startsWith('تنزيل_مميز_')) {
-                    await demoteVipCommand(sock, chatId, message, senderId);
-                    commandExecuted = true;
-                } else {
-                    const mentionedJidListDemote = message.message.extendedTextMessage?.contextInfo?.mentionedJid || [];
-                    const demoteArgs = cleanMessage.split(' ');
-                    const specifiedRank = demoteArgs.length > 1 ? demoteArgs.slice(1).join(' ') : null;
-                    await demoteCommand(sock, chatId, mentionedJidListDemote, message, specifiedRank);
-                    commandExecuted = true;
+                await setManagerCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'رفع ادمن' || cleanMessage.startsWith('رفع ادمن ') || normalizedCleanMessage === 'رفع_ادمن' || normalizedCleanMessage.startsWith('رفع_ادمن_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر الرفع معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
                 }
+                await setAdminCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'رفع مميز' || cleanMessage.startsWith('رفع مميز ') || normalizedCleanMessage === 'رفع_مميز' || normalizedCleanMessage.startsWith('رفع_مميز_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر الرفع معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
+                }
+                await setVipCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'تنزيل مدير' || cleanMessage.startsWith('تنزيل مدير ') || normalizedCleanMessage === 'تنزيل_مدير' || normalizedCleanMessage.startsWith('تنزيل_مدير_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر التنزيل معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
+                }
+                await demoteManagerCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'تنزيل ادمن' || cleanMessage.startsWith('تنزيل ادمن ') || normalizedCleanMessage === 'تنزيل_ادمن' || normalizedCleanMessage.startsWith('تنزيل_ادمن_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر التنزيل معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
+                }
+                await demoteAdminCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'تنزيل مميز' || cleanMessage.startsWith('تنزيل مميز ') || normalizedCleanMessage === 'تنزيل_مميز' || normalizedCleanMessage.startsWith('تنزيل_مميز_'):
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر التنزيل معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
+                }
+                await demoteVipCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'تنزيل مالك' || cleanMessage.startsWith('تنزيل مالك ') || normalizedCleanMessage === 'تنزيل_مالك' || normalizedCleanMessage.startsWith('تنزيل_مالك_'):
+                // prevent demoting primary owner via this command — handle inside demoteOwnerCommand
+                if (isGroup && !(await getToggle(chatId, TOGGLE_TYPES.PROMOTE)) && !message.key.fromMe && !senderIsSudo) {
+                    await sock.sendMessage(chatId, { text: '*↢ امـر التنزيل معطل من قبل المالك*' }, { quoted: message, contextInfo: {} });
+                    commandExecuted = true; break;
+                }
+                await demoteOwnerCommand(sock, chatId, message, senderId); commandExecuted = true; break;
+            case cleanMessage === 'تنزيل مالك اساسي' || cleanMessage.startsWith('تنزيل مالك اساسي ') || normalizedCleanMessage === 'تنزيل_مالك_اساسي' || normalizedCleanMessage.startsWith('تنزيل_مالك_اساسي_'):
+                await sock.sendMessage(chatId, { text: '*↢ لا يمكن تنزيل المالك الأساسي.*' }, { quoted: message });
+                commandExecuted = true; break;
+            case cleanMessage === 'رفع' || normalizedCleanMessage === 'رفع' || cleanMessage === 'تنزيل' || normalizedCleanMessage === 'تنزيل':
+                // bare رفع/تنزيل — silent ignore, no response
+                commandExecuted = true;
                 break;
-            case cleanMessage === 'بينغ' || normalizedCleanMessage === 'بينغ':
+            case cleanMessage === 'بينغ' || cleanMessage === 'بنق' || normalizedCleanMessage === 'بينغ' || normalizedCleanMessage === 'بنق':
                 await pingCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'نشط' || normalizedCleanMessage === 'نشط':
@@ -1419,7 +1520,7 @@ if (originalCommand) {
             case cleanMessage === 'اعدادات المنشن' || cleanMessage.startsWith('اعدادات المنشن ') || normalizedCleanMessage === 'اعدادات_المنشن' || normalizedCleanMessage.startsWith('اعدادات_المنشن_'):
                 {
                     const argsAr = rawText.replace(/\.?(اعدادات المنشن|اعدادات_المنشن)/, '').trim();
-                    const isOwner = message.key.fromMe || senderIsSudo;
+                    const isOwner = message.key.fromMe || senderIsConfiguredBot || senderIsSudo;
                     if (argsAr) {
                         await mentionToggleCommand(sock, chatId, message, argsAr, isOwner);
                     } else {
@@ -1428,7 +1529,7 @@ if (originalCommand) {
                     commandExecuted = true;
                 }
                 break;
-            case cleanMessage === 'تمويه' || cleanMessage.startsWith('تمويه ') || normalizedCleanMessage === 'تمويه' || normalizedCleanMessage.startsWith('تمويه_'):
+            case cleanMessage === 'تمويه' || cleanMessage === 'تموية' || cleanMessage.startsWith('تمويه ') || cleanMessage.startsWith('تموية ') || normalizedCleanMessage === 'تمويه' || normalizedCleanMessage === 'تموية' || normalizedCleanMessage.startsWith('تمويه_') || normalizedCleanMessage.startsWith('تموية_'):
                 const quotedMessageBlur = message.message?.extendedTextMessage?.contextInfo?.quotedMessage;
                 await blurCommand(sock, chatId, message, quotedMessageBlur);
                 commandExecuted = true;
@@ -1480,11 +1581,11 @@ if (originalCommand) {
                 await wordban.unbanWord(sock, chatId, message, cleanMessage.replace('الغاء منع', '').trim());
                 return;
 
-            case cleanMessage === 'قائمه المنع':
+            case cleanMessage === 'قائمه المنع' || cleanMessage === 'قائمة المنع' || normalizedCleanMessage === 'قائمه_المنع' || normalizedCleanMessage === 'قائمة_المنع':
                 await wordban.showBanList(sock, chatId, message);
                 return;
 
-            case cleanMessage === 'مسح قائمه المنع':
+            case cleanMessage === 'مسح قائمه المنع' || cleanMessage === 'مسح قائمة المنع' || normalizedCleanMessage === 'مسح_قائمه_المنع' || normalizedCleanMessage === 'مسح_قائمة_المنع':
                 await wordban.clearBanList(sock, chatId, message);
                 return;
 
@@ -1492,7 +1593,7 @@ if (originalCommand) {
                 await setGroupName(sock, chatId, senderId, cleanMessage.replace('اسم القروب', '').trim(), message);
                 return;
 
-            case cleanMessage === 'صوره القروب':
+            case cleanMessage === 'صوره القروب' || cleanMessage === 'صورة القروب' || normalizedCleanMessage === 'صوره_القروب' || normalizedCleanMessage === 'صورة_القروب':
                 await setGroupPhoto(sock, chatId, senderId, message);
                 return;
 
@@ -1537,29 +1638,6 @@ if (originalCommand) {
                 await unpinAll(sock, chatId, message);
                 return;
 
-            case cleanMessage === 'كود المصدر' || normalizedCleanMessage === 'كود_المصدر' || cleanMessage === 'جيت هاب' || normalizedCleanMessage === 'جيت_هاب':
-                await githubCommand(sock, chatId, message);
-                commandExecuted = true;
-                break;
-            case cleanMessage === 'منع الكلمات السيئة' || cleanMessage.startsWith('منع الكلمات السيئة ') || normalizedCleanMessage === 'منع_الكلمات_السيئة' || normalizedCleanMessage.startsWith('منع_الكلمات_السيئة_'):
-                if (!isGroup) {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                    return;
-                }
-
-                const adminStatusBadword = await isAdmin(sock, chatId, senderId);
-                isSenderAdmin = adminStatusBadword.isSenderAdmin;
-                isBotAdmin = adminStatusBadword.isBotAdmin;
-
-                if (!isBotAdmin) {
-                    await sock.sendMessage(chatId, { text: '❌ يجب أن يكون البوت مشرفاً لاستخدام هذه الميزة' }, { quoted: message });
-                    return;
-                }
-
-                await antibadwordCommand(sock, chatId, message, senderId, isSenderAdmin);
-                commandExecuted = true;
-                break;
-
             case cleanMessage === 'تفعيل ai' || normalizedCleanMessage === 'تفعيل_ai':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
@@ -1591,8 +1669,8 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
 
-            case cleanMessage === 'تغيير اسم الملصق' || cleanMessage.startsWith('تغيير اسم الملصق ') || normalizedCleanMessage === 'تغيير_اسم_الملصق' || normalizedCleanMessage.startsWith('تغيير_اسم_الملصق_'):
-                const takeArgsAr = rawText.replace(/\.?(تغيير اسم الملصق|تغيير_اسم_الملصق)/, '').trim().split(' ');
+            case cleanMessage === 'تغيير اسم الملصق' || cleanMessage === 'تغير اسم الملصق' || cleanMessage.startsWith('تغيير اسم الملصق ') || cleanMessage.startsWith('تغير اسم الملصق ') || normalizedCleanMessage === 'تغيير_اسم_الملصق' || normalizedCleanMessage === 'تغير_اسم_الملصق' || normalizedCleanMessage.startsWith('تغيير_اسم_الملصق_') || normalizedCleanMessage.startsWith('تغير_اسم_الملصق_'):
+                const takeArgsAr = rawText.replace(/\.?(تغيير اسم الملصق|تغير اسم الملصق|تغيير_اسم_الملصق|تغير_اسم_الملصق)/, '').trim().split(' ');
                 await takeCommand(sock, chatId, message, takeArgsAr);
                 commandExecuted = true;
                 break;
@@ -1600,7 +1678,7 @@ if (originalCommand) {
                 await flirtCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'تحليل الشخصية' || cleanMessage.startsWith('تحليل الشخصية ') || normalizedCleanMessage === 'تحليل_الشخصية' || normalizedCleanMessage.startsWith('تحليل_الشخصية_'):
+            case cleanMessage === 'تحليل الشخصية' || cleanMessage === 'تحليل الشخصيه' || cleanMessage.startsWith('تحليل الشخصية ') || cleanMessage.startsWith('تحليل الشخصيه ') || normalizedCleanMessage === 'تحليل_الشخصية' || normalizedCleanMessage === 'تحليل_الشخصيه' || normalizedCleanMessage.startsWith('تحليل_الشخصية_') || normalizedCleanMessage.startsWith('تحليل_الشخصيه_'):
                 await characterCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -1611,7 +1689,7 @@ if (originalCommand) {
                 }
                 await shipCommand(sock, chatId, message);
                 break;
-            case cleanMessage === 'معلومات المجموعة' || normalizedCleanMessage === 'معلومات_المجموعة':
+            case cleanMessage === 'معلومات المجموعة' || cleanMessage === 'معلومات المجموعه' || normalizedCleanMessage === 'معلومات_المجموعة' || normalizedCleanMessage === 'معلومات_المجموعه':
                 if (!isGroup) {
                     await sock.sendMessage(chatId, { text: 'هذا الأمر يمكن استخدامه في المجموعات فقط!' }, { quoted: message });
                     return;
@@ -1642,7 +1720,7 @@ if (originalCommand) {
                 await stickerTelegramCommand(sock, chatId, message);
                 break;
 
-            case cleanMessage === 'عرض مرة' || normalizedCleanMessage === 'عرض_مرة':
+            case cleanMessage === 'عرض مرة' || cleanMessage === 'عرض مره' || normalizedCleanMessage === 'عرض_مرة' || normalizedCleanMessage === 'عرض_مره':
                 await viewOnceCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'مسح الجلسة' || normalizedCleanMessage === 'مسح_الجلسة':
@@ -1651,62 +1729,6 @@ if (originalCommand) {
             case cleanMessage === 'حالة تلقائية' || cleanMessage.startsWith('حالة تلقائية ') || normalizedCleanMessage === 'حالة_تلقائية' || normalizedCleanMessage.startsWith('حالة_تلقائية_'):
                 const autoStatusArgs = cleanMessage.replace(/حالة تلقائية|حالة_تلقائية/g, '').trim().split(' ');
                 await autoStatusCommand(sock, chatId, message, autoStatusArgs);
-                break;
-            case cleanMessage === 'معدني' || cleanMessage.startsWith('معدني ') || normalizedCleanMessage === 'معدني' || normalizedCleanMessage.startsWith('معدني_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'metallic');
-                break;
-            case cleanMessage === 'ثلج' || cleanMessage.startsWith('ثلج ') || normalizedCleanMessage === 'ثلج' || normalizedCleanMessage.startsWith('ثلج_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'ice');
-                break;
-            case cleanMessage === 'مصفوفة' || cleanMessage.startsWith('مصفوفة ') || normalizedCleanMessage === 'مصفوفة' || normalizedCleanMessage.startsWith('مصفوفة_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'matrix');
-                break;
-            case cleanMessage === 'ضوء' || cleanMessage.startsWith('ضوء ') || normalizedCleanMessage === 'ضوء' || normalizedCleanMessage.startsWith('ضوء_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'light');
-                break;
-            case cleanMessage === 'نيون' || cleanMessage.startsWith('نيون ') || normalizedCleanMessage === 'نيون' || normalizedCleanMessage.startsWith('نيون_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'neon');
-                break;
-            case cleanMessage === 'شيطاني' || cleanMessage.startsWith('شيطاني ') || normalizedCleanMessage === 'شيطاني' || normalizedCleanMessage.startsWith('شيطاني_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'devil');
-                break;
-            case cleanMessage === 'بنفسجي' || cleanMessage.startsWith('بنفسجي ') || normalizedCleanMessage === 'بنفسجي' || normalizedCleanMessage.startsWith('بنفسجي_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'purple');
-                break;
-            case cleanMessage === 'رعد' || cleanMessage.startsWith('رعد ') || normalizedCleanMessage === 'رعد' || normalizedCleanMessage.startsWith('رعد_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'thunder');
-                break;
-            case cleanMessage === 'نار' || cleanMessage.startsWith('نار ') || normalizedCleanMessage === 'نار' || normalizedCleanMessage.startsWith('نار_'):
-                await textmakerCommand(sock, chatId, message, rawText, 'fire');
-                break;
-
-            case cleanMessage === 'تفعيل الحذف' || cleanMessage.startsWith('تفعيل الحذف ') || normalizedCleanMessage === 'تفعيل_الحذف' || normalizedCleanMessage.startsWith('تفعيل_الحذف_'):
-                if (isGroup) {
-                    const adminStatus = await isAdmin(sock, chatId, senderId);
-                    if (!adminStatus.isSenderAdmin && !message.key.fromMe) {
-                        await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
-                        break;
-                    }
-                    await handleAntideleteCommand(sock, chatId, message, 'on');
-                } else {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                }
-                break;
-            case cleanMessage === 'تعطيل الحذف' || cleanMessage.startsWith('تعطيل الحذف ') || normalizedCleanMessage === 'تعطيل_الحذف' || normalizedCleanMessage.startsWith('تعطيل_الحذف_'):
-                if (isGroup) {
-                    const adminStatus = await isAdmin(sock, chatId, senderId);
-                    if (!adminStatus.isSenderAdmin && !message.key.fromMe) {
-                        await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
-                        break;
-                    }
-                    await handleAntideleteCommand(sock, chatId, message, 'off');
-                } else {
-                    await sock.sendMessage(chatId, { text: '❌ هذا الأمر يمكن استخدامه في المجموعات فقط.' }, { quoted: message });
-                }
-                break;
-            case cleanMessage === 'منع الحذف' || cleanMessage.startsWith('منع الحذف ') || normalizedCleanMessage === 'منع_الحذف' || normalizedCleanMessage.startsWith('منع_الحذف_'):
-                const antideleteMatch = cleanMessage.replace(/منع الحذف|منع_الحذف/g, '').trim();
-                await handleAntideleteCommand(sock, chatId, message, antideleteMatch);
                 break;
             case cleanMessage === 'استسلام' || normalizedCleanMessage === 'استسلام' || cleanMessage === 'مستسلم' || normalizedCleanMessage === 'مستسلم':
                 await handleTicTacToeMove(sock, chatId, senderId, 'مستسلم');
@@ -1733,13 +1755,13 @@ if (originalCommand) {
             case cleanMessage === 'تغيير الصورة' || cleanMessage.startsWith('تغيير الصورة ') || normalizedCleanMessage === 'تغيير_الصورة' || normalizedCleanMessage.startsWith('تغيير_الصورة_'):
                 await setGroupPhoto(sock, chatId, senderId, message);
                 break;
-            case cleanMessage === 'انستقرام' || cleanMessage.startsWith('انستقرام ') || normalizedCleanMessage === 'انستقرام' || normalizedCleanMessage.startsWith('انستقرام_'):
+            case cleanMessage === 'انستقرام' || cleanMessage === 'انستا' || cleanMessage === 'انستجرام' || cleanMessage.startsWith('انستقرام ') || cleanMessage.startsWith('انستا ') || cleanMessage.startsWith('انستجرام ') || normalizedCleanMessage === 'انستقرام' || normalizedCleanMessage === 'انستا' || normalizedCleanMessage === 'انستجرام' || normalizedCleanMessage.startsWith('انستقرام_') || normalizedCleanMessage.startsWith('انستا_') || normalizedCleanMessage.startsWith('انستجرام_'):
                 await instagramCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'قصص انستا مع تعليق' || cleanMessage.startsWith('قصص انستا مع تعليق ') || normalizedCleanMessage === 'قصص_انستا_مع_تعليق' || normalizedCleanMessage.startsWith('قصص_انستا_مع_تعليق_'):
                 await igsCommand(sock, chatId, message, true);
                 break;
-            case cleanMessage === 'قصص انستا' || cleanMessage.startsWith('قصص انستا ') || normalizedCleanMessage === 'قصص_انستا' || normalizedCleanMessage.startsWith('قصص_انستا_'):
+            case cleanMessage === 'قصص انستا' || cleanMessage === 'قصص انستقرام' || cleanMessage.startsWith('قصص انستا ') || cleanMessage.startsWith('قصص انستقرام ') || normalizedCleanMessage === 'قصص_انستا' || normalizedCleanMessage === 'قصص_انستقرام' || normalizedCleanMessage.startsWith('قصص_انستا_') || normalizedCleanMessage.startsWith('قصص_انستقرام_'):
                 await igsCommand(sock, chatId, message, false);
                 break;
             case cleanMessage === 'فيسبوك' || cleanMessage.startsWith('فيسبوك ') || normalizedCleanMessage === 'فيسبوك' || normalizedCleanMessage.startsWith('فيسبوك_'):
@@ -1748,7 +1770,7 @@ if (originalCommand) {
             case cleanMessage === 'سبوتيفاي' || cleanMessage.startsWith('سبوتيفاي ') || normalizedCleanMessage === 'سبوتيفاي' || normalizedCleanMessage.startsWith('سبوتيفاي_'):
                 await spotifyCommand(sock, chatId, message);
                 break;
-            case cleanMessage === 'اغنية' || cleanMessage.startsWith('اغنية ') || normalizedCleanMessage === 'اغنية' || normalizedCleanMessage.startsWith('اغنية_'):
+            case cleanMessage === 'اغنية' || cleanMessage === 'أغنية' || cleanMessage === 'اغنيه' || cleanMessage.startsWith('اغنية ') || cleanMessage.startsWith('أغنية ') || cleanMessage.startsWith('اغنيه ') || normalizedCleanMessage === 'اغنية' || normalizedCleanMessage === 'أغنية' || normalizedCleanMessage === 'اغنيه' || normalizedCleanMessage.startsWith('اغنية_') || normalizedCleanMessage.startsWith('أغنية_') || normalizedCleanMessage.startsWith('اغنيه_'):
                 await songCommand(sock, chatId, message);
                 break;
             case cleanMessage === 'فيديو' || cleanMessage.startsWith('فيديو ') || normalizedCleanMessage === 'فيديو' || normalizedCleanMessage.startsWith('فيديو_'):
@@ -1783,8 +1805,8 @@ if (originalCommand) {
                 await handleCreenCommand(sock, chatId, message, rawText.replace(/^(\.?(انشاء\s*(?:فيديو|فديو)?\s*ذكي|انشاء_(?:فيديو|فديو)?_ذكي))/i, '').trim());
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'انشاء صوره' || cleanMessage.startsWith('انشاء صوره ') || normalizedCleanMessage === 'انشاء_صوره' || cleanMessage.startsWith('انشاء_صوره_'):
-            case cleanMessage === 'انشاء صورة' || cleanMessage.startsWith('انشاء صورة ') || normalizedCleanMessage === 'انشاء_صورة' || cleanMessage.startsWith('انشاء_صورة_'):
+            case cleanMessage === 'انشاء صوره' || cleanMessage.startsWith('انشاء صوره ') || normalizedCleanMessage === 'انشاء_صوره' || normalizedCleanMessage.startsWith('انشاء_صوره_'):
+            case cleanMessage === 'انشاء صورة' || cleanMessage.startsWith('انشاء صورة ') || normalizedCleanMessage === 'انشاء_صورة' || normalizedCleanMessage.startsWith('انشاء_صورة_'):
                 if (cleanMessage.startsWith('انشاء ذكي') || cleanMessage.startsWith('انشاء_ذكي')) {
                     const args = rawText.replace(/^(\.?انشاء\s*ذكي|انشاء_ذكي)/i, '').trim();
                     await handleCreenCommand(sock, chatId, message, args);
@@ -1881,11 +1903,11 @@ if (originalCommand) {
                 await demotemeCommand(sock, chatId, message, senderId, cleanMessage);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'اكتموه' || normalizedCleanMessage === 'اكتموه':
+            case cleanMessage === 'اكتموه' || cleanMessage === 'اكتموة' || normalizedCleanMessage === 'اكتموه' || normalizedCleanMessage === 'اكتموة':
                 await mutehimCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
-            case cleanMessage === 'نداء المالك' || normalizedCleanMessage === 'نداء_المالك':
+            case cleanMessage === 'نداء المالك' || normalizedCleanMessage === 'نداء_المالك' || cleanMessage === 'نداء مالك' || normalizedCleanMessage === 'نداء_مالك':
                 await callownerCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
@@ -1938,8 +1960,9 @@ if (originalCommand) {
         // إذا لم يتم تنفيذ الأمر وكان هناك تحويل من أمر مخصص، حاول مرة أخرى بعد تحديث normalizedCleanMessage
         if (!commandExecuted && wasCustomCommandTransformed) {
             const normalizedCleanMessageAfterTransform = cleanMessage.replace(/\s+/g, '_');
-            
-            switch (true) {
+            if (isGroup) { if (!(await requireBotAdmin(sock, chatId, message))) return; }
+
+        switch (true) {
                 case cleanMessage === 'م1' || cleanMessage === '1':
                     await menu1Command(sock, chatId, message);
                     commandExecuted = true;
@@ -1972,11 +1995,11 @@ if (originalCommand) {
                     await hateCommand(sock, chatId, message, senderId);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'حظي' || cleanMessage === 'حظه' || normalizedCleanMessageAfterTransform === 'حظي' || normalizedCleanMessageAfterTransform === 'حظه':
+                case cleanMessage === 'حظي' || cleanMessage === 'حظه' || cleanMessage === 'حظة' || normalizedCleanMessageAfterTransform === 'حظي' || normalizedCleanMessageAfterTransform === 'حظه' || normalizedCleanMessageAfterTransform === 'حظة':
                     await luckCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'وجهي' || cleanMessage === 'وجهه' || normalizedCleanMessageAfterTransform === 'وجهي' || normalizedCleanMessageAfterTransform === 'وجهه':
+                case cleanMessage === 'وجهي' || cleanMessage === 'وجهه' || cleanMessage === 'وجهة' || normalizedCleanMessageAfterTransform === 'وجهي' || normalizedCleanMessageAfterTransform === 'وجهه' || normalizedCleanMessageAfterTransform === 'وجهة':
                     await faceCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
@@ -1984,15 +2007,15 @@ if (originalCommand) {
                     await wishCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'نجومي' || cleanMessage === 'نجومه' || normalizedCleanMessageAfterTransform === 'نجومي' || normalizedCleanMessageAfterTransform === 'نجومه':
+                case cleanMessage === 'نجومي' || cleanMessage === 'نجومه' || cleanMessage === 'نجومة' || normalizedCleanMessageAfterTransform === 'نجومي' || normalizedCleanMessageAfterTransform === 'نجومه' || normalizedCleanMessageAfterTransform === 'نجومة':
                     await starsCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'مزاجي' || cleanMessage === 'مزاجه' || normalizedCleanMessageAfterTransform === 'مزاجي' || normalizedCleanMessageAfterTransform === 'مزاجه':
+                case cleanMessage === 'مزاجي' || cleanMessage === 'مزاجه' || cleanMessage === 'مزاجة' || normalizedCleanMessageAfterTransform === 'مزاجي' || normalizedCleanMessageAfterTransform === 'مزاجه' || normalizedCleanMessageAfterTransform === 'مزاجة':
                     await moodCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'غبائي' || cleanMessage === 'غبائه' || normalizedCleanMessageAfterTransform === 'غبائي' || normalizedCleanMessageAfterTransform === 'غبائه':
+                case cleanMessage === 'غبائي' || cleanMessage === 'غبائه' || cleanMessage === 'غباءة' || normalizedCleanMessageAfterTransform === 'غبائي' || normalizedCleanMessageAfterTransform === 'غبائه' || normalizedCleanMessageAfterTransform === 'غباءة':
                     await stupidCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
@@ -2008,7 +2031,7 @@ if (originalCommand) {
                     await zodiacCmd(sock, chatId, message, senderId);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'عمري' || cleanMessage === 'عمره':
+                case cleanMessage === 'عمري' || cleanMessage === 'عمره' || cleanMessage === 'عمرة':
                     let gLink = '';
                     if (isGroup) {
                         try { gLink = await sock.groupInviteCode(chatId).then(c => 'https://chat.whatsapp.com/' + c); } catch(e) {}
@@ -2020,7 +2043,7 @@ if (originalCommand) {
                     await jokeCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
-                case cleanMessage === 'ايش تختار' || normalizedCleanMessageAfterTransform === 'ايش_تختار':
+                case cleanMessage === 'ايش تختار' || cleanMessage === 'إيش تختار' || normalizedCleanMessageAfterTransform === 'ايش_تختار' || normalizedCleanMessageAfterTransform === 'إيش_تختار':
                     await chooseCommand(sock, chatId, message);
                     commandExecuted = true;
                     break;
@@ -2075,21 +2098,78 @@ async function handleGroupParticipantUpdate(sock, update) {
         }
 
         if (action === 'promote') {
-            const actionKey = `${id}_${participants.join('_')}`;
+            const norm = (a) => { const s = typeof a === "string" ? a : (a && (a.id || a.jid || a.phoneNumber) ? (a.id || a.jid || a.phoneNumber) : String(a)); return s.split('@')[0].split(':')[0]; };
+            const botIdNum = sock.user.id.split(':')[0].split('@')[0];
+            const botPromoted = participants.some(p => {
+                if (typeof p === 'string') return p.split('@')[0].split(':')[0] === botIdNum;
+                const idNorm = (p.id || p.jid || '').split('@')[0].split(':')[0];
+                const phoneNorm = (p.phoneNumber || '').split('@')[0].split(':')[0];
+                return idNorm === botIdNum || phoneNorm === botIdNum;
+            });
+            if (botPromoted && author) {
+                let meta = null;
+                try { meta = await sock.groupMetadata(id); } catch {}
+                const authorIsAdmin = meta ? meta.participants.some(p => norm(p.id) === norm(author) && p.admin) : false;
+                if (authorIsAdmin) {
+                    const { setPrimaryOwner, getPrimaryOwner } = require('./lib/primaryOwner');
+                    if (!getPrimaryOwner(id)) setPrimaryOwner(id, author);
+                    const contactName = sock.contacts?.get?.(author)?.name || author.split('@')[0];
+                    const groupName = meta?.subject || 'المجموعة';
+                    await sock.sendMessage(id, {
+                        text: '*↢ تــم تــفــعــيـل المـجــمــوعــه "' + groupName + '" تــلقــائيــاً*\n\n*↢ المــســتــخـدم ( @' + contactName + ' ) ↢ مــالك اســاسي*\n\n*↢ المــشــرفــيــن رتـبـتـهم ↢ ( مالك )*\n\n*↢ ارســل "الاوامــر"  لعــرض اوامـر البــوت*',
+                        mentions: [author].filter(Boolean)
+                    }).catch(() => {});
+                }
+            }
+
+            const participantsStr = participants.map(norm);
+            const actionKey = `${id}_${participantsStr.join('_')}`;
             if (sock.recentManualActions && sock.recentManualActions.has(actionKey)) {
                 return;
             }
             if (!isPublic) return;
+            if (!botPromoted) return; // يتعامل بس مع ترقية البوت
             await handlePromotionEvent(sock, id, participants, author);
             return;
         }
 
-        if (action === 'demote') {
-            const actionKey = `${id}_${participants.join('_')}`;
-            if (sock.recentManualActions && sock.recentManualActions.has(actionKey)) {
-                return;
+        // حماية المالك الأساسي: إذا تم تنزيله أو إزالته من المجموعة، يغادر البوت
+        if (action === 'demote' || action === 'remove') {
+            try {
+                const { getPrimaryOwner, isPrimaryOwner, clearPrimaryOwner } = require('./lib/primaryOwner');
+                const primaryOwner = getPrimaryOwner(id);
+                if (primaryOwner) {
+                    const norm = (a) => { const s = typeof a === "string" ? a : (a && (a.id || a.jid || a.phoneNumber) ? (a.id || a.jid || a.phoneNumber) : String(a)); return s.split('@')[0].split(':')[0]; };
+                    const primaryNorm = primaryOwner.split('@')[0].split(':')[0];
+                    const affected = participants.map(norm);
+                    const primaryAffected = affected.includes(primaryNorm) || participants.some(p => isPrimaryOwner(id, typeof p === 'string' ? p : (p && (p.id || p.jid || p.phoneNumber) ? (p.id || p.jid || p.phoneNumber) : String(p))));
+
+                    if (primaryAffected) {
+                        await sock.sendMessage(id, {
+                            text: '*↢المـالك الاسـاسـي (الذي ضـافني) لـم يعد مشرف سـاغـادر الان، يمـكن لاي مشـرف آخـر رفـعي مـن جـديد ليصـبح المـالك الاسـاسـي*'
+                        }).catch(() => {});
+                        clearPrimaryOwner(id);
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        await sock.groupLeave(id).catch(() => {});
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('Error in primary owner protection:', e);
             }
+        }
+
+        if (action === 'demote') {
+            const norm = (a) => { const s = typeof a === "string" ? a : (a && (a.id || a.jid || a.phoneNumber) ? (a.id || a.jid || a.phoneNumber) : String(a)); return s.split('@')[0].split(':')[0]; };
+            const botIdNum = sock.user.id.split(':')[0].split('@')[0];
+            const botDemoted = participants.some(p => {
+                if (typeof p === 'string') return p.split('@')[0].split(':')[0] === botIdNum;
+                const idNorm = (p.id || p.jid || '').split('@')[0].split(':')[0];
+                const phoneNorm = (p.phoneNumber || '').split('@')[0].split(':')[0];
+                return idNorm === botIdNum || phoneNorm === botIdNum;
+            });
             if (!isPublic) return;
+            if (!botDemoted) return; // يتعامل بس مع تنزيل البوت
             await handleDemotionEvent(sock, id, participants, author);
             return;
         }
@@ -2104,6 +2184,194 @@ async function handleGroupParticipantUpdate(sock, update) {
     } catch (error) {
         console.error('Error in handleGroupParticipantUpdate:', error);
     }
+}
+
+/**
+ * وكيل الذكاء الاصطناعي — يتعامل مع رسالة تبدأ ببادئة لين/leen.
+ *
+ * النموذج يشرح أو يختار أداة معتمدة فقط، ولا ينفّذ شيئاً بنفسه.
+ * الأداة تتحقق منها عندنا، ثم نحوّلها إلى نص تنفيذي بالحرف، ونمرّرها إلى
+ * handleMessages بنفس مفتاح الرسالة الحقيقي، فتعمل فحوص المشرف والرتبة والتبديل كالمعتاد.
+ *
+ * الأوامر الخطرة لا تُنفَّذ إلا بتأكيد من رسالة جديدة لنفس المستخدم لنفس العملية.
+ * رسالة التأكيد يكتبها النموذج نفسه.
+ */
+/**
+ * وكيل الذكاء الاصطناعي — فهم وتحويل نص فقط.
+ *
+ * النموذج يرد باسم أمر واحد موجود في النظام. نكتب هذا الاسم في حقل
+ * النص من كائن الرسالة الأصلية نفسه (دون المساس بـ key أو المنشن
+ * أو أي بيانات أخرى)، ثم نمرر نفس الرسالة إلى handleMessages
+ * فيتعامل معها النظام كأن المستخدم أرسل الأمر مباشرة.
+ * لا تأكيد، لا صلاحيات جديدة: النظام الحالي يتولى كل شيء.
+ */
+/**
+ * وكيل الذكاء الاصطناعي — فهم النية فقط.
+ *
+ * النموذج يقرر: محادثة (CHAT) أو سؤال (ASK) فيُرسل رده مباشرة،
+ * أو تنفيذ (RUN) فنكتب أسماء الأوامر في نص الرسالة الأصلية نفسها
+ * (دون المساس بـ key أو المنشن أو أي بيانات أخرى) ونمررها إلى
+ * handleMessages الذي يتولى التنفيذ والصلاحيات كالمعتاد.
+ * لا تأكيد، لا صلاحيات جديدة: النظام الحالي يحكم.
+ */
+/**
+ * وكيل الذكاء الاصطناعي — فهم النية فقط.
+ *
+ * يُستدعى ببادئة «لين»/«leen»، أو عند رد لاحق (ولو بلا بادئة) على سؤال
+ * توضيحي معلّق لنفس المستخدم ونفس المجموعة.
+ * النموذج يقرر: محادثة (CHAT) أو سؤال (ASK) فيُرد مباشرة،
+ * أو توضيح (CLARIFY) فيُحفظ الطلب الأصلي بكائنه،
+ * أو تنفيذ (RUN) فنكتب الأسماء في نص رسالة حقيقية (الأصلية المحفوظة
+ * عند الحاجة) ونمررها إلى handleMessages الذي يتولى كل شيء كالمعتاد.
+ * لا تأكيد، لا صلاحيات جديدة: النظام الحالي يحكم.
+ */
+async function handleAiRequest(sock, chatId, message, senderId, query, rawText, isContinuation) {
+    const ai = require('./lib/aiAgent');
+    const { UNDER_MAINTENANCE } = require('./lib/messages');
+
+    const reply = (text) => sock.sendMessage(chatId, { text }, { quoted: message });
+
+    // نحفظ كل رسالة بسياقها الحقيقي قبل أي تعديل.
+    ai.rememberMessage(chatId, senderId, message);
+
+    // طلب جديد ببادئة يلغي أي تعليق سابق — موضوع جديد يعني بداية جديدة.
+    if (!isContinuation) ai.clearPending(chatId, senderId);
+
+    // رد لاحق بلا طلب معلّق (انتهت مهلته مثلاً): يعود للمسار الطبيعي.
+    let pend = null;
+    if (isContinuation) {
+        pend = ai.getPending(chatId, senderId);
+        if (!pend) return false;
+    }
+
+    if (!query) {
+        await reply('*↢ أنا لين، مساعد البوت.*\n*↢ اذكر اسمي أولاً ثم كلمني.*\n*↢ مثال: لين كيف أرفع مالك؟*');
+        return true;
+    }
+
+    if (!ai.hasApiKey()) {
+        console.error('[AI] AI_API_KEY غير موجود');
+        await reply(UNDER_MAINTENANCE);
+        return true;
+    }
+
+    await sock.sendMessage(chatId, { react: { text: '\u{1F9E0}', key: message.key } }).catch(() => {});
+
+    const userContent = ai.buildContext(chatId, senderId, pend, query, message);
+    const out = await ai.callModel([
+        { role: 'system', content: ai.SYSTEM_PROMPT + '\n\n' + ai.reference() },
+        { role: 'user', content: userContent }
+    ]);
+
+    if (out.error) {
+        console.error('[AI] خطأ النموذج:', String(out.error).slice(0, 140));
+        await sock.sendMessage(chatId, { react: { text: '❌', key: message.key } }).catch(() => {});
+        await reply(UNDER_MAINTENANCE);
+        return true;
+    }
+
+    const raw = out.data?.choices?.[0]?.message?.content || '';
+    const intent = ai.parseIntent(raw);
+
+    // مخرج خارج البروتوكول: نرسله كما هو إن كان نصاً، وإلا نطلب التوضيح.
+    if (!intent) {
+        const fallback = String(raw || '').trim().split('\n')[0].trim().slice(0, 500);
+        ai.pushReply(chatId, senderId, fallback || 'طلب توضيح');
+        await sock.sendMessage(chatId, { react: { text: '\u{1F916}', key: message.key } }).catch(() => {});
+        await reply(fallback || '*↢ ما فهمت، ممكن توضح أكثر؟*');
+        return true;
+    }
+
+    // موضوع جديد مستقل: يُلغى المعلق ويُعالَج الطلب من جديد.
+    // (يُحترم فقط في سياق متابعة؛ في طلب جديد يُعامل كعدم فهم.)
+    if (intent.type === 'NEW') {
+        if (isContinuation) {
+            ai.clearPending(chatId, senderId);
+            return await handleAiRequest(sock, chatId, message, senderId, query, rawText, false);
+        }
+        await reply('*↢ ما فهمت، ممكن توضح أكثر؟*');
+        return true;
+    }
+
+    // محادثة أو سؤال: رد النموذج مباشرة، بلا handleMessages. التعليق يبقى لمتابعة الحوار.
+    if (intent.type === 'CHAT' || intent.type === 'ASK') {
+        ai.pushReply(chatId, senderId, intent.text);
+        await sock.sendMessage(chatId, { react: { text: '\u{1F916}', key: message.key } }).catch(() => {});
+        await reply(intent.text.slice(0, 3500));
+        return true;
+    }
+
+    // سؤال توضيحي: نحفظ الرسالة الأصلية بكائنها ونرد بالسؤال. لا تنفيذ.
+    if (intent.type === 'CLARIFY') {
+        ai.setPending(chatId, senderId, {
+            message, originalQuery: (isContinuation && pend) ? pend.originalQuery : query,
+            candidates: [], question: intent.text
+        });
+        ai.pushReply(chatId, senderId, intent.text);
+        await sock.sendMessage(chatId, { react: { text: '\u{1F916}', key: message.key } }).catch(() => {});
+        await reply(intent.text.slice(0, 1000));
+        return true;
+    }
+
+    // تنفيذ: مطابقة صارمة لكل اسم، ثم تسلسل برسائل حقيقية.
+    // الهدف يُلتقط مرة واحدة قبل التسلسل: منشن الرسالة الأصلية المحفوظة.
+    const runTarget = isContinuation ? ai.getPendingTarget(chatId, senderId) : { hasMention: false, message: null };
+    const done = [];
+    for (let i = 0; i < intent.commands.length; i++) {
+        const name = ai.resolveName(intent.commands[i]);
+        if (!name) {
+            // توقف واسأل مع حفظ الطلب الأصلي: الرد اللاحق يكمله.
+            const follow = await ai.callModel([
+                { role: 'system', content: 'أنت "لين" مساعد واتساب. اكتب سؤالاً قصيراً بالعربية للمستخدم: ما الذي تم فهمه وتنفيذه حتى الآن، وما الأمر غير المفهوم، واسأله عنه. سطران فقط، بلا مقدمات وبلا جداول.' },
+                { role: 'user', content: ai.buildContext(chatId, senderId, pend, `نُفذ حتى الآن: ${done.length ? done.join('، ') : 'لا شيء'}. الأمر غير المفهوم: «${intent.commands[i]}».${i + 1 < intent.commands.length ? ` وبعده: ${intent.commands.slice(i + 1).join('، ')}.` : ''}`, message) }
+            ]);
+            const txt = String(follow.data?.choices?.[0]?.message?.content || '').trim().split('\n').slice(0, 3).join('\n').slice(0, 600)
+                || '*↢ ما فهمت جزءاً من الطلب، ممكن توضحه؟*';
+            ai.setPending(chatId, senderId, {
+                message, originalQuery: query,
+                candidates: intent.commands.slice(i), question: txt
+            });
+            ai.pushReply(chatId, senderId, txt);
+            await reply(txt);
+            return true;
+        }
+        // التعديل الوحيد المسموح: حقل النص في رسالة حقيقية.
+        // الهدف يأتي من منشن الرسالة الأصلية المحفوظة مع الطلب المعلّق،
+        // وإلا من منشن الرسالة الحالية. لا بحث عشوائي في رسائل قديمة.
+        // كل بيانات WhatsApp أصلية كما وصلت، دون اختلاق أي معرف.
+        const text = name.name.replace(/_/g, ' ');
+        let target = message;
+        if (ai.needsTarget(name.name) && !ai.messageHasMention(message)) {
+            if (runTarget.hasMention && runTarget.message && runTarget.message !== message) {
+                console.log('[AI] التنفيذ على الرسالة الأصلية المحفوظة:', runTarget.keyId);
+                target = runTarget.message;
+            } else {
+                await reply('*↢ يرجى عمل منشن للمستخدم الذي تريد تنفيذ الأمر عليه.*');
+                return true;
+            }
+        }
+        const m = target.message;
+        if (m?.extendedTextMessage && typeof m.extendedTextMessage.text === 'string') {
+            m.extendedTextMessage.text = text;
+        } else if (m && typeof m.conversation === 'string') {
+            m.conversation = text;
+        } else if (m?.imageMessage && typeof m.imageMessage.caption === 'string') {
+            m.imageMessage.caption = text;
+        } else if (m?.videoMessage && typeof m.videoMessage.caption === 'string') {
+            m.videoMessage.caption = text;
+        } else {
+            await reply('*↢ الأمر غير موجود*');
+            return true;
+        }
+        // نستهلك التعليق قبل إعادة الدخول حتى لا تلتقط الرسالة المُعاد إدخالها.
+        ai.clearPending(chatId, senderId);
+        // نفس الرسالة (أو رسالة السياق ذات الصلة)، نفس المفتاح، نفس المسار الحالي.
+        await handleMessages(sock, { messages: [target], type: 'notify' }, true);
+        done.push(text);
+    }
+
+    ai.pushReply(chatId, senderId, 'طلب تنفيذ: ' + done.join('، '));
+    return true;
 }
 
 module.exports = {

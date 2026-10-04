@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 module.exports = async function(sock, chatId, message, args = '') {
     const text = (args || '').trim();
     if (!text) {
@@ -11,6 +12,6 @@ module.exports = async function(sock, chatId, message, args = '') {
         const out = names.map((n, i) => `${i + 1}. ${n}`).join('\n');
         await sock.sendMessage(chatId, { text: out || 'لا توجد نتائج.' }, { quoted: message });
     } catch (e) {
-        await sock.sendMessage(chatId, { text: 'حدث خطأ أثناء جلب أسماء الدلع.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 };

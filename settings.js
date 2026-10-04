@@ -2,7 +2,7 @@ const settings = {
   packname: '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
   botName: "𝐋𝐞𝐞𝐧𝐁𝐨𝐭",
   botOwner: 'Professor',
-  ownerNumber: '967715760166',
+  ownerNumber: '963938953339',
   giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
   imgflipUsername: '',
   imgflipPassword: '',
@@ -12,7 +12,7 @@ const settings = {
   description: "This is a bot for managing group commands and automating tasks.",
   version: "0.0.1",
   VERSION: "0. 0.1",
-  newsletterJid: '',
+  newsletterJid: '120363400425238128@newsletter',
   updateZipUrl: "https://github.com/mruniquehacker/Knightbot-MD/archive/refs/heads/main.zip",
   };
 

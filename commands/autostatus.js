@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 
@@ -86,7 +87,7 @@ async function autoStatusCommand(sock, chatId, msg, args) {
     } catch (error) {
         console.error('Error in autostatus command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء إدارة الحالة التلقائية!\n' + error.message
+            text: UNDER_MAINTENANCE + error.message
         });
     }
 }

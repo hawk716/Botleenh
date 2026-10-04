@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'leen-bot',
     script: 'index.js',
-    cwd: '/home/runner/workspace/leen',
+    cwd: '/a',
     instances: 1,
     autorestart: true,
     watch: false,

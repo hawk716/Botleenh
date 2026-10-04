@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
@@ -110,7 +111,7 @@ async function mentionToggleCommand(sock, chatId, message, args, isOwner) {
         const state = loadState();
         state.enabled = onoff === 'on';
         saveState(state);
-        return sock.sendMessage(chatId, { text: `الرد على المنشن ${state.enabled ? 'مفعل' : 'معطل'}.` }, { quoted: message });
+        return sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
 }
 
 async function setMentionCommand(sock, chatId, message, isOwner) {
@@ -144,7 +145,7 @@ async function setMentionCommand(sock, chatId, message, isOwner) {
                         buf = Buffer.concat(chunks);
                 } catch (e) {
                         console.error('download error', e);
-                        return sock.sendMessage(chatId, { text: '❌ فشل تنزيل الوسائط.' }, { quoted: message });
+                        return sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
                 }
         }
 
@@ -201,7 +202,7 @@ async function setMentionCommand(sock, chatId, message, isOwner) {
     const outPath = path.join(__dirname, '..', 'assets', outName);
         try { fs.writeFileSync(outPath, buf); } catch (e) {
                 console.error('write error', e);
-                return sock.sendMessage(chatId, { text: '❌ فشل حفظ الملف.' }, { quoted: message });
+                return sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
         }
 
         const state = loadState();

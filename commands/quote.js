@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 module.exports = async function quoteCommand(sock, chatId, message) {
@@ -16,6 +17,6 @@ module.exports = async function quoteCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, { text: quoteMessage }, { quoted: message });
     } catch (error) {
         console.error('Error in quote command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في الحصول على الاقتباس. من فضلك حاول مرة أخرى لاحقًا!' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 };

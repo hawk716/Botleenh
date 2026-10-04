@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
@@ -5,6 +6,7 @@ const axios = require('axios');
 const { execFile } = require('child_process');
 const { igdl } = require('ruhend-scraper');
 const { ttdl: ttdlBtch } = require('btch-downloader');
+const settings = require('../settings');
 
 const YT_DLP = '/home/codespace/.python/current/bin/yt-dlp';
 const processedMessages = new Set();
@@ -226,8 +228,8 @@ async function videoCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -243,15 +245,15 @@ async function videoCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
                 }, { quoted: message })
             } else {
                 await sock.sendMessage(chatId, {
-                    text: '*↢ فشل تحميل الفيديو من هذا الرابط.*'
+                    text: UNDER_MAINTENANCE
                 }, { quoted: message })
             }
             return
@@ -296,8 +298,8 @@ async function videoCommand(sock, chatId, message) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                        newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                         serverMessageId: -1
                     }
                 }
@@ -319,8 +321,8 @@ async function videoCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -332,7 +334,7 @@ async function videoCommand(sock, chatId, message) {
 
     } catch (error) {
         console.error('[VIDEO] خطأ:', error?.message?.substring(0, 150))
-        await sock.sendMessage(chatId, { text: '*↢ عذراً حدث خطأ.*' }, { quoted: message })
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message })
     }
 }
 

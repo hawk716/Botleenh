@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { addRestriction, parseDuration, formatDate } = require('../lib/restrictions');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
@@ -35,6 +36,13 @@ async function restrictCommand(sock, chatId, message, senderId) {
             return;
         }
         
+        // لا يمكن تقييد البوت نفسه
+        const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+        if (isTargetBot(sock, groupMetadata, userToRestrict)) {
+            await rejectBotTarget(sock, chatId, message);
+            return;
+        }
+
         // Check if target has higher rank
         const targetRank = await getUserRank(chatId, userToRestrict);
         const targetLevel = getRankLevel(targetRank);
@@ -68,7 +76,7 @@ async function restrictCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in restrictCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في تقييد المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

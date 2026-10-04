@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 const BASE = 'https://shizoapi.onrender.com/api/pies';
@@ -31,7 +32,7 @@ async function piesCommand(sock, chatId, message, args) {
                 );
         } catch (err) {
                 console.error('Error in pies command:', err);
-                await sock.sendMessage(chatId, { text: '❌ فشل في تحميل الصورة. يرجى المحاولة مرة أخرى.' }, { quoted: message });
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
         }
 }
 
@@ -45,7 +46,7 @@ async function piesAlias(sock, chatId, message, country) {
                 );
         } catch (err) {
                 console.error(`Error in pies alias (${country}) command:`, err);
-                await sock.sendMessage(chatId, { text: '❌ فشل في تحميل الصورة. يرجى المحاولة مرة أخرى.' }, { quoted: message });
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
         }
 }
 

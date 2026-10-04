@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 const { channelInfo } = require('../lib/messageConfig');
 
@@ -47,7 +48,7 @@ async function wastedCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in wasted command:', error);
         await sock.sendMessage(chatId, { 
-            text: 'فشل في إنشاء صورة wasted! حاول مرة أخرى لاحقًا.',
+            text: UNDER_MAINTENANCE,
             ...channelInfo 
         }, { quoted: message });
     }

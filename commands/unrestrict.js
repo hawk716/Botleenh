@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { removeRestriction } = require('../lib/restrictions');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
@@ -64,7 +65,7 @@ async function unrestrictCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in unrestrictCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في إلغاء التقييد!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

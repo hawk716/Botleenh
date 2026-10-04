@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { updateGroupSetting, getGroupSettings } = require('../lib/groupSettings');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
@@ -35,7 +36,8 @@ async function toggleSettingsCommand(sock, chatId, message, senderId, command, a
             'الالعاب': 'games_enabled',
             'الاوامر': 'menus_enabled',
             'اكتموه': 'mutehim_enabled',
-            'نداء المالك': 'callowner_enabled'
+            'نداء المالك': 'callowner_enabled',
+            'نداء مالك': 'callowner_enabled'
         };
 
         const settingKey = settingMap[command];
@@ -54,7 +56,7 @@ async function toggleSettingsCommand(sock, chatId, message, senderId, command, a
     } catch (error) {
         console.error('Error in toggle settings command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء تحديث الإعدادات!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

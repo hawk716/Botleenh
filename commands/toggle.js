@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 const { setToggle, getToggle, removeToggle, TOGGLE_TYPES } = require('../lib/toggleSystem');
 
@@ -39,7 +40,7 @@ async function handleToggleCommand(sock, chatId, userMessage, senderId, isSender
 • انذار
 • الاوامر
 • اكتموه
-• نداء المالك
+• نداء مالك
 
 *مثال:*
 تفعيل الترحيب
@@ -67,29 +68,23 @@ async function handleToggleCommand(sock, chatId, userMessage, senderId, isSender
             'انذار': TOGGLE_TYPES.WARN,
             'الاوامر': TOGGLE_TYPES.COMMANDS,
             'اكتموه': TOGGLE_TYPES.MUTEHIM,
-            'نداء المالك': 'owner_call'
+            'نداء المالك': 'owner_call',
+            'نداء مالك': 'owner_call'
         };
 
         const mappedFeature = featureMap[feature];
 
         if (!mappedFeature) {
-            if (senderLevel < 3 && !message.key.fromMe) {
-                await sock.sendMessage(chatId, { text: '*↢ هـذا الامـر يخـص〖 مدير 〗*' }, { quoted: message });
-                return;
-            }
-            await sock.sendMessage(chatId, { 
-                text: '*↢ ميزة غير صحيحة!*\n*↢ استخدم: تفعيل أو تعطيل*' 
-            }, { quoted: message });
             return;
         }
 
         // owner-only features (الحظر, الرفع)
-        const ownerOnlyFeatures = [TOGGLE_TYPES.BAN, TOGGLE_TYPES.PROMOTE];
+        const developerOnlyFeatures = [TOGGLE_TYPES.BAN, TOGGLE_TYPES.PROMOTE];
 
-        if (ownerOnlyFeatures.includes(mappedFeature)) {
+        if (developerOnlyFeatures.includes(mappedFeature)) {
             if (senderLevel < 4 && !message.key.fromMe) {
                 await sock.sendMessage(chatId, { 
-                    text: '*↢ عذراً الامر يخص〖 المالك〗فقط.*' 
+                    text: '*↢ عذراً الامر يخص〖 مالك〗فقط.*' 
                 }, { quoted: message });
                 return;
             }
@@ -139,7 +134,7 @@ async function handleToggleCommand(sock, chatId, userMessage, senderId, isSender
 
     } catch (error) {
         console.error('Error in toggle command:', error);
-        await sock.sendMessage(chatId, { text: '*_خطأ في معالجة أمر التفعيل/التعطيل_*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

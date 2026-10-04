@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const { downloadMediaMessage } = require('@whiskeysockets/baileys');
@@ -33,7 +34,7 @@ async function takeCommand(sock, chatId, message, args) {
             );
 
             if (!stickerBuffer) {
-                await sock.sendMessage(chatId, { text: '❌ فشل تحميل الملصق' });
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
                 return;
             }
 
@@ -69,7 +70,7 @@ async function takeCommand(sock, chatId, message, args) {
 
         } catch (error) {
             console.error('Sticker processing error:', error);
-            await sock.sendMessage(chatId, { text: '❌ خطأ في معالجة الملصق' });
+            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
         }
 
     } catch (error) {

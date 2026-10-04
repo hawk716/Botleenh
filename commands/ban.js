@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const fs = require('fs');
 const path = require('path');
@@ -45,6 +46,24 @@ async function banCommand(sock, chatId, message, senderId) {
         return;
     }
 
+    if (!message.key.fromMe && senderLevel === 4) {
+        const targetParticipant = groupMetadata.participants.find(p => p.id === userToBan);
+        const targetRank = await getUserRank(chatId, userToBan, targetParticipant && targetParticipant.admin);
+        if (targetRank === 'مالك') {
+            await sock.sendMessage(chatId, {
+                text: '*↢ عـذراً الامـر يـخص  ↤︎〖  المـالك الاسـاسـي 〗فـقط .*'
+            }, { quoted: message });
+            return;
+        }
+    }
+
+    // لا يمكن حظر البوت نفسه
+    const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+    if (isTargetBot(sock, groupMetadata, userToBan)) {
+        await rejectBotTarget(sock, chatId, message);
+        return;
+    }
+
     try {
         const bannedFilePath = path.join(process.cwd(), 'data', 'banned.json');
         let bannedData = {};
@@ -67,26 +86,42 @@ async function banCommand(sock, chatId, message, senderId) {
         }
 
         const userNumber = userToBan.split('@')[0];
-        const alreadyBanned = bannedData[chatId].some(banned => banned.split('@')[0] === userNumber);
+
+        // نجمع كل صيغ المستخدم (LID + رقم الهاتف) لضمان عمل الحظر أياً كانت صيغة المُرسِل
+        const banJids = [userToBan];
+        const targetInfo = groupMetadata.participants.find(p =>
+            p.id === userToBan ||
+            (p.phoneNumber && (p.phoneNumber + '@s.whatsapp.net') === userToBan) ||
+            (p.id && p.id.split('@')[0] === userNumber)
+        );
+        if (targetInfo) {
+            if (targetInfo.id && !banJids.includes(targetInfo.id)) banJids.push(targetInfo.id);
+            if (targetInfo.phoneNumber) {
+                const phoneJid = targetInfo.phoneNumber + '@s.whatsapp.net';
+                if (!banJids.includes(phoneJid)) banJids.push(phoneJid);
+            }
+        }
+        const userNumbers = banJids.map(j => j.split('@')[0]);
+        const alreadyBanned = bannedData[chatId].some(banned => userNumbers.includes(banned.split('@')[0]));
 
         if (!alreadyBanned) {
-            bannedData[chatId].push(userToBan);
+            bannedData[chatId].push(...banJids);
             fs.writeFileSync(bannedFilePath, JSON.stringify(bannedData, null, 2), 'utf8');
 
-            await sock.sendMessage(chatId, { 
-                text: `*↢ تم حظرته*\n*↢ المستخدم ↢ @${userToBan.split('@')[0]}*`,
+            await sock.sendMessage(chatId, {
+                text: `*↢ تم حظـرهہ*\n*↢ المستخدم ↢* @${userToBan.split('@')[0]}`,
                 mentions: [userToBan]
             }, { quoted: message });
         } else {
             await sock.sendMessage(chatId, { 
-                text: `*↢ مـا يحتاج محظور مسـبقاً.*\n*↢ المستخدم: @${userToBan.split('@')[0]}*`,
+                text: `*↢ مـا يحتاج محظور مسـبقاً.*\n*↢ المستخدم:* @${userToBan.split('@')[0]}`,
                 mentions: [userToBan]
             }, { quoted: message });
         }
     } catch (error) {
         console.error('Error in ban command:', error);
         await sock.sendMessage(chatId, { 
-            text: '*↢ فشل حظر المستخدم!*'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 async function resetlinkCommand(sock, chatId, senderId) {
     try {
         // Check if sender is admin
@@ -32,7 +33,7 @@ async function resetlinkCommand(sock, chatId, senderId) {
 
     } catch (error) {
         console.error('Error in resetlink command:', error);
-        await sock.sendMessage(chatId, { text: 'فشل إعادة تعيين رابط المجموعة!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

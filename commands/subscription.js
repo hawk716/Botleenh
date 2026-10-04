@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 
@@ -103,7 +104,7 @@ async function handleSubscriptionManagement(sock, chatId, message, senderId, cle
             } catch (err) {
                 console.log(`[SUB] Error: ${err.message}`);
                 pendingSubscriptionRequest = null;
-                await sock.sendMessage(chatId, { text: '*↢ خطأ في تفعيل الاشتراك، يرجى المحاولة مرة أخرى*' });
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
                 return true;
             }
         }
@@ -185,7 +186,7 @@ async function requestSubscription(sock, chatId, senderId) {
         return true;
     } catch (err) {
         console.log(`[SUB] Error requesting subscription: ${err.message}`);
-        await sock.sendMessage(chatId, { text: '*↢ خطأ في جلب معلومات المجموعة*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
         return true;
     }
 }

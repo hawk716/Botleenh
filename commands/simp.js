@@ -1,4 +1,6 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
+const settings = require('../settings');
 
 async function simpCommand(sock, chatId, quotedMsg, mentionedJid, sender) {
     try {
@@ -37,8 +39,8 @@ async function simpCommand(sock, chatId, quotedMsg, mentionedJid, sender) {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }
@@ -47,13 +49,13 @@ async function simpCommand(sock, chatId, quotedMsg, mentionedJid, sender) {
     } catch (error) {
         console.error('Error in simp command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ آسف، لم أتمكن من إنشاء بطاقة simp. من فضلك حاول مرة أخرى لاحقًا!',
+            text: UNDER_MAINTENANCE,
             contextInfo: {
                 forwardingScore: 1,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: '120363161513685998@newsletter',
-                    newsletterName: 'KnightBot MD',
+                    newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                    newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }
             }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const yts = require('yt-search');
 const axios = require('axios');
 
@@ -35,7 +36,7 @@ async function playCommand(sock, chatId, message) {
 
         if (!data || !data.status || !data.result || !data.result.downloadUrl) {
             return await sock.sendMessage(chatId, { 
-                text: "فشل تحميل الصوت. الرجاء المحاولة لاحقاً."
+                text: UNDER_MAINTENANCE
             });
         }
 
@@ -52,7 +53,7 @@ async function playCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in song2 command:', error);
         await sock.sendMessage(chatId, { 
-            text: "فشل التحميل. الرجاء المحاولة لاحقاً."
+            text: UNDER_MAINTENANCE
         });
     }
 }

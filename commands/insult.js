@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const insults = [
     "أنت مثل السحابة. عندما تختفي، يصبح اليوم جميلاً!",
     "أنت تجلب الفرح للجميع عندما تغادر الغرفة!",
@@ -70,7 +71,7 @@ async function insultCommand(sock, chatId, message) {
             await new Promise(resolve => setTimeout(resolve, 2000));
             try {
                 await sock.sendMessage(chatId, { 
-                    text: 'من فضلك حاول مرة أخرى بعد ثوانٍ قليلة.'
+                    text: UNDER_MAINTENANCE
                 });
             } catch (retryError) {
                 console.error('Error sending retry message:', retryError);
@@ -78,7 +79,7 @@ async function insultCommand(sock, chatId, message) {
         } else {
             try {
                 await sock.sendMessage(chatId, { 
-                    text: 'حدث خطأ أثناء إرسال الإهانة.'
+                    text: UNDER_MAINTENANCE
                 });
             } catch (sendError) {
                 console.error('Error sending error message:', sendError);

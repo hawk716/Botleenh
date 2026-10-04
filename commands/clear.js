@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 async function clearCommand(sock, chatId) {
     try {
         const message = await sock.sendMessage(chatId, { text: 'جاري مسح رسائل البوت...' });
@@ -8,7 +9,7 @@ async function clearCommand(sock, chatId) {
         
     } catch (error) {
         console.error('Error clearing messages:', error);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ أثناء مسح الرسائل.' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { igdl } = require("ruhend-scraper");
 
 // Store processed message IDs to prevent duplicates
@@ -143,7 +144,7 @@ async function instagramCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in Instagram command:', error);
         await sock.sendMessage(chatId, { 
-            text: "❌ حدث خطأ أثناء معالجة طلب انستقرام. الرجاء المحاولة مرة أخرى."
+            text: UNDER_MAINTENANCE
         });
     }
 }

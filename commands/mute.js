@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const isAdmin = require('../lib/isAdmin');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -50,7 +51,7 @@ async function muteCommand(sock, chatId, senderId, message, durationInMinutes) {
         }
     } catch (error) {
         console.error('Error muting/unmuting the group:', error);
-        await sock.sendMessage(chatId, { text: 'حدث خطأ أثناء كتم/إلغاء كتم المجموعة. يرجى المحاولة مرة أخرى.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

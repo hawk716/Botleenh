@@ -6,16 +6,41 @@
       "enabled": true,
       "action": "delete"
     },
+    "120363410042973005@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
+    "120363429263237948@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
+    "120363430093807011@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
     "120363425110232090@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
+    "120363413293532956@g.us": {
       "enabled": true,
       "action": "delete"
     }
   },
-  "antibadword": {},
+  "antibadword": {
+    "120363410042973005@g.us": {
+      "enabled": true,
+      "action": "delete"
+    }
+  },
   "warnings": {},
   "sudo": [
     "96715760166@s.whatsapp.net",
-    "967715760166@s.whatsapp.net"
+    "967715760166@s.whatsapp.net",
+    "967716213452@s.whatsapp.net",
+    "+967715760166@s.whatsapp.net",
+    "246819506405401@lid",
+    "963938953339@s.whatsapp.net"
   ],
   "welcome": {
     "120363422381460940@g.us": {
@@ -27,6 +52,31 @@
     },
     "120363023036831570@g.us": {
       "enabled": true
+    },
+    "120363430571741859@g.us": {
+      "enabled": true
+    },
+    "120363413175583226@g.us": {
+      "enabled": true
+    },
+    "120363417899427560@g.us": {
+      "enabled": true
+    },
+    "120363420724228814@g.us": {
+      "enabled": true
+    },
+    "120363408074839084@g.us": {
+      "enabled": true
+    },
+    "120363410424246228@g.us": {
+      "enabled": true
+    },
+    "120363429263237948@g.us": {
+      "enabled": true,
+      "message": "#الاسم \nومع ورور"
+    },
+    "120363412018101967@g.us": {
+      "enabled": true
     }
   },
   "goodbye": {},
@@ -37,6 +87,10 @@
   "id_system": {},
   "antitag": {
     "120363425110232090@g.us": {
+      "enabled": true,
+      "action": "delete"
+    },
+    "120363410424246228@g.us": {
       "enabled": true,
       "action": "delete"
     }

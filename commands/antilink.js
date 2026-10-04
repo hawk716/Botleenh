@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { setAntilink, removeAntilink } = require('../lib/index');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
 const { clearConfigCache } = require('../lib/antilink');
@@ -38,7 +39,7 @@ async function handleAntilinkCommand(sock, chatId, userMessage, senderId, isSend
         }
     } catch (error) {
         console.error('Error in antilink command:', error);
-        await sock.sendMessage(chatId, { text: '*_خطأ في معالجة أمر مكافحة الروابط_*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

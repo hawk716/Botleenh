@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 const { uploadImage } = require('../lib/uploadImage');
@@ -49,7 +50,7 @@ async function handleHeart(sock, chatId, message) {
         await sock.sendMessage(chatId, { image: Buffer.from(response.data) }, { quoted: message });
     } catch (error) {
         console.error('Error in misc heart:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في إنشاء صورة القلب. حاول لاحقاً.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 
@@ -190,7 +191,7 @@ async function miscCommand(sock, chatId, message, args) {
         }
     } catch (error) {
         console.error('Error in misc command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في إنشاء الصورة. تحقق من المعاملات وحاول مرة أخرى.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

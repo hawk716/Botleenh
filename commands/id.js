@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const fs = require('fs');
 const path = require('path');
@@ -25,35 +26,35 @@ function getRandomPhrase(array) {
 function getActivityMessage(messageCount) {
     if (messageCount < 100) {
         const lowActivity = [
-            '*حرك تفاعلك شوي 🥺*',
-            '*تفاعلك ضعيف 😢*',
-            '*تحتاج دفعة 💔*'
+            'تحتاج دفعة 💔',
+            'تفاعلك ضعيف 😢',
+            'حرّك تفاعلك شوي 🥺'
         ];
         return getRandomPhrase(lowActivity);
     } else if (messageCount >= 100 && messageCount < 1500) {
         const lowActivity = [
-            '*حرك تفاعلك شوي 🥺*',
-            '*تفاعلك ضعيف 😢*',
-            '*تحتاج دفعة 💔*'
+            'تحتاج دفعة 💔',
+            'تفاعلك ضعيف 😢',
+            'حرّك تفاعلك شوي 🥺'
         ];
         return getRandomPhrase(lowActivity);
     } else if (messageCount >= 1500 && messageCount < 5000) {
         const mediumActivity = [
-            '*تفاعلك حلو ❤*',
-            '*ماشي الحال 😁*',
-            '*تفاعلك متوسط 😊*'
+            'تفاعلك حلو ❤',
+            'ماشي الحال 😁',
+            'تفاعلك متوسط 😊'
         ];
         return getRandomPhrase(mediumActivity);
     } else if (messageCount >= 5000 && messageCount < 10000) {
         const highActivity = [
-            '*تفاعلك نار 🔥*',
-            '*تفاعلك قوي 💪*',
-            '*ماحد يكدر لك 🥇*',
-            '*مضيع نص عمرك بالكروب 🙂*'
+            'تفاعلك نار 🔥',
+            'تفاعلك قوي 💪',
+            'ماحد يكدر لك 🥇',
+            'مضيع نص عمرك بالكروب 🙂'
         ];
         return getRandomPhrase(highActivity);
     } else {
-        return '*ملك التفاعل 👑*';
+        return 'ملك التفاعل 👑';
     }
 }
 
@@ -76,22 +77,23 @@ async function idCommand(sock, chatId, message, senderId) {
 
         const groupMetadata = await sock.groupMetadata(chatId);
         const participant = groupMetadata.participants.find(p => p.id === targetUser);
-        
+
         let userName = targetUser.split('@')[0];
-        
-        if (targetUser === senderId && message.pushName) {
+
+        if (participant && participant.name) {
+            userName = participant.name;
+        } else if (targetUser === senderId && message.pushName) {
             userName = message.pushName;
         } else {
             try {
                 const contactName = await sock.getName(targetUser);
-                if (contactName) {
+                if (contactName && !/^\d+$/.test(contactName)) {
                     userName = contactName;
                 }
             } catch (e) {}
         }
 
-        const phoneNumber = targetUser.split('@')[0].replace(/[:.]/g, '');
-        const userId = phoneNumber.slice(-8);
+        const userId = targetUser.split('@')[0];
         
         const userRank = await getUserRank(chatId, targetUser);
         
@@ -123,13 +125,11 @@ async function idCommand(sock, chatId, message, senderId) {
         const openingPhrase = getRandomPhrase(openingPhrases);
         const activityMessage = getActivityMessage(messageCount);
 
-        const idMessage = `${openingPhrase}\n` +
-                         `*٭ إسـمك ↢ ${userName}*\n` +
-                         `*٭ رقـمك ↢ +${phoneNumber}*\n` +
-                         `*٭ إيـديك ↢ ${userId}*\n` +
-                         `*٭ رتـبـتك ↢ ${finalRank}*\n` +
-                         `*٭ رسـائلك ↢ ${messageCount} - ${activityMessage}*\n` +
-                         `*wa.me/+${phoneNumber} -*`;
+const idMessage = `${openingPhrase}\n` +
+                          `*٭ إسـمك ↢ ${userName}*\n` +
+                          `*٭ إيـديك ↢ ${userId}*\n` +
+                          `*٭ رتـبـتك ↢ ${finalRank}*\n` +
+                          `*٭ رسـائلك ↢ ${messageCount} - ${activityMessage}*`;
 
         await sock.sendMessage(chatId, { 
             text: idMessage,
@@ -138,7 +138,7 @@ async function idCommand(sock, chatId, message, senderId) {
 
     } catch (error) {
         console.error('Error in idCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ في عرض المعلومات!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

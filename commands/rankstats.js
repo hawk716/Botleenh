@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { getAllRanks } = require('../lib/ranks');
 
@@ -28,7 +29,7 @@ async function rankStatsCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, { text: statsMessage }, { quoted: message });
     } catch (error) {
         console.error('Error in rankStatsCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ في عرض الإحصائيات!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

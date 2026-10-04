@@ -6,17 +6,17 @@ async function menu6Command(sock, chatId, message) {
     const senderIsSudo = await isSudo(senderId);
     const isOwner = message.key.fromMe || senderIsSudo;
 
-    // قائمة المطور فقط
+    // قائمة مالك فقط
     if (isOwner) {
-        const menuMessage = `*↢ أهلاً بك عزيزي في*
-─────────────────────
-*↢ قائمة اوامر المطور*
-─────────────────────
+        const menuMessage = `*↢ أهلاً بك عزيزي في*─────────────────────
+*↢ قائمة اوامر مالك*─────────────────────
 *↢ مسح الجلسة*
 *↢ مسح المؤقت*
 *↢ تغيير صورة البوت*
 *↢ المشرفين*
 *↢ تحديث*
+*↢ قفل الحذف*
+*↢ فتح الحذف*
 *↢ تفاعل تلقائي تشغيل*
 *↢ تفاعل تلقائي ايقاف*
 *↢ حالة تلقائية تشغيل*
@@ -32,11 +32,15 @@ async function menu6Command(sock, chatId, message) {
 *↢ منع المكالمات حالة*
 *↢ حظر الخاص تشغيل*
 *↢ حظر الخاص ايقاف*
-*↢ حظر الخاص حالة*
 *↢ حظر الخاص تعيين*
 *↢ الوضع*
+─────────────────────
 *↢ الوضع عام*
-*↢ الوضع خاص*`;
+*↢ الوضع خاص*
+─────────────────────
+*↢ الاعدادات*
+*↢ اعدادات المنشن*
+*↢ كود المصدر`;
 
         try {
             await sock.sendMessage(chatId, { text: menuMessage }, { quoted: message });
@@ -45,7 +49,7 @@ async function menu6Command(sock, chatId, message) {
             await sock.sendMessage(chatId, { text: menuMessage }, { quoted: message });
         }
     } else {
-        await sock.sendMessage(chatId, { text: '*↢ هذه القائمة خاصة بالمطور فقط!' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: '*↢ حــــــالــــيـــاً هـذه القائمة خـاصة بالمالـك فـقط، 👑*' }, { quoted: message });
     }
 }
 

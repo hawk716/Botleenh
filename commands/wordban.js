@@ -28,7 +28,7 @@ async function unbanWord(sock, chatId, message, text) {
     const word = text?.trim();
     if (!word) {
         return sock.sendMessage(chatId, { 
-            text: '*↢ قـم بكتابة الامر ثم الكلمة.*\n*مثال: الغاء منع قحبه*'
+            text: '*↢ قـم بكتابة الامر ثم الكلمة.*\n*مثال: الغاء منع حقير*'
         }, { quoted: message });
     }
 

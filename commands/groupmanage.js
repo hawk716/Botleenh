@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
@@ -54,7 +55,7 @@ async function setGroupDescription(sock, chatId, senderId, text, message) {
         }
     } catch (e) {
         console.error('Error updating description:', e);
-        await sock.sendMessage(chatId, { text: '❌ فشل تحديث البايو' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 
@@ -66,7 +67,7 @@ async function clearGroupDescription(sock, chatId, senderId, message) {
         await sock.sendMessage(chatId, { text: '*↫ تــم اعادة تعيين وصف الجروب بنجاح ☑️*' }, { quoted: message });
     } catch (e) {
         console.error('Error clearing description:', e);
-        await sock.sendMessage(chatId, { text: '❌ فشل مسح الوصف' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 
@@ -82,7 +83,7 @@ async function setGroupName(sock, chatId, senderId, text, message) {
         await sock.groupUpdateSubject(chatId, name);
         await sock.sendMessage(chatId, { text: `*↫ تــم تحديث اسم الجروب بنجاح ☑️*\n*↫ الاسـم الجديد:* ${name}` }, { quoted: message });
     } catch (e) {
-        await sock.sendMessage(chatId, { text: '❌ فشل تحديث اسم المجموعة.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 
@@ -119,7 +120,7 @@ async function setGroupPhoto(sock, chatId, senderId, message) {
         await sock.sendMessage(chatId, { text: '*↫ تــم تحديث صورة الجروب بنجاح ☑️*' }, { quoted: message });
     } catch (e) {
         console.error('Error updating group photo:', e);
-        await sock.sendMessage(chatId, { text: '❌ فشل تحديث صورة المجموعة.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

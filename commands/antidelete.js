@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const { tmpdir } = require('os');
@@ -74,10 +75,28 @@ function saveAntideleteConfig(config) {
 
 // Command Handler
 async function handleAntideleteCommand(sock, chatId, message, match) {
-    // Check if the command is used by the owner only
-    const isOwnerOrSudo = message.key.fromMe; // Assuming fromMe check is sufficient for owner
+    // السماح للمالك (fromMe أو sudo) أو مشرفي المجموعة وما فوق
+    const senderId = message.key.participant || message.key.remoteJid;
+    let allowed = message.key.fromMe;
+    if (!allowed) {
+        try {
+            const { isSudo } = require('../lib/index');
+            allowed = !!(await isSudo(senderId));
+        } catch (e) {
+            allowed = false;
+        }
+    }
+    if (!allowed) {
+        try {
+            const isAdmin = require('../lib/isAdmin');
+            const { isSenderAdmin } = await isAdmin(sock, chatId, senderId);
+            allowed = !!isSenderAdmin;
+        } catch (e) {
+            allowed = false;
+        }
+    }
 
-    if (!isOwnerOrSudo) {
+    if (!allowed) {
         await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
         return;
     }
@@ -86,7 +105,7 @@ async function handleAntideleteCommand(sock, chatId, message, match) {
 
     if (!match) {
         return sock.sendMessage(chatId, {
-            text: `*إعداد مكافحة الحذف*\n\nالحالة الحالية: ${config.enabled ? '✅ مفعّل' : '❌ معطل'}\n\nتفعيل الحذف - تفعيل\nتعطيل الحذف - إيقاف`
+            text: UNDER_MAINTENANCE
         }, {quoted: message});
     }
 
@@ -106,7 +125,7 @@ async function handleAntideleteCommand(sock, chatId, message, match) {
     }
 
     saveAntideleteConfig(config);
-    return sock.sendMessage(chatId, { text: `*مكافحة الحذف ${lowerMatch === 'تفعيل' ? 'مفعّلة ✅' : 'معطلة ❌'}*` }, {quoted:message});
+    return sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, {quoted:message});
 }
 
 // Store incoming messages (also handles anti-view-once by forwarding immediately)
@@ -290,7 +309,7 @@ async function handleMessageRevocation(sock, revocationMessage) {
                 }
             } catch (err) {
                 await sock.sendMessage(ownerNumber, {
-                    text: `⚠️ خطأ في إرسال الوسائط: ${err.message}`
+                    text: UNDER_MAINTENANCE
                 });
             }
 

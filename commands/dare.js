@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 async function dareCommand(sock, chatId, message) {
@@ -16,7 +17,7 @@ async function dareCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, { text: dareMessage }, { quoted: message });
     } catch (error) {
         console.error('Error in dare command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل في الحصول على تحدي. حاول مرة أخرى لاحقاً!' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

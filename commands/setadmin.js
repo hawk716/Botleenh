@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -14,10 +15,10 @@ async function setAdminCommand(sock, chatId, message, senderId) {
         const senderRank = await getUserRank(chatId, senderId, isWhatsAppAdmin);
         const senderLevel = getRankLevel(senderRank);
         
-        // مالك or مدير can use this
-        if (senderLevel < 3 && !message.key.fromMe) {
+        // مالك/مدير/ادمن can use this (ادمن can promote to ادمن)
+        if (senderLevel < 2 && !message.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ هـذا الامـر يخـص〖 المدير 〗*'
+                text: '*↢ هـذا الامـر يخـص〖 الادمن 〗 فما فوق*'
             }, { quoted: message });
             return;
         }
@@ -51,7 +52,7 @@ async function setAdminCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setAdminCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

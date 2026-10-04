@@ -1,0 +1,22 @@
+node_modules/
+session/
+.env
+baileys_store.json
+data/*.json
+*.log
+
+# مجلدات وأدوات خارجية لا يحتاجها البوت
+codex-nvidia-proxy/
+telegram-compressor/
+
+# ملفات تشغيل ومخابر
+--bind
+uvx
+n.py
+test.session
+BashAFK.session
+Logging.txt
+Providers
+
+# ذاكرة المحادثات (تُنشأ تلقائياً)
+memory/

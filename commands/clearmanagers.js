@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const fs = require('fs');
 const path = require('path');
@@ -59,7 +60,7 @@ async function clearManagersCommand(sock, chatId, message, senderId) {
     } catch (error) {
         console.error('Error in clearManagersCommand:', error);
         await sock.sendMessage(chatId, { 
-            text: '*↢ حدث خطأ أثناء مسح رتب المدراء!*'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

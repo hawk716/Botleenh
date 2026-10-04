@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -218,7 +219,7 @@ async function updateCommand(sock, chatId, message, senderIsSudo, zipOverride) {
         await restartProcess(sock, chatId, message);
     } catch (err) {
         console.error('Update failed:', err);
-        await sock.sendMessage(chatId, { text: `❌ فشل التحديث:\n${String(err.message || err)}` }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

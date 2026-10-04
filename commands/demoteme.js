@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { isFeatureEnabled } = require('../lib/groupSettings');
 const { getUserRank, removeUserRank } = require('../lib/ranks');
@@ -16,7 +17,7 @@ async function demotemeCommand(sock, chatId, message, senderId, userMessage) {
         // Check if demoteme feature is enabled
         if (!isFeatureEnabled(chatId, 'demoteme_enabled')) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ امـر نزلني معطل من قبل المدراء*'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
             return;
         }
@@ -80,7 +81,7 @@ async function demotemeCommand(sock, chatId, message, senderId, userMessage) {
     } catch (error) {
         console.error('Error in demoteme command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء تنفيذ الأمر!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

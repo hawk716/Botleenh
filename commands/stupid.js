@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 async function stupidCommand(sock, chatId, quotedMsg, mentionedJid, sender, args) {
@@ -42,7 +43,7 @@ async function stupidCommand(sock, chatId, quotedMsg, mentionedJid, sender, args
     } catch (error) {
         console.error('Error in stupid command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ آسف، لم أتمكن من إنشاء بطاقة stupid. من فضلك حاول مرة أخرى لاحقًا!'
+            text: UNDER_MAINTENANCE
         });
     }
 }

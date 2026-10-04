@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { handleAntiBadwordCommand } = require('../lib/antibadword');
 const isAdminHelper = require('../lib/isAdmin');
 
@@ -16,7 +17,7 @@ async function antibadwordCommand(sock, chatId, message, senderId, isSenderAdmin
         await handleAntiBadwordCommand(sock, chatId, message, match);
     } catch (error) {
         console.error('Error in antibadword command:', error);
-        await sock.sendMessage(chatId, { text: '*خطأ في معالجة أمر مكافحة الكلمات السيئة*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

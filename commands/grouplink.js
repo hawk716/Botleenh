@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { isFeatureEnabled } = require('../lib/groupSettings');
 
@@ -13,7 +14,7 @@ async function grouplinkCommand(sock, chatId, message) {
         // Check if link feature is enabled
         if (!isFeatureEnabled(chatId, 'link_enabled')) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ امـر ( الرابط ) معطل حالياً ⚠️*\n*↢ لا يعمـل سوى مع " المالك " فقـط*'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
             return;
         }
@@ -29,7 +30,7 @@ async function grouplinkCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in grouplink command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء الحصول على رابط المجموعة!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const gTTS = require('gtts');
 const fs = require('fs');
 const path = require('path');
@@ -93,7 +94,7 @@ async function ttsCommand(sock, chatId, text, msg) {
             if (err) {
                 console.error('gTTS save error:', err);
                 const sendOpts = msg?.key ? { quoted: msg } : {};
-                await sock.sendMessage(chatId, { text: '❌ خطأ في إنشاء الصوت.' }, sendOpts);
+                await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, sendOpts);
                 return;
             }
 
@@ -111,7 +112,7 @@ async function ttsCommand(sock, chatId, text, msg) {
         console.error('❌ Error in TTS command:', error);
         const sendOpts = msg?.key ? { quoted: msg } : {};
         await sock.sendMessage(chatId, {
-            text: '❌ حدث خطأ أثناء إنشاء الصوت.'
+            text: UNDER_MAINTENANCE
         }, sendOpts);
     }
 }

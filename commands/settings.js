@@ -1,4 +1,13 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
+const settings = require('../settings');
+const { isSudo } = require('../lib/index');
+
+function isConfiguredBotId(jid) {
+    const configuredNumber = String(settings.ownerNumber || '').replace(/\D/g, '');
+    const senderNumber = String(jid || '').split('@')[0].split(':')[0].replace(/\D/g, '');
+    return Boolean(configuredNumber && senderNumber && configuredNumber === senderNumber);
+}
 
 function readJsonSafe(path, fallback) {
     try {
@@ -11,9 +20,9 @@ function readJsonSafe(path, fallback) {
 
 async function settingsCommand(sock, chatId, message) {
     try {
-        // Owner-only
-        // Check if the sender is the owner or in sudo list
-        const isOwnerOrSudo = message.key.fromMe || (global.sudo && global.sudo.includes(message.key.remoteJid));
+        // Accept messages sent by the bot account, the configured bot ID, or a Sudo user.
+        const senderId = message.key.participant || message.key.remoteJid;
+        const isOwnerOrSudo = message.key.fromMe || isConfiguredBotId(senderId) || await isSudo(senderId);
 
         if (!isOwnerOrSudo) {
             await sock.sendMessage(chatId, { text: '• عذراً الامر يخص ↤︎ 〖  الادمن 〗 فقط .' }, { quoted: message });
@@ -84,7 +93,7 @@ async function settingsCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, { text: lines.join('\n') }, { quoted: message });
     } catch (error) {
         console.error('Error in settings command:', error);
-        await sock.sendMessage(chatId, { text: '❌ فشل قراءة الإعدادات.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

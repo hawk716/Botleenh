@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const isAdmin = require('../lib/isAdmin');
@@ -66,6 +67,24 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
             return;
         }
 
+        // لا يمكن إنذار البوت نفسه
+        const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+        if (isTargetBot(sock, groupMetadata, userToWarn)) {
+            await rejectBotTarget(sock, chatId, message);
+            return;
+        }
+
+        if (!message.key.fromMe && senderLevel === 4) {
+            const targetParticipant = groupMetadata.participants.find(p => p.id === userToWarn);
+            const targetRank = await getUserRank(chatId, userToWarn, targetParticipant && targetParticipant.admin);
+            if (targetRank === 'مالك') {
+                await sock.sendMessage(chatId, {
+                    text: '*↢ عـذراً الامـر يـخص  ↤︎〖  المـالك الاسـاسـي 〗فـقط .*'
+                }, { quoted: message });
+                return;
+            }
+        }
+
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         try {
@@ -117,7 +136,7 @@ async function warnCommand(sock, chatId, senderId, mentionedJids, message, warnC
             }
         } catch (error) {
             console.error('Error in warn command:', error);
-            await sock.sendMessage(chatId, { text: '*↢ فشل إنذار المستخدم!*' }, { quoted: message });
+            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
         }
     } catch (error) {
         console.error('Error in warn command:', error);

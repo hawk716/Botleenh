@@ -60,6 +60,7 @@
     "phin": "^3.7.1",
     "pino": "^8.21.0",
     "primesave-dl": "^1.0.2",
+    "profanity-i18n": "^1.0.22",
     "qrcode": "^1.5.4",
     "qrcode-reader": "^1.0.4",
     "qrcode-terminal": "^0.12.0",

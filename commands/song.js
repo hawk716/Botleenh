@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const yts = require('yt-search');
 const fs = require('fs');
 const path = require('path');
@@ -5,6 +6,7 @@ const axios = require('axios');
 const { execFile } = require('child_process');
 const { igdl } = require('ruhend-scraper');
 const { ttdl: ttdlBtch } = require('btch-downloader');
+const settings = require('../settings');
 
 const YT_DLP = '/home/codespace/.python/current/bin/yt-dlp';
 const processedMessages = new Set();
@@ -101,7 +103,7 @@ async function songCommand(sock, chatId, message) {
         if (!query) return;
 
         const platform = detectPlatform(query);
-        let audioBuffer = null, audioUrl = null, audioTitle = '', audioThumbnail = '', audioDuration = 0;
+        let audioBuffer = null, audioUrl = null, audioTitle = '', audioArtist = '', audioThumbnail = '', audioDuration = 0;
 
         if (platform !== 'unknown') {
             await sock.sendMessage(chatId, { react: { text: '🔄', key: message.key } });
@@ -146,6 +148,7 @@ async function songCommand(sock, chatId, message) {
                             })
                         })
                         audioTitle = info.title || ''
+                        audioArtist = info.author || info.artist || info.uploader || ''
                         audioThumbnail = info.thumbnail || ''
                         audioDuration = info.duration || 0
                         const tmpDir = path.join(__dirname, '../temp')
@@ -164,6 +167,7 @@ async function songCommand(sock, chatId, message) {
                         })
                     })
                     audioTitle = info.title || ''
+                    audioArtist = info.author || info.artist || info.uploader || ''
                     audioThumbnail = info.thumbnail || ''
                     audioDuration = info.duration || 0
                     const tmpDir = path.join(__dirname, '../temp')
@@ -185,6 +189,7 @@ async function songCommand(sock, chatId, message) {
                         })
                     })
                     audioTitle = info.title || ''
+                    audioArtist = info.author || info.artist || info.uploader || ''
                     audioThumbnail = info.thumbnail || ''
                     audioDuration = info.duration || 0
                     const tmpDir = path.join(__dirname, '../temp')
@@ -211,6 +216,7 @@ async function songCommand(sock, chatId, message) {
                         })
                     })
                     audioTitle = info.title || ''
+                    audioArtist = info.author || info.artist || info.uploader || ''
                     audioThumbnail = info.thumbnail || ''
                     audioDuration = info.duration || 0
                     const tmpDir = path.join(__dirname, '../temp')
@@ -232,7 +238,8 @@ async function songCommand(sock, chatId, message) {
             if (audioBuffer) {
                 const safeTitle = (audioTitle || 'صوت').replace(/[^\w\s\u0600-\u06FF]/gi, '').trim() || 'صوت'
                 const duration = audioDuration ? formatDuration(audioDuration) : ''
-                const caption = audioTitle ? `*${audioTitle}*${duration ? `\n> *_${duration}_*` : ''}` : ''
+                const artist = audioArtist || ''
+                const caption = `*الاغنيه: ${audioTitle || 'صوت'} 🎵*\n*الفنان: ${artist || 'غير معروف'} 🎤*\n━━━━━━━━━━━━━━━━━━\n${duration ? `> *_${duration}_*\n` : ''}━━━━━━━━━━━━━━━━━━\n*بواسطة: 𝐋𝐞𝐞𝐧𝐁𝐨𝐭*`
                 await sock.sendMessage(chatId, {
                     audio: audioBuffer,
                     mimetype: 'audio/mpeg',
@@ -243,15 +250,16 @@ async function songCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
                 }, { quoted: message })
             } else if (audioUrl) {
                 const duration = audioDuration ? formatDuration(audioDuration) : ''
-                const caption = audioTitle ? `*${audioTitle}*${duration ? `\n> *_${duration}_*` : ''}` : ''
+                const artist = audioArtist || ''
+                const caption = `*الاغنيه: ${audioTitle || 'صوت'} 🎵*\n*الفنان: ${artist || 'غير معروف'} 🎤*\n━━━━━━━━━━━━━━━━━━\n${duration ? `> *_${duration}_*\n` : ''}━━━━━━━━━━━━━━━━━━\n*بواسطة: 𝐋𝐞𝐞𝐧𝐁𝐨𝐭*`
                 await sock.sendMessage(chatId, {
                     audio: { url: audioUrl },
                     mimetype: 'audio/mpeg',
@@ -261,8 +269,8 @@ async function songCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -314,8 +322,8 @@ async function songCommand(sock, chatId, message) {
                     forwardingScore: 1,
                     isForwarded: true,
                     forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363161513685998@newsletter',
-                        newsletterName: 'KnightBot MD',
+                        newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                        newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                         serverMessageId: -1
                     }
                 }
@@ -340,8 +348,8 @@ async function songCommand(sock, chatId, message) {
                         forwardingScore: 1,
                         isForwarded: true,
                         forwardedNewsletterMessageInfo: {
-                            newsletterJid: '120363161513685998@newsletter',
-                            newsletterName: 'KnightBot MD',
+                            newsletterJid: settings.newsletterJid || '120363400425238128@newsletter',
+                            newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                             serverMessageId: -1
                         }
                     }
@@ -353,7 +361,7 @@ async function songCommand(sock, chatId, message) {
 
     } catch (err) {
         console.error('[SONG] خطأ:', err.message?.substring(0, 100))
-        await sock.sendMessage(chatId, { text: '*↢ عذراً حدث خطأ.*' }, { quoted: message })
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message })
     }
 }
 

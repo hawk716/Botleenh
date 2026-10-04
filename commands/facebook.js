@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
@@ -76,7 +77,7 @@ async function facebookCommand(sock, chatId, message) {
 
         if (!data || data.status !== 200 || !data.success || !data.result) {
             return await sock.sendMessage(chatId, { 
-                text: 'عذراً، واجهة البرمجة لم تُرجع استجابة صحيحة. الرجاء المحاولة لاحقاً!'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
         }
 
@@ -142,7 +143,7 @@ async function facebookCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in Facebook command:', error);
         await sock.sendMessage(chatId, { 
-            text: "حدث خطأ. قد تكون واجهة البرمجة معطلة. الخطأ: " + error.message
+            text: UNDER_MAINTENANCE + error.message
         }, { quoted: message });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 async function showRanksCommand(sock, chatId, message) {
     try {
         const groupMetadata = await sock.groupMetadata(chatId);
@@ -25,7 +26,7 @@ ${adminsList.length > 0 ? adminsList.join('\n') : 'لا يوجد ادمنية'}`
         }, { quoted: message });
     } catch (error) {
         console.error('Error in showRanksCommand:', error);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ في عرض الرتب!' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
     }
 }
 

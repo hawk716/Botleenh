@@ -363,6 +363,31 @@ async function startXeonBotInc() {
         try {
             for (const group of groupList) {
                 console.log(`[GROUP] New/updated group: ${group.id} - ${group.subject}`);
+                const participants = group.participants || [];
+                const norm = (a) => (typeof a === "string" ? a.split('@')[0].split(':')[0] : '');
+                const botId = XeonBotInc.user?.id || '';
+                const botNorm = norm(botId);
+                const botP = participants.find(p => norm(p.id) === botNorm);
+                const botIsAdmin = botP?.admin === 'admin' || botP?.admin === 'superadmin';
+                const author = group.author;
+                const authorNorm = norm(author);
+                const authorP = participants.find(p => norm(p.id) === authorNorm);
+                const authorIsAdmin = authorP?.admin === 'admin' || authorP?.admin === 'superadmin';
+
+                if (botIsAdmin) {
+                    const { setPrimaryOwner, getPrimaryOwner } = require('./lib/primaryOwner');
+                    if (!getPrimaryOwner(group.id)) setPrimaryOwner(group.id, author);
+                    console.log(`[GROUP-ADD] Bot is admin in ${group.id}, welcome + setPrimaryOwner`);
+                    await XeonBotInc.sendMessage(group.id, {
+                        text: '*↢ تم تفعيل المجموعة، نقاش تلقائيًا*\n*↢ تم ترقية من اضافني ↢ ( مالك اساسي )*\n*↢ المشرفين ↢ ( مالك )*\n*↢ ارسل الاوامر لعرض اوامر البوت*',
+                        mentions: [author]
+                    }).catch(() => {});
+                } else if (!authorIsAdmin) {
+                    console.log(`[GROUP-ADD] Inviter is NOT admin in ${group.id}, leaving`);
+                    await XeonBotInc.sendMessage(group.id, { text: '*↢ يجب ان يكون المستخدم الذي يضيفني للمجموعه مشرفاً، والا لن استطيع العمل هنا. 😞*' }).catch(() => {});
+                    await new Promise(r => setTimeout(r, 1500));
+                    await XeonBotInc.groupLeave(group.id).catch(() => {});
+                }
             }
         } catch (error) {
             console.error('[GROUP] Error in groups.upsert:', error);
@@ -423,6 +448,7 @@ async function startXeonBotInc() {
         await handleGroupParticipantUpdate(XeonBotInc, update);
         
         const { id, participants, action } = update;
+        
         if (action === 'promote' && participants.includes(XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net')) {
             try {
                 const { getUserRank, setUserRank } = require('./lib/ranks');

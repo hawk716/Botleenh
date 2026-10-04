@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { UltimateTextToImage, registerFont } = require('ultimate-text-to-image');
 const fs = require('fs');
 const path = require('path');
@@ -189,7 +190,7 @@ async function textmakerCommand(sock, chatId, message, q, type) {
     const imageBuffer = buildImage(text, type);
     if (!imageBuffer) {
       return await sock.sendMessage(chatId, {
-        text: 'تعذر إنشاء الصورة من النص المدخل.',
+        text: UNDER_MAINTENANCE,
       }, { quoted: message });
     }
 
@@ -200,7 +201,7 @@ async function textmakerCommand(sock, chatId, message, q, type) {
   } catch (error) {
     console.error('Error in text generator:', error);
     await sock.sendMessage(chatId, {
-      text: 'حدث خطأ في إنشاء الصورة.',
+      text: UNDER_MAINTENANCE,
     }, { quoted: message });
   }
 }

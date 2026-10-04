@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { isFeatureEnabled } = require('../lib/groupSettings');
 const isAdmin = require('../lib/isAdmin');
@@ -14,7 +15,7 @@ async function mutehimCommand(sock, chatId, message) {
         // Check if mutehim feature is enabled
         if (!isFeatureEnabled(chatId, 'mutehim_enabled')) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ امـر ( اكتموه ) معطل حالياً.*'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
             return;
         }
@@ -49,7 +50,7 @@ async function mutehimCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in mutehim command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء تنفيذ الأمر!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

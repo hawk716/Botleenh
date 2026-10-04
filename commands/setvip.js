@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { setUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -15,9 +16,9 @@ async function setVipCommand(sock, chatId, message, senderId) {
         const senderLevel = getRankLevel(senderRank);
         
         // مدير or higher can set مميز
-        if (senderLevel < 3 && !message.key.fromMe) {
+        if (senderLevel < 2 && !message.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ هـذا الامـر يخـص〖 مدير 〗*'
+                text: '*↢ هـذا الامـر يخـص〖 الادمن 〗 فما فوق*'
             }, { quoted: message });
             return;
         }
@@ -51,7 +52,7 @@ async function setVipCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in setVipCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في رفع المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

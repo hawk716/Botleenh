@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const { channelInfo } = require('../lib/messageConfig');
@@ -23,7 +24,7 @@ async function unbanCommand(sock, chatId, message, senderId) {
     const senderLevel = getRankLevel(senderRank);
 
     // مدير or higher (level >= 3) OR bot owner
-    if (senderLevel < 3 && !message.key.fromMe) {
+    if (senderLevel < 2 && !message.key.fromMe) {
         await sock.sendMessage(chatId, { 
             text: '*↢ هـذا الامـر يخـص〖 المدير 〗*'
         }, { quoted: message });
@@ -68,23 +69,38 @@ async function unbanCommand(sock, chatId, message, senderId) {
 
         if (!bannedData[chatId] || bannedData[chatId].length === 0) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ عذراً لايوجد محظورين لمسحهم.*'
+                text: `*↢غـير مـحـظـور مـسـبــقآً*\n*↢المستخدم ↢* @${(userToUnban || '').split('@')[0]}`,
+                mentions: userToUnban ? [userToUnban] : []
             }, { quoted: message });
             return;
         }
 
         const userNumber = userToUnban.split('@')[0];
-        const userIndex = bannedData[chatId].findIndex(banned => banned.split('@')[0] === userNumber);
+
+        // نجمع كل صيغ المستخدم (LID + رقم الهاتف) لضمان مسح الحظر بالكامل
+        const userNumbers = [userNumber];
+        const targetInfo = groupMetadata.participants.find(p =>
+            p.id === userToUnban ||
+            (p.phoneNumber && (p.phoneNumber + '@s.whatsapp.net') === userToUnban) ||
+            (p.id && p.id.split('@')[0] === userNumber)
+        );
+        if (targetInfo) {
+            if (targetInfo.id) userNumbers.push(targetInfo.id.split('@')[0]);
+            if (targetInfo.phoneNumber) userNumbers.push(targetInfo.phoneNumber.split('@')[0]);
+        }
+
+        const userIndex = bannedData[chatId].findIndex(banned => userNumbers.includes(banned.split('@')[0]));
 
         if (userIndex === -1) {
             await sock.sendMessage(chatId, { 
-                text: `*↢ المستخدم @${userNumber} غير محظور*`,
+                text: `*↢غـير مـحـظـور مـسـبــقآً*\n*↢المستخدم ↢* @${userNumber}`,
                 mentions: [userToUnban]
             }, { quoted: message });
             return;
         }
 
-        bannedData[chatId].splice(userIndex, 1);
+        // نحذف كل صيغ المستخدم دفعة واحدة
+        bannedData[chatId] = bannedData[chatId].filter(banned => !userNumbers.includes(banned.split('@')[0]));
 
         if (bannedData[chatId].length === 0) {
             delete bannedData[chatId];
@@ -93,14 +109,14 @@ async function unbanCommand(sock, chatId, message, senderId) {
         fs.writeFileSync(bannedFilePath, JSON.stringify(bannedData, null, 2), 'utf8');
 
         await sock.sendMessage(chatId, { 
-            text: `*↢ الطيـب @${userNumber}*\n*↢ تـم الـغاء حظـره*`,
+            text: `*↢ الطيـب* @${userNumber}\n*↢ تـم الـغاء حظـره*`,
             mentions: [userToUnban]
         }, { quoted: message });
 
     } catch (error) {
         console.error('خطأ في إلغاء الحظر:', error);
         await sock.sendMessage(chatId, { 
-            text: `*↢ فشل إلغاء الحظر!*`
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

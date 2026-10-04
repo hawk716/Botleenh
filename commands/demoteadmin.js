@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { removeUserRank, getUserRank, getRankLevel } = require('../lib/ranks');
 
@@ -15,9 +16,9 @@ async function demoteAdminCommand(sock, chatId, message, senderId) {
         const senderLevel = getRankLevel(senderRank);
         
         // مدير or higher can demote ادمن
-        if (senderLevel < 3 && !message.key.fromMe) {
+        if (senderLevel < 2 && !message.key.fromMe) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ هـذا الامـر يخـص〖 مدير 〗*'
+                text: '*↢ هـذا الامـر يخـص〖 الادمن 〗 فما فوق*'
             }, { quoted: message });
             return;
         }
@@ -34,6 +35,14 @@ async function demoteAdminCommand(sock, chatId, message, senderId) {
             return;
         }
         
+
+        // لا يمكن تنزيل البوت نفسه
+        const { isTargetBot, rejectBotTarget } = require('../lib/isBotTarget');
+        if (isTargetBot(sock, groupMetadata, userToDemote)) {
+            await rejectBotTarget(sock, chatId, message, { react: false });
+            return;
+        }
+
         // Check if user is actually ادمن
         const targetRank = await getUserRank(chatId, userToDemote);
         if (targetRank !== 'ادمن') {
@@ -52,7 +61,7 @@ async function demoteAdminCommand(sock, chatId, message, senderId) {
         }, { quoted: message });
     } catch (error) {
         console.error('Error in demoteAdminCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في تنزيل المستخدم!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

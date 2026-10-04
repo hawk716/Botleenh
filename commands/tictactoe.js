@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const TicTacToe = require('../lib/tictactoe');
 
 // Store games globally
@@ -39,7 +40,7 @@ async function tictactoeCommand(sock, chatId, senderId, text) {
     } catch (error) {
         console.error('Error in tictactoe command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ خطأ في بدء اللعبة. حاول مرة أخرى.' 
+            text: UNDER_MAINTENANCE 
         });
     }
 }
@@ -105,7 +106,7 @@ ${arr.slice(6).join('')}
     } catch (error) {
         console.error('Error joining game:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ خطأ في الانضمام للعبة.' 
+            text: UNDER_MAINTENANCE 
         });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 
@@ -34,7 +35,7 @@ async function truthCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in truth command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل في الحصول على سؤال صراحة. حاول مرة أخرى لاحقاً!' 
+            text: UNDER_MAINTENANCE 
         }, { quoted: message });
     }
 }

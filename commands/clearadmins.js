@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 
 const { getAllRanks } = require('../lib/ranks');
 const { getUserRank, getRankLevel } = require('../lib/ranks');
@@ -49,7 +50,7 @@ async function clearAdminsCommand(sock, chatId, message, senderId) {
         }
     } catch (error) {
         console.error('Error in clearAdminsCommand:', error);
-        await sock.sendMessage(chatId, { text: '*↢ فشل في مسح الادمنيه!*' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

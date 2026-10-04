@@ -20,7 +20,7 @@ async function aliveCommand(sock, chatId, message) {
                 forwardingScore: 999,
                 isForwarded: true,
                 forwardedNewsletterMessageInfo: {
-                    newsletterJid: settings.newsletterJid || '120363161513685998@newsletter',
+                    newsletterJid: settings.newsletterJid || settings.newsletterJid || '120363400425238128@newsletter',
                     newsletterName: settings.packname || '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
                     serverMessageId: -1
                 }

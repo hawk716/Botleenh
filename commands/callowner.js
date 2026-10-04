@@ -1,4 +1,4 @@
-
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { isFeatureEnabled } = require('../lib/groupSettings');
 
 const ownerCallMessages = [
@@ -20,7 +20,7 @@ async function callownerCommand(sock, chatId, message) {
         // Check if callowner feature is enabled
         if (!isFeatureEnabled(chatId, 'callowner_enabled')) {
             await sock.sendMessage(chatId, { 
-                text: '*↢ امـر ( نداء المالك ) معطل حالياً.*'
+                text: UNDER_MAINTENANCE
             }, { quoted: message });
             return;
         }
@@ -52,11 +52,10 @@ async function callownerCommand(sock, chatId, message) {
             text: `*${finalMessage}*`,
             mentions: [groupOwner]
         }, { quoted: message });
-
     } catch (error) {
         console.error('Error in callowner command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ حدث خطأ أثناء تنفيذ الأمر!'
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

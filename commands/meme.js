@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const path = require('path');
@@ -20,7 +21,7 @@ async function memeCommand(sock, chatId, message) {
 
         if (!videos || videos.length === 0) {
             await sock.sendMessage(chatId, {
-                text: '❌ لا توجد مقاطع ميم متاحة حالياً. تواصل مع المطور لإضافة المزيد.'
+                text: '❌ لا توجد مقاطع ميم متاحة حالياً. تواصل مع المالك لإضافة المزيد.'
             }, { quoted: message });
             return;
         }
@@ -40,13 +41,13 @@ async function memeCommand(sock, chatId, message) {
         await sock.sendMessage(chatId, {
             video: videoBuffer,
             mimetype: 'video/mp4',
-            caption: '*↢ ميم عربي*'
+            caption: '*↢ بــواسـطـة: بوت لين - 𝐋𝐞𝐞𝐧𝐁𝐨𝐭*'
         }, { quoted: message });
 
     } catch (error) {
         console.error('Error in meme command:', error);
         await sock.sendMessage(chatId, {
-            text: `❌ فشل في جلب الميم: ${error.message}`
+            text: UNDER_MAINTENANCE
         }, { quoted: message });
     }
 }

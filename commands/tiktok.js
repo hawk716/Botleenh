@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { ttdl } = require("ruhend-scraper");
 const axios = require('axios');
 
@@ -185,18 +186,18 @@ async function tiktokCommand(sock, chatId, message) {
 
             // If we reach here, no method worked
             return await sock.sendMessage(chatId, { 
-                text: "❌ فشل تحميل فيديو تيك توك. جميع طرق التحميل فشلت. الرجاء المحاولة برابط مختلف أو التحقق من توفر الفيديو."
+                text: UNDER_MAINTENANCE
             });
         } catch (error) {
             console.error('Error in TikTok download:', error);
             await sock.sendMessage(chatId, { 
-                text: "فشل تحميل فيديو تيك توك. الرجاء المحاولة برابط مختلف."
+                text: UNDER_MAINTENANCE
             });
         }
     } catch (error) {
         console.error('Error in TikTok command:', error);
         await sock.sendMessage(chatId, { 
-            text: "حدث خطأ أثناء معالجة الطلب. الرجاء المحاولة لاحقاً."
+            text: UNDER_MAINTENANCE
         });
     }
 }
@@ -227,7 +228,7 @@ async function downloadSong(sock, chatId, message, url) {
     } catch (error) {
         console.error('Error in downloadSong command:', error);
         await sock.sendMessage(chatId, { 
-            text: "فشل تحميل الأغنية. الرجاء المحاولة برابط مختلف."
+            text: UNDER_MAINTENANCE
         });
     }
 }

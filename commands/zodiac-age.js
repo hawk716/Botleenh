@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fs = require('fs');
 const path = require('path');
 const settings = require('../settings');
@@ -67,7 +68,7 @@ async function handleZodiacResponse(sock, chatId, msg, senderId, text) {
     let month = parseInt(match[2]);
     
     if (day < 1 || day > 31 || month < 1 || month > 12) {
-        await sock.sendMessage(chatId, { text: '*↢ التاريخ غير صحيح، حاول مرة أخرى.*' });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE });
         return true;
     }
     

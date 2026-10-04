@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
 
 function extractViewOnceMedia(quoted) {
@@ -36,7 +37,7 @@ async function viewonceCommand(sock, chatId, message) {
 
         await sock.sendMessage(chatId, { [type]: buffer, caption: media.caption || '' }, { quoted: message });
     } catch (e) {
-        await sock.sendMessage(chatId, { text: '❌ فشل تحميل الوسائط.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

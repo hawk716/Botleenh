@@ -15,8 +15,11 @@ async function welcomeCommand(sock, chatId, message, match) {
 }
 
 async function handleJoinEvent(sock, id, participants) {
+    const botId = sock.user?.id || '';
+    const norm = (a) => (typeof a === "string" ? a.split('@')[0].split(':')[0] : '');
     for (const p of participants) {
         const participant = typeof p === 'object' ? (p.id || p.jid || String(p)) : p;
+        if (norm(participant) === norm(botId)) continue;
         setJoinDate(id, participant);
         await sendWelcome(sock, id, participant);
     }

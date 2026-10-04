@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 
 async function shayariCommand(sock, chatId, message) {
@@ -10,8 +11,7 @@ async function shayariCommand(sock, chatId, message) {
         }
 
         const buttons = [
-            { buttonId: '.shayari', buttonText: { displayText: 'شعر 🪄' }, type: 1 },
-            { buttonId: '.roseday', buttonText: { displayText: '🌹 يوم الورد' }, type: 1 }
+            { buttonId: '.shayari', buttonText: { displayText: 'شعر 🪄' }, type: 1 }
         ];
 
         await sock.sendMessage(chatId, { 
@@ -22,7 +22,7 @@ async function shayariCommand(sock, chatId, message) {
     } catch (error) {
         console.error('Error in shayari command:', error);
         await sock.sendMessage(chatId, { 
-            text: '❌ فشل في جلب الشعر. من فضلك حاول مرة أخرى لاحقًا.',
+            text: UNDER_MAINTENANCE,
         }, { quoted: message });
     }
 }

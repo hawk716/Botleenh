@@ -294,3 +294,1472 @@
 [2026-06-08T07:23:04.584Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
 [2026-06-08T07:23:47.128Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="غزل", state=undefined
 [2026-06-08T07:25:52.042Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-08-24T07:33:13.195Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-24T07:36:57.273Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-08-24T07:37:08.884Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-08-24T07:37:24.508Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-24T07:39:19.273Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-08-24T07:39:28.525Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:39:32.989Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:39:36.332Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:40:26.568Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-24T07:41:06.334Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-24T07:41:11.935Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع", state=undefined
+[2026-08-24T07:43:10.487Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-24T07:43:15.874Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع", state=undefined
+[2026-08-24T07:43:26.797Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:43:28.726Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:43:33.262Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع", state=undefined
+[2026-08-24T07:52:17.286Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-24T07:52:29.839Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T07:52:40.927Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T07:52:48.651Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T07:52:59.613Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T07:53:09.791Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل ادمن", state=undefined
+[2026-08-24T07:53:22.057Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مميز", state=undefined
+[2026-08-24T07:53:29.958Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مميز", state=undefined
+[2026-08-24T07:53:46.952Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T07:54:20.407Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مدير", state=undefined
+[2026-08-24T07:54:31.356Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T07:54:37.139Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل", state=undefined
+[2026-08-24T07:54:45.091Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T07:54:50.380Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رتبته", state=undefined
+[2026-08-24T07:55:10.571Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مدير", state=undefined
+[2026-08-24T07:55:16.417Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="اارتبه", state=undefined
+[2026-08-24T07:55:19.202Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-08-24T07:55:25.254Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="اارتبة", state=undefined
+[2026-08-24T07:55:28.195Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-08-24T07:55:36.446Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الرتبة", state=undefined
+[2026-08-24T07:55:45.489Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-08-24T07:55:54.906Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مدير", state=undefined
+[2026-08-24T07:56:05.929Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T07:56:18.984Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T07:57:47.551Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مدير", state=undefined
+[2026-08-24T07:58:01.619Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="رلب", state=undefined
+[2026-08-24T07:58:07.040Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مدير", state=undefined
+[2026-08-24T07:58:25.202Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-08-24T07:58:32.630Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-08-24T07:58:43.250Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T07:58:58.566Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T07:59:07.697Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T11:53:07.811Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T11:53:57.970Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T11:57:02.083Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="كنت حامي بالليل ذحين قدنا مابيش طافه", state=undefined
+[2026-08-24T11:58:44.646Z] [CustomCmd] chat=120363412115460859@g.us, sender=256985710764182@lid, msg="الو", state=undefined
+[2026-08-24T11:58:47.477Z] [CustomCmd] chat=120363412115460859@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T12:00:28.778Z] [CustomCmd] chat=120363412115460859@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-08-24T12:01:22.346Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-08-24T12:01:25.729Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T12:01:37.927Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:01:44.047Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-24T12:02:28.161Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك اساسي", state=undefined
+[2026-08-24T12:02:35.453Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:03:40.017Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك أساسي", state=undefined
+[2026-08-24T12:10:15.803Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:10:25.641Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-24T12:10:32.831Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:10:50.155Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك أساسي", state=undefined
+[2026-08-24T12:11:40.330Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:18:16.888Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-24T12:18:21.939Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:18:32.315Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:18:46.673Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:19:24.075Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:19:35.377Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل الكل", state=undefined
+[2026-08-24T12:19:42.776Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مدير", state=undefined
+[2026-08-24T12:19:50.491Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="تنزيل مالك أساسي", state=undefined
+[2026-08-24T12:20:00.347Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-24T12:20:15.170Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:20:26.180Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-08-24T12:23:53.111Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-08-24T12:24:03.610Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-24T12:24:19.222Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:24:37.858Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:24:50.794Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-08-24T12:25:00.599Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-24T12:25:14.088Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-08-26T06:41:01.469Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="الووو", state=undefined
+[2026-08-26T06:41:01.616Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="ليش فاتح مدرسه", state=undefined
+[2026-08-26T07:16:16.567Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:16:22.628Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:16:34.434Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:17:09.411Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:17:14.239Z] [CustomCmd] chat=120363413175583226@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:17:28.206Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-26T07:20:02.636Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-26T07:20:09.964Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مدير", state=undefined
+[2026-08-26T07:20:15.906Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:20:22.517Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-08-26T07:20:29.314Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="تنزيل مالك", state=undefined
+[2026-08-26T07:20:44.663Z] [CustomCmd] chat=120363413175583226@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-08-26T07:21:03.505Z] [CustomCmd] chat=120363413175583226@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-08-26T07:24:02.621Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-08-26T07:24:14.186Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="للوو", state=undefined
+[2026-08-26T07:24:17.568Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:24:22.780Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الرتبه", state=undefined
+[2026-08-26T07:35:45.692Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تعطيل التاك", state=undefined
+[2026-08-26T07:35:53.682Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="منع التاك", state=undefined
+[2026-08-26T07:36:00.351Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="م2", state=undefined
+[2026-08-26T07:36:15.902Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="قفل التاك", state=undefined
+[2026-08-26T07:37:18.537Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-26T07:37:48.648Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-08-26T07:38:09.368Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-30T12:35:38.670Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-30T12:35:38.682Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-08-30T12:35:39.965Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-30T12:35:40.645Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-08-30T12:35:40.674Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-30T12:36:40.109Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-08-30T12:36:50.846Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-08-30T12:37:08.153Z] [CustomCmd] chat=120363429778872718@newsletter, sender=120363429778872718@newsletter, msg="هاذه اسئله في درس الاعداد المركبه من الاستاذ  شكيب الرباصي", state=undefined
+[2026-08-30T12:37:18.925Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-30T12:41:56.426Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-30T12:42:21.583Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-30T12:43:02.742Z] [CustomCmd] chat=120363429778872718@newsletter, sender=120363429778872718@newsletter, msg="هذه اسئله في درس الاعداد المركبه من الاستاذ  شكيب الرباصي", state=undefined
+[2026-08-30T12:43:12.078Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-08-30T12:43:42.619Z] [CustomCmd] chat=120363429778872718@newsletter, sender=120363429778872718@newsletter, msg="هذه اسئله في درس الاعداد المركبه من الاستاذ  شكيب الرباصي", state=undefined
+[2026-08-30T12:44:33.936Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رفع ادمن", state=undefined
+[2026-08-30T12:44:46.092Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-08-30T13:05:28.516Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-08-30T13:05:40.252Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="ابب", state=undefined
+[2026-08-30T13:06:01.669Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-08-30T13:06:06.741Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-08-30T13:09:38.819Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="ا تال", state=undefined
+[2026-08-30T13:09:40.660Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-08-30T13:09:44.756Z] [CustomCmd] chat=120363427802215200@g.us, sender=256985710764182@lid, msg="م2", state=undefined
+[2026-08-30T13:10:11.411Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-08-30T13:13:54.309Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-08-30T13:13:56.591Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-08-30T13:13:58.662Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-08-30T13:14:02.205Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="كيفك", state=undefined
+[2026-08-30T13:15:10.591Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="تللل", state=undefined
+[2026-08-30T13:15:11.429Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="لل", state=undefined
+[2026-08-30T13:19:32.059Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="لوو", state=undefined
+[2026-08-30T13:19:33.014Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="تب", state=undefined
+[2026-08-30T13:19:38.673Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="ةة", state=undefined
+[2026-08-30T13:19:41.032Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-08-30T13:19:45.311Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الو", state=undefined
+[2026-08-30T13:19:49.091Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="م5", state=undefined
+[2026-08-30T13:19:51.859Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-08-30T13:20:01.486Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="اكس او", state=undefined
+[2026-08-30T13:20:27.000Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-08-30T13:20:30.096Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T06:55:34.175Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-03T06:55:34.598Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-09-03T06:55:34.615Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T06:55:43.623Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-03T06:55:45.633Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T06:55:55.596Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الو", state=undefined
+[2026-09-03T06:56:00.043Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="هلا", state=undefined
+[2026-09-03T06:56:03.824Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T06:56:11.233Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T06:58:25.880Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-09-03T06:58:30.323Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T06:58:45.416Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-09-03T06:58:47.991Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="كيفكم", state=undefined
+[2026-09-03T06:58:49.870Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T06:58:52.255Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T06:59:02.710Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T07:01:15.478Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T07:01:42.042Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T07:01:43.608Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-09-03T07:01:48.659Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="كيفمم", state=undefined
+[2026-09-03T07:01:54.463Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T07:01:56.811Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="م2", state=undefined
+[2026-09-03T07:03:45.529Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T07:03:47.051Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الوو", state=undefined
+[2026-09-03T07:03:52.573Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="كيف انتو", state=undefined
+[2026-09-03T07:03:58.995Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="نكته", state=undefined
+[2026-09-03T07:04:02.285Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="م6", state=undefined
+[2026-09-03T07:04:07.744Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="شعر", state=undefined
+[2026-09-03T07:04:09.365Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="غزل", state=undefined
+[2026-09-03T07:04:19.709Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="غزل", state=undefined
+[2026-09-03T07:04:21.182Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="حب", state=undefined
+[2026-09-03T07:04:30.366Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-03T07:04:36.359Z] [CustomCmd] chat=120363428877332104@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:29:28.038Z] [CustomCmd] chat=256985710764182@lid, sender=256985710764182@lid, msg="نشط", state=undefined
+[2026-09-25T17:29:28.310Z] [CustomCmd] chat=256985710764182@lid, sender=256985710764182@lid, msg="حياة", state=undefined
+[2026-09-25T17:30:49.317Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-09-25T17:32:07.117Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:32:25.006Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:37:30.905Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:37:38.208Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:38:08.379Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T17:38:14.042Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:38:21.670Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:38:27.111Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="تنزيل", state=undefined
+[2026-09-25T17:38:29.170Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الالعاب", state=undefined
+[2026-09-25T17:38:34.833Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-25T17:38:44.152Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="طرد", state=undefined
+[2026-09-25T17:43:18.132Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T17:43:23.290Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:43:25.118Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-25T17:43:42.039Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م6", state=undefined
+[2026-09-25T17:43:47.344Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-25T17:43:57.474Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-25T17:44:03.905Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م6", state=undefined
+[2026-09-25T17:44:07.804Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:44:29.284Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-25T17:44:37.938Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-09-25T17:45:07.173Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-09-25T17:45:14.458Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الرتب", state=undefined
+[2026-09-25T17:45:17.747Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:45:31.456Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:47:25.762Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الو", state=undefined
+[2026-09-25T17:47:52.944Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-25T17:48:20.489Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="تال", state=undefined
+[2026-09-25T17:48:40.709Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="ااا", state=undefined
+[2026-09-25T17:49:27.254Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:49:40.998Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:49:53.866Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:50:00.590Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:57:06.622Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:57:13.135Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-25T17:57:15.045Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T17:57:17.465Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الالعاب", state=undefined
+[2026-09-25T17:57:20.295Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م6", state=undefined
+[2026-09-25T17:57:23.035Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="اكس او", state=undefined
+[2026-09-25T17:57:39.073Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:57:52.114Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T17:57:55.774Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-25T18:02:23.823Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:02:43.496Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:03:20.367Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-25T18:04:32.115Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T18:04:34.124Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:04:47.175Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:09:33.997Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:09:37.267Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T18:09:50.612Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:10:00.633Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:10:06.257Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-25T18:10:32.752Z] [CustomCmd] chat=120363432224158158@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:10:34.636Z] [CustomCmd] chat=120363432224158158@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T18:10:36.924Z] [CustomCmd] chat=120363432224158158@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:31:53.790Z] [CustomCmd] chat=120363432224158158@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:32:00.052Z] [CustomCmd] chat=120363432224158158@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-25T19:35:23.703Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:35:29.300Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:36:05.487Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-25T19:36:38.937Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="وةة", state=undefined
+[2026-09-25T19:37:27.773Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="تتا", state=undefined
+[2026-09-25T19:39:26.207Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="تل", state=undefined
+[2026-09-25T19:42:57.935Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:51:20.842Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:51:33.381Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:51:39.981Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامى", state=undefined
+[2026-09-25T19:51:40.545Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="ال", state=undefined
+[2026-09-25T19:51:41.498Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="لب", state=undefined
+[2026-09-25T19:51:45.510Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-25T19:52:06.792Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:52:30.484Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:52:55.899Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامؤ", state=undefined
+[2026-09-25T19:52:59.117Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T19:53:09.637Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:01:53.005Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="وولاد", state=undefined
+[2026-09-25T20:01:55.306Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:02:35.976Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:02:39.609Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="م5", state=undefined
+[2026-09-25T20:02:57.881Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:03:01.482Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="م5", state=undefined
+[2026-09-25T20:03:30.892Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:03:53.012Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تنزيل مشرف", state=undefined
+[2026-09-25T20:04:17.775Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تنزيل مشرف", state=undefined
+[2026-09-25T20:04:51.197Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:04:52.579Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-25T20:04:54.873Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="اكس", state=undefined
+[2026-09-25T20:04:59.008Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-25T20:05:00.922Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="حب", state=undefined
+[2026-09-25T20:05:06.127Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-25T20:05:18.526Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المشرف", state=undefined
+[2026-09-25T20:05:21.057Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالك", state=undefined
+[2026-09-25T20:05:23.184Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الرتب", state=undefined
+[2026-09-25T20:05:35.575Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:05:55.023Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:06:00.452Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:06:07.684Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:08:16.993Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-25T20:24:15.141Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="hh", state=undefined
+[2026-09-26T05:40:27.855Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="رتبه", state=undefined
+[2026-09-26T05:40:37.812Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:40:59.785Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:41:06.329Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:41:12.187Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T05:41:23.694Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:41:28.515Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:41:33.740Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T05:41:34.607Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تل", state=undefined
+[2026-09-26T05:41:44.641Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تلل", state=undefined
+[2026-09-26T05:41:51.600Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:47:17.151Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:47:19.073Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الالعاب", state=undefined
+[2026-09-26T05:47:22.920Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T05:47:25.582Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T05:47:29.541Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="حب", state=undefined
+[2026-09-26T05:47:32.240Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="تفعيل", state=undefined
+[2026-09-26T05:47:46.096Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:47:57.886Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:48:10.262Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:49:53.673Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:50:41.470Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:50:57.796Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:51:12.154Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:52:11.996Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:52:21.835Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:52:28.844Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الالعاب", state=undefined
+[2026-09-26T05:52:33.147Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T05:52:43.888Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:53:01.252Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:53:12.881Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:53:24.202Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T05:53:27.663Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-09-26T05:53:42.911Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-09-26T06:26:05.882Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T06:26:14.649Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T06:26:16.179Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:26:59.543Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:32:26.268Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:33:02.106Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="رتبه", state=undefined
+[2026-09-26T06:33:04.533Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:33:14.450Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:33:22.058Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:33:32.572Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="اكس او", state=undefined
+[2026-09-26T06:34:06.111Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:18.243Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:30.723Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:41.073Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:44.262Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:48.706Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:34:59.585Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:36:48.757Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:38:28.793Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:38:44.785Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:38:52.816Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:38:58.471Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:39:03.826Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="نشط", state=undefined
+[2026-09-26T06:43:11.413Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:43:21.709Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:44:04.180Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:45:57.707Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:46:46.650Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:46:55.389Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="رفع", state=undefined
+[2026-09-26T06:47:02.407Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-09-26T06:50:09.882Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:50:15.687Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:59:35.545Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T06:59:48.760Z] [CustomCmd] chat=120363414403434226@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:01:24.230Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:02:10.699Z] [CustomCmd] chat=120363414403434226@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:02:41.514Z] [CustomCmd] chat=120363414403434226@g.us, sender=256985710764182@lid, msg="اكس او", state=undefined
+[2026-09-26T07:05:09.289Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T07:11:47.251Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:11:55.621Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:12:08.315Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:12:19.534Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:12:22.399Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T07:12:27.701Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:12:29.320Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T07:12:30.958Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T07:13:55.339Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="ترفيه", state=undefined
+[2026-09-26T07:14:21.893Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="ترفيه", state=undefined
+[2026-09-26T07:14:25.185Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T07:14:32.697Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="حب", state=undefined
+[2026-09-26T07:14:33.893Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-26T07:14:39.973Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T07:15:47.650Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T07:15:49.406Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-26T07:15:53.654Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="تفعيل الروابط", state=undefined
+[2026-09-26T07:15:55.364Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="حب", state=undefined
+[2026-09-26T07:16:06.168Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="حب", state=undefined
+[2026-09-26T07:16:08.384Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-26T07:16:30.097Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="ال", state=undefined
+[2026-09-26T07:16:36.084Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-09-26T07:16:58.800Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T07:17:43.905Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="ال", state=undefined
+[2026-09-26T07:17:51.295Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="رفع مالك", state=undefined
+[2026-09-26T07:18:06.875Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T07:18:13.385Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-26T07:18:17.111Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T07:18:37.478Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T07:18:47.965Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="مسح الكل", state=undefined
+[2026-09-26T07:19:10.025Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T07:19:20.180Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="مسح الكل", state=undefined
+[2026-09-26T07:19:25.277Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T07:19:38.410Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="تنزيل مالك", state=undefined
+[2026-09-26T07:19:47.599Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T07:20:17.904Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="تفعيل الروابط", state=undefined
+[2026-09-26T07:20:33.894Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="قفل القروب", state=undefined
+[2026-09-26T07:20:43.923Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="فتح القروب", state=undefined
+[2026-09-26T07:25:52.036Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T07:26:02.096Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:27:49.580Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T07:27:53.052Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="قفل طعه", state=undefined
+[2026-09-26T07:28:04.960Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="قفل عملي", state=undefined
+[2026-09-26T07:29:18.196Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="تفعيل طع", state=undefined
+[2026-09-26T07:30:32.331Z] [CustomCmd] chat=120363410424246228@g.us, sender=246819506405401@lid, msg="نشط", state=undefined
+[2026-09-26T09:05:45.339Z] [CustomCmd] chat=120363400425238128@newsletter, sender=120363400425238128@newsletter, msg="مرحبا", state=undefined
+[2026-09-26T09:09:24.715Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="الاوامر", state=undefined
+[2026-09-26T09:09:43.141Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="م5", state=undefined
+[2026-09-26T09:09:44.915Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-09-26T09:09:50.476Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-09-26T09:29:04.803Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="حاظر", state=undefined
+[2026-09-26T09:29:13.246Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="قفل التاك", state=undefined
+[2026-09-26T09:36:12.992Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T09:36:29.927Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T09:36:34.820Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T09:39:50.800Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T09:39:53.506Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T09:41:12.862Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م6", state=undefined
+[2026-09-26T15:38:40.265Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T15:38:41.201Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T15:38:43.327Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="ايدي", state=undefined
+[2026-09-26T15:38:45.745Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T15:38:53.585Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-26T15:39:05.117Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T15:39:29.929Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T15:39:51.099Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="تفعيل", state=undefined
+[2026-09-26T15:40:20.143Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T15:40:21.755Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T15:40:34.926Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T15:40:51.936Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T15:42:36.312Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="ايدي", state=undefined
+[2026-09-26T15:42:39.893Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T15:42:42.632Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T16:11:21.198Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T16:11:24.629Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T16:11:31.570Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T16:11:54.203Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T16:12:02.295Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T16:12:20.647Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-26T16:12:50.349Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T16:17:45.357Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالكين", state=undefined
+[2026-09-26T16:19:47.731Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالكين", state=undefined
+[2026-09-26T16:20:49.131Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م3", state=undefined
+[2026-09-26T16:20:50.853Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-26T16:21:05.108Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T16:21:34.999Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالك", state=undefined
+[2026-09-26T16:22:56.176Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالك", state=undefined
+[2026-09-26T16:23:00.569Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالكين", state=undefined
+[2026-09-26T16:24:23.436Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="المالكين", state=undefined
+[2026-09-26T16:24:27.674Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T16:27:20.988Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T16:31:20.243Z] [CustomCmd] chat=120363414403434226@g.us, sender=263806118797548@lid, msg="م3", state=undefined
+[2026-09-26T16:31:32.421Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م3", state=undefined
+[2026-09-26T16:40:04.481Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T16:41:39.356Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T16:44:08.191Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T16:46:33.594Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م6", state=undefined
+[2026-09-26T16:48:54.575Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="معلومات المجموعه", state=undefined
+[2026-09-26T16:49:02.777Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="معلومات المجموعة", state=undefined
+[2026-09-26T16:50:02.235Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-26T16:50:08.603Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-26T16:55:09.352Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T16:55:18.406Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T16:55:25.003Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="المالكين", state=undefined
+[2026-09-26T16:55:33.243Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="المطور", state=undefined
+[2026-09-26T16:55:35.800Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="المالك", state=undefined
+[2026-09-26T16:56:29.737Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T21:29:11.895Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T21:43:01.478Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T21:43:14.300Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T21:43:41.387Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م3", state=undefined
+[2026-09-26T21:45:32.122Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م6", state=undefined
+[2026-09-26T21:45:53.562Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="م6", state=undefined
+[2026-09-26T21:46:45.876Z] [CustomCmd] chat=120363425110232090@g.us, sender=256985710764182@lid, msg="م6", state=undefined
+[2026-09-26T21:56:41.552Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T21:56:43.522Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T21:56:49.214Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T21:56:54.993Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-26T22:04:04.577Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:04:06.613Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T22:04:43.065Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:07:13.142Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:09:09.746Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:12:18.197Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:15:22.344Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T22:16:27.420Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T22:20:40.688Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T22:21:05.566Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-26T22:22:47.160Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T22:22:49.702Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-26T22:24:35.284Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T22:24:45.127Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T22:28:59.057Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-26T22:29:04.365Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-26T22:29:06.440Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م3", state=undefined
+[2026-09-26T22:29:08.596Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-26T22:29:09.245Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-26T22:34:06.451Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-26T22:34:23.869Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T22:34:25.471Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م3", state=undefined
+[2026-09-26T22:34:27.176Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T22:34:32.908Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5م6", state=undefined
+[2026-09-26T22:35:06.360Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T22:35:16.095Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-26T22:38:11.307Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T22:41:23.903Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-26T22:41:46.832Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-26T22:42:04.338Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م3", state=undefined
+[2026-09-26T22:42:11.505Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T22:42:13.068Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-26T22:46:23.158Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-26T22:47:48.917Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م5", state=undefined
+[2026-09-26T22:47:54.596Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م4", state=undefined
+[2026-09-26T22:47:58.782Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-27T06:32:52.555Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-27T06:32:56.632Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-27T06:32:59.812Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م3", state=undefined
+[2026-09-27T06:33:26.796Z] [CustomCmd] chat=120363410042973005@g.us, sender=246819506405401@lid, msg="م3", state=undefined
+[2026-09-27T06:34:39.663Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T06:39:17.751Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-27T06:39:23.019Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل السب", state=undefined
+[2026-09-27T06:39:34.182Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T06:39:39.491Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل الروابط", state=undefined
+[2026-09-27T06:42:26.983Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل السب", state=undefined
+[2026-09-27T06:42:32.944Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="فتح السب", state=undefined
+[2026-09-27T06:42:37.852Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل-فتح السب", state=undefined
+[2026-09-27T06:42:49.940Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل-فتح السب", state=undefined
+[2026-09-27T06:42:53.724Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل السب", state=undefined
+[2026-09-27T06:43:05.189Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="م2", state=undefined
+[2026-09-27T06:43:25.149Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="فتح الحذف", state=undefined
+[2026-09-27T06:45:37.520Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="فتح-قفل الحذف", state=undefined
+[2026-09-27T06:45:59.690Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="قفل-فتح الحذف", state=undefined
+[2026-09-27T06:48:47.765Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="تعطيل الحظر", state=undefined
+[2026-09-27T06:54:27.161Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="توب", state=undefined
+[2026-09-27T06:54:34.179Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="التوب", state=undefined
+[2026-09-27T06:54:39.268Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="توب ون", state=undefined
+[2026-09-27T06:54:50.175Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="اسئله", state=undefined
+[2026-09-27T06:54:55.648Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="اسئلة", state=undefined
+[2026-09-27T06:55:03.741Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-27T06:55:54.042Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="فتح السب", state=undefined
+[2026-09-27T06:55:57.996Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قفل السب", state=undefined
+[2026-09-27T06:55:59.803Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-27T06:56:05.261Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="فتح الحذف", state=undefined
+[2026-09-27T06:56:08.011Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="فتح السب", state=undefined
+[2026-09-27T06:56:12.590Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قفل السب", state=undefined
+[2026-09-27T06:56:15.948Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T06:58:59.913Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قاىمة التوب", state=undefined
+[2026-09-27T06:59:07.794Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قائمة التوب", state=undefined
+[2026-09-27T06:59:14.359Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قائمه التوب", state=undefined
+[2026-09-27T06:59:21.387Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قائمة توب", state=undefined
+[2026-09-27T06:59:28.467Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-27T07:10:44.345Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل السب", state=undefined
+[2026-09-27T07:10:49.089Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="فتح السب", state=undefined
+[2026-09-27T07:11:14.188Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تعطيل السب", state=undefined
+[2026-09-27T07:11:51.254Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل السب", state=undefined
+[2026-09-27T07:11:55.734Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="فتح السب", state=undefined
+[2026-09-27T07:12:08.110Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T07:12:15.564Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="فتح الحذف", state=undefined
+[2026-09-27T07:13:53.458Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="فتح الحذف", state=undefined
+[2026-09-27T07:14:02.297Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T07:16:14.878Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل الروابط", state=undefined
+[2026-09-27T07:16:48.168Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-09-27T07:16:59.609Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الرابط", state=undefined
+[2026-09-27T07:50:33.647Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T07:50:50.477Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T07:52:10.280Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T07:52:13.668Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="انيك", state=undefined
+[2026-09-27T07:52:18.942Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="يلعنك", state=undefined
+[2026-09-27T07:53:07.082Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T07:53:10.273Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="يلعنك", state=undefined
+[2026-09-27T07:53:18.792Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قحبه", state=undefined
+[2026-09-27T07:53:59.691Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قحبه", state=undefined
+[2026-09-27T07:54:20.139Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قحبه", state=undefined
+[2026-09-27T07:54:22.908Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="مخنوث", state=undefined
+[2026-09-27T07:54:39.694Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T07:54:42.463Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قحبه", state=undefined
+[2026-09-27T07:55:10.468Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T07:55:12.298Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T07:56:08.475Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T07:56:57.063Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T07:58:12.871Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T07:58:27.189Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="ياقحبه", state=undefined
+[2026-09-27T07:58:38.461Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="تفو عليك", state=undefined
+[2026-09-27T07:58:47.562Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه بنت القحبه", state=undefined
+[2026-09-27T08:02:40.398Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:07:05.161Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:09:15.282Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:09:26.480Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل السب", state=undefined
+[2026-09-27T08:09:29.998Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:09:37.242Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T08:09:42.474Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:10:38.596Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:10:42.978Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T08:10:44.898Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-27T08:10:52.894Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:19:22.188Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:20:47.553Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحيه", state=undefined
+[2026-09-27T08:20:50.726Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:20:59.929Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مختوث", state=undefined
+[2026-09-27T08:21:06.961Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="انيك", state=undefined
+[2026-09-27T08:21:14.108Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T08:21:17.290Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="انيك", state=undefined
+[2026-09-27T08:26:04.727Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:26:09.014Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="ياقحبه", state=undefined
+[2026-09-27T08:26:15.228Z] [CustomCmd] chat=120363410042973005@g.us, sender=256985710764182@lid, msg="قفل السب", state=undefined
+[2026-09-27T08:26:20.938Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="ياقحبه", state=undefined
+[2026-09-27T08:32:50.997Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T08:32:53.560Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T12:10:32.865Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="hi", state=undefined
+[2026-09-27T12:10:36.842Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-27T12:10:42.747Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قفل السبب", state=undefined
+[2026-09-27T12:10:44.770Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T12:10:49.410Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T12:10:56.796Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-27T12:11:19.331Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T12:11:24.065Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T12:12:39.749Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-27T12:14:03.646Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T12:14:15.670Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قحبه", state=undefined
+[2026-09-27T12:14:29.562Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوث", state=undefined
+[2026-09-27T12:14:34.020Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="يازاننني", state=undefined
+[2026-09-27T12:14:48.745Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="طرطور", state=undefined
+[2026-09-27T12:14:55.048Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="انيكك", state=undefined
+[2026-09-27T12:15:14.533Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مختوثه", state=undefined
+[2026-09-27T12:15:19.570Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="مخنوثه", state=undefined
+[2026-09-27T12:15:38.639Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="قفل الحذف", state=undefined
+[2026-09-27T12:16:43.951Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="حذف", state=undefined
+[2026-09-27T12:16:54.150Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="حذف", state=undefined
+[2026-09-27T12:19:09.467Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="م2", state=undefined
+[2026-09-27T12:19:16.495Z] [CustomCmd] chat=120363410424246228@g.us, sender=256985710764182@lid, msg="م4", state=undefined
+[2026-09-27T12:19:34.049Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-27T12:19:37.427Z] [CustomCmd] chat=120363410424246228@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-27T12:21:29.417Z] [CustomCmd] chat=120363410042973005@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-28T06:49:02.188Z] [CustomCmd] chat=120363425110232090@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T07:02:38.435Z] [CustomCmd] chat=120363411237663614@g.us, sender=246819506405401@lid, msg="المالك الاساسي", state=undefined
+[2026-09-28T07:02:42.740Z] [CustomCmd] chat=120363411237663614@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:03:00.245Z] [CustomCmd] chat=120363411237663614@g.us, sender=263806118797548@lid, msg="الرتبه", state=undefined
+[2026-09-28T07:03:04.836Z] [CustomCmd] chat=120363411237663614@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:06:04.640Z] [CustomCmd] chat=120363412919796298@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:06:11.277Z] [CustomCmd] chat=120363412919796298@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:08:30.927Z] [CustomCmd] chat=120363412919796298@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:08:38.392Z] [CustomCmd] chat=120363412919796298@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-09-28T07:31:56.613Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T07:32:49.648Z] [CustomCmd] chat=120363425110232090@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T07:37:24.680Z] [CustomCmd] chat=120363411717683592@g.us, sender=263806118797548@lid, msg="تفعيل", state=undefined
+[2026-09-28T07:37:35.075Z] [CustomCmd] chat=120363411717683592@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-28T09:11:39.703Z] [CustomCmd] chat=120363430544657416@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T09:13:24.138Z] [CustomCmd] chat=120363430544657416@g.us, sender=246819506405401@lid, msg="تفعيل", state=undefined
+[2026-09-28T09:13:32.403Z] [CustomCmd] chat=120363430544657416@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T09:13:54.235Z] [CustomCmd] chat=120363430544657416@g.us, sender=246819506405401@lid, msg="الرتبه", state=undefined
+[2026-09-28T09:13:59.335Z] [CustomCmd] chat=120363430544657416@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-28T10:21:31.033Z] [CustomCmd] chat=120363429134307415@g.us, sender=246819506405401@lid, msg="رفع مالك", state=undefined
+[2026-09-28T10:21:59.818Z] [CustomCmd] chat=120363429134307415@g.us, sender=246819506405401@lid, msg="المالكين", state=undefined
+[2026-09-28T10:22:03.315Z] [CustomCmd] chat=120363429134307415@g.us, sender=246819506405401@lid, msg="المطورين", state=undefined
+[2026-09-28T10:28:53.281Z] [CustomCmd] chat=120363429134307415@g.us, sender=246819506405401@lid, msg="ظالوو", state=undefined
+[2026-09-28T11:12:19.011Z] [CustomCmd] chat=120363410516808306@g.us, sender=246819506405401@lid, msg="الل", state=undefined
+[2026-09-28T11:42:55.423Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T11:43:20.681Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="تفعيل", state=undefined
+[2026-09-28T11:55:34.158Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="رتبني", state=undefined
+[2026-09-28T11:55:39.017Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="رتبتي", state=undefined
+[2026-09-28T11:55:46.306Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T12:04:59.837Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="المالكين", state=undefined
+[2026-09-28T12:10:12.730Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="المالكين", state=undefined
+[2026-09-28T12:11:06.318Z] [CustomCmd] chat=120363431288389796@g.us, sender=246819506405401@lid, msg="المالكين", state=undefined
+[2026-09-28T15:26:51.120Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T15:50:44.432Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T15:54:26.021Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:03:36.600Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="هلو", state=undefined
+[2026-09-28T16:04:03.464Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:04:27.929Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T16:05:24.004Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="م2", state=undefined
+[2026-09-28T16:05:53.403Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:06:17.802Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T16:07:22.103Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="طرد", state=undefined
+[2026-09-28T16:08:33.688Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T16:09:29.448Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="هكذا", state=undefined
+[2026-09-28T16:09:35.803Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="طرد", state=undefined
+[2026-09-28T16:10:02.111Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T16:10:32.709Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="اجعبتك هذه الميزه بس", state=undefined
+[2026-09-28T16:10:34.972Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T16:10:48.840Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اتحداك الان", state=undefined
+[2026-09-28T16:11:06.008Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="لو اشتي ارفع رقمي مشرف كيف", state=undefined
+[2026-09-28T16:11:27.119Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ارسل منه رساله", state=undefined
+[2026-09-28T16:11:56.273Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="رفع مالك", state=undefined
+[2026-09-28T16:11:56.979Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="طرد", state=undefined
+[2026-09-28T16:13:11.867Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:13:33.783Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:13:44.791Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T16:13:55.037Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="التسليه", state=undefined
+[2026-09-28T16:14:04.628Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T16:14:41.864Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="صراحه", state=undefined
+[2026-09-28T16:14:59.610Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش تختار", state=undefined
+[2026-09-28T16:15:17.839Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م6", state=undefined
+[2026-09-28T16:15:28.103Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م5", state=undefined
+[2026-09-28T16:16:22.376Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انشاء صور", state=undefined
+[2026-09-28T16:16:37.922Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="توليد فيديو", state=undefined
+[2026-09-28T16:16:47.517Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ميزه حلوه لو ارسلت الصوره لمره واحده البوت يقدر يخليها دائم", state=undefined
+[2026-09-28T16:17:03.112Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="كلهم خاربين لانه يشتي لهم ماااني لتشغيلهم", state=undefined
+[2026-09-28T16:17:14.094Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="عرض مره", state=undefined
+[2026-09-28T16:17:23.939Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="عرض مرة", state=undefined
+[2026-09-28T16:18:08.496Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="جبتي كيفك", state=undefined
+[2026-09-28T16:18:23.228Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="جيمني هلو", state=undefined
+[2026-09-28T16:18:34.357Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T16:19:00.644Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="صراحه", state=undefined
+[2026-09-28T16:19:05.100Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="تحسين", state=undefined
+[2026-09-28T16:19:44.519Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:20:29.505Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T16:20:37.500Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="طرد", state=undefined
+[2026-09-28T16:20:56.310Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حقيقه", state=undefined
+[2026-09-28T16:21:14.699Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="حقيقه", state=undefined
+[2026-09-28T16:21:17.223Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="حقيقة", state=undefined
+[2026-09-28T16:21:22.249Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حب", state=undefined
+[2026-09-28T16:21:31.908Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="كره", state=undefined
+[2026-09-28T16:21:53.660Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="كذب", state=undefined
+[2026-09-28T16:21:58.969Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="م4", state=undefined
+[2026-09-28T16:22:10.364Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="حظه", state=undefined
+[2026-09-28T16:22:19.819Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="حظة", state=undefined
+[2026-09-28T16:22:32.546Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-28T16:22:41.868Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-28T16:22:46.118Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="تحليل الشخصية", state=undefined
+[2026-09-28T16:22:58.944Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="بعض احيان مايرضي الا بتاء مربوطه", state=undefined
+[2026-09-28T16:23:03.235Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="تحليل الشخصية", state=undefined
+[2026-09-28T16:23:40.415Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="شعر", state=undefined
+[2026-09-28T16:24:13.413Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ذكاء", state=undefined
+[2026-09-28T16:24:59.037Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ذكاء", state=undefined
+[2026-09-28T16:25:14.632Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ذكاء كيفك", state=undefined
+[2026-09-28T16:25:27.717Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="مش شغال مالك من هذا", state=undefined
+[2026-09-28T16:25:30.369Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="جرأه", state=undefined
+[2026-09-28T16:26:15.862Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state=undefined
+[2026-09-28T16:26:39.467Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اضف اشتراك", state=undefined
+[2026-09-28T16:26:57.263Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تفعيل الاشتراك", state=undefined
+[2026-09-28T16:27:40.182Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م5", state=undefined
+[2026-09-28T16:27:51.342Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ملصق", state=undefined
+[2026-09-28T16:28:26.667Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طقس تعز", state=undefined
+[2026-09-28T16:28:43.479Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طقس نيويورك", state=undefined
+[2026-09-28T16:28:57.722Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طقس جيبوتي", state=undefined
+[2026-09-28T16:29:01.733Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اعجبك البوت هذا وعادنا مارتبته حلا", state=undefined
+[2026-09-28T16:29:09.470Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="جو جيبوتي", state=undefined
+[2026-09-28T16:29:13.439Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طقس المحطه", state=undefined
+[2026-09-28T16:29:32.440Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضخم والله", state=undefined
+[2026-09-28T16:29:41.766Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طقس القاعده", state=undefined
+[2026-09-28T16:29:57.916Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T16:30:31.466Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="بالرد بس بالمنشن مايشتغل", state=undefined
+[2026-09-28T16:31:47.780Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اسئله", state=undefined
+[2026-09-28T16:31:50.810Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اسئلة", state=undefined
+[2026-09-28T16:32:12.469Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اسئلة", state=undefined
+[2026-09-28T16:32:34.628Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اسئلة", state=undefined
+[2026-09-28T16:33:39.046Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="اسئلة", state=undefined
+[2026-09-28T16:34:14.299Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-28T16:34:36.033Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="طرد", state=undefined
+[2026-09-28T16:34:48.316Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="م4", state=undefined
+[2026-09-28T16:49:02.878Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-09-28T16:49:46.582Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="م2", state=undefined
+[2026-09-28T16:50:31.549Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تنزيل", state=undefined
+[2026-09-28T16:50:56.102Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تنزيل مالك", state=undefined
+[2026-09-28T16:51:34.192Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ها وكيف زلتك اول", state=undefined
+[2026-09-28T16:51:46.228Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اوامر الاعدادات", state=undefined
+[2026-09-28T16:52:02.666Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="رقمي الثاني هذا لانه انشئت المجموعه برقم البوت", state=undefined
+[2026-09-28T16:52:14.106Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="الاعدادات", state=undefined
+[2026-09-28T16:54:14.929Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="خاص بالمطور", state=undefined
+[2026-09-28T16:54:15.559Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هل لديه اي اوامر للقنوات هل يستطيع افادتها", state=undefined
+[2026-09-28T16:54:27.874Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="مثل ايش", state=undefined
+[2026-09-28T16:54:34.596Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="قول لي وانا بضيفها", state=undefined
+[2026-09-28T16:55:31.885Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="الاعدادات", state=undefined
+[2026-09-28T16:56:00.050Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضروري القناه تعمل لها اي اضافه لانه القناه فيها اعضاء كثر من 100الف ام المجموعات من 1025لا يتجاوز لو تشتي طلبه الله عليك بالقنوات", state=undefined
+[2026-09-28T16:56:05.746Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الاعدادات", state=undefined
+[2026-09-28T16:56:29.247Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تقدر تنزل اعلان بالبوت والبوت يرسلها لكامل المجموعات والاعضاء الي مشتركين فيبه", state=undefined
+[2026-09-28T16:56:32.422Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م3", state=undefined
+[2026-09-28T16:56:49.655Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كيف افعل مثل هذا", state=undefined
+[2026-09-28T16:57:47.356Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مكافحة الروابط", state=undefined
+[2026-09-28T16:58:05.975Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T16:58:25.617Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م2", state=undefined
+[2026-09-28T16:59:18.904Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="الوه", state=undefined
+[2026-09-28T16:59:54.904Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T17:00:03.671Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-28T17:00:27.129Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="قفل المجموعه", state=undefined
+[2026-09-28T17:00:36.829Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="مله ايش اضيف اصلا القنوات مافيها نظام مثل تلجرام ايش اسوي لهن", state=undefined
+[2026-09-28T17:00:53.314Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="بنفكر لهن بشي", state=undefined
+[2026-09-28T17:01:20.136Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ايوه بس مابسويه لان الاغلب بينزلو البوت بيقلك يسوي اعلانات من ظهرنا بس لو به مبلغ ضخم بخليه يرسل بكل مكان", state=undefined
+[2026-09-28T17:01:41.843Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="هذا حق اعدادات البوت", state=undefined
+[2026-09-28T17:01:56.537Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ان شاء الله", state=undefined
+[2026-09-28T17:02:08.319Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="المجموعة تاء مربوطه", state=undefined
+[2026-09-28T17:02:33.539Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فتح امر فتح الكل", state=undefined
+[2026-09-28T17:02:50.132Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="قفل المجموعة", state=undefined
+[2026-09-28T17:03:14.071Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كيف اقفل المجموعه اسمح للمشرفين بارسال الرسايل", state=undefined
+[2026-09-28T17:03:21.710Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انذار", state=undefined
+[2026-09-28T17:03:44.008Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T17:04:06.812Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="رفع مالك", state=undefined
+[2026-09-28T17:04:25.887Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تنزيل ادمن", state=undefined
+[2026-09-28T17:04:43.826Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حضر", state=undefined
+[2026-09-28T17:04:57.215Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حظر", state=undefined
+[2026-09-28T17:05:37.321Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="سلام", state=undefined
+[2026-09-28T17:06:20.426Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تقييد", state=undefined
+[2026-09-28T17:06:52.222Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تقييد 29سبتمبر", state=undefined
+[2026-09-28T17:07:20.052Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انذاراتي", state=undefined
+[2026-09-28T17:07:33.328Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مسح الانذارات", state=undefined
+[2026-09-28T17:07:54.076Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تنزيل مالك", state=undefined
+[2026-09-28T17:08:14.869Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تقييد", state=undefined
+[2026-09-28T17:08:55.515Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state=undefined
+[2026-09-28T17:10:01.575Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اسم القروب محمد", state=undefined
+[2026-09-28T17:10:33.703Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضع ترحيب", state=undefined
+[2026-09-28T17:11:12.171Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="القوانين", state=undefined
+[2026-09-28T17:11:31.110Z] [CustomCmd] chat=120363429263237948@g.us, sender=256985710764182@lid, msg="ضع قوانين", state=undefined
+[2026-09-28T17:11:31.630Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الرابط", state=undefined
+[2026-09-28T17:12:04.921Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كيف الغي ارسال الروابط", state=undefined
+[2026-09-28T17:12:16.397Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حضر", state=undefined
+[2026-09-28T17:12:25.086Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="قفل الروابط", state=undefined
+[2026-09-28T17:12:39.729Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="برسل رابط", state=undefined
+[2026-09-28T17:13:23.706Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="الاوامر", state=undefined
+[2026-09-28T17:13:35.616Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="ازاله", state=undefined
+[2026-09-28T17:13:47.105Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="طرد", state=undefined
+[2026-09-28T17:14:02.722Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="م4", state=undefined
+[2026-09-28T17:14:15.984Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="شعر", state=undefined
+[2026-09-28T17:14:35.443Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="جرأة", state=undefined
+[2026-09-28T17:14:56.887Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="الكرة السحرية", state=undefined
+[2026-09-28T17:16:02.730Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايموجي المناسب", state=undefined
+[2026-09-28T17:17:28.414Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكتة", state=undefined
+[2026-09-28T17:17:53.157Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ذكاء", state=undefined
+[2026-09-28T17:19:11.136Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ذكاء", state=undefined
+[2026-09-28T17:19:23.287Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش تختار", state=undefined
+[2026-09-28T17:19:50.699Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T17:20:00.327Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T17:20:05.415Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T17:20:18.708Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T17:20:27.250Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T17:31:26.302Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-28T17:31:34.967Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="اعدادات المنشن", state=undefined
+[2026-09-28T17:59:31.195Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-28T17:59:43.882Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-28T17:59:46.700Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T17:59:48.657Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نكتة", state=undefined
+[2026-09-28T17:59:56.188Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الكره السحريه", state=undefined
+[2026-09-28T18:00:01.417Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الكرة السحرية", state=undefined
+[2026-09-28T18:00:08.325Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="ماطعم الرمان", state=undefined
+[2026-09-28T18:00:17.393Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="ماطعم الرمان", state=undefined
+[2026-09-28T18:00:22.823Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الكره السحريه ماطعم الرمان", state=undefined
+[2026-09-28T18:00:45.262Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الكره السحريه هل تحبني", state=undefined
+[2026-09-28T18:00:54.527Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الكره السحريه من اتت", state=undefined
+[2026-09-28T18:06:21.449Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-28T18:08:50.474Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T18:09:18.854Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="م1 م2", state=undefined
+[2026-09-28T18:09:26.970Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="مم1", state=undefined
+[2026-09-28T18:09:31.623Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T18:09:39.828Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T18:11:00.637Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ضفته", state=undefined
+[2026-09-28T18:12:20.108Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-28T18:12:33.205Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-28T18:12:55.275Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="عدد الرتب", state=undefined
+[2026-09-28T18:13:05.974Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="المالكين", state=undefined
+[2026-09-28T18:13:18.301Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="المطور", state=undefined
+[2026-09-28T18:13:29.835Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الايدي", state=undefined
+[2026-09-28T18:13:57.209Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مسح الكل", state=undefined
+[2026-09-28T18:14:40.543Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م2", state=undefined
+[2026-09-28T18:15:06.623Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فتح امر الرايط", state=undefined
+[2026-09-28T18:15:20.215Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state=undefined
+[2026-09-28T18:15:39.374Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="التحكم بالاوامر", state=undefined
+[2026-09-28T18:16:44.714Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الترحيب", state=undefined
+[2026-09-28T18:17:15.207Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="معلومات المجموعه", state=undefined
+[2026-09-28T18:17:53.822Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T18:17:54.044Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-09-28T18:18:08.868Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميم", state=undefined
+[2026-09-28T18:18:28.847Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="غزل", state=undefined
+[2026-09-28T18:18:50.532Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الالعاب", state=undefined
+[2026-09-28T18:19:12.305Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="مسح الكل", state=undefined
+[2026-09-28T18:19:15.133Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الايدي", state=undefined
+[2026-09-28T18:19:26.825Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="قدنا قلت بفحصه بدخله زغط زغط بس والله انه بوت ضخم", state=undefined
+[2026-09-28T18:19:56.514Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اكس او", state=undefined
+[2026-09-28T18:20:13.529Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اضم 1", state=undefined
+[2026-09-28T18:20:15.942Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ذحين انا قدنا اللاحظ الاخطاء الي فيه واصلحها وحده وحده من اول قد صلحت كم وكم اخطاء", state=undefined
+[2026-09-28T18:20:20.729Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 1", state=undefined
+[2026-09-28T18:20:36.248Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="يالله اختار", state=undefined
+[2026-09-28T18:21:03.549Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="اكتب كتابه", state=undefined
+[2026-09-28T18:21:09.132Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="واحد", state=undefined
+[2026-09-28T18:21:19.992Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ياخي هكذا 1 ورد عليه", state=undefined
+[2026-09-28T18:23:14.191Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هههه والله انه ضخم قوه بيسلي على الناس", state=undefined
+[2026-09-28T18:23:20.946Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="قد ظفت فيه امر ذكاء اصطناعي", state=undefined
+[2026-09-28T18:23:25.435Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ميتا كيف حالك", state=undefined
+[2026-09-28T18:23:35.389Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ان شاء الله", state=undefined
+[2026-09-28T18:23:49.363Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ميتا معك ام", state=undefined
+[2026-09-28T18:24:20.170Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ميتا هل يمكنك معرفة ما اسمي", state=undefined
+[2026-09-28T18:24:58.329Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ميتا ما اول رساله ارسلتها لك", state=undefined
+[2026-09-28T18:28:51.544Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الرجل المشنوق", state=undefined
+[2026-09-28T18:29:13.615Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="خمن الكلمه", state=undefined
+[2026-09-28T18:29:18.886Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فصل", state=undefined
+[2026-09-28T18:29:28.758Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طيب كيف اخمنها ايش دراني", state=undefined
+[2026-09-28T18:29:36.688Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فصل", state=undefined
+[2026-09-28T18:29:50.204Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حاول جيب كلمات من اربعه حروف لانه اربع شرطات _", state=undefined
+[2026-09-28T18:30:11.950Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="دكان", state=undefined
+[2026-09-28T18:30:30.055Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ركززز كلمه مش فعل ولا فاعل ولا غيره", state=undefined
+[2026-09-28T18:30:58.345Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نفطي", state=undefined
+[2026-09-28T18:31:12.284Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تلميح", state=undefined
+[2026-09-28T18:31:31.603Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="البوت رقد", state=undefined
+[2026-09-28T18:32:10.088Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كتاب", state=undefined
+[2026-09-28T18:32:43.893Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش برائيك ازيد اضيف له", state=undefined
+[2026-09-28T18:33:07.470Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="خلي للبوت أسم مثلا اول ما اكتب اسمه يرد عليا او لو في عضو قال السلام عليكم يرد السلام بتقدر", state=undefined
+[2026-09-28T18:33:27.471Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T18:33:43.501Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="سيارتي", state=undefined
+[2026-09-28T18:34:29.713Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="رقم حظي", state=undefined
+[2026-09-28T18:34:51.417Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="رقم حظي علي", state=undefined
+[2026-09-28T18:35:26.005Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="جرأة", state=undefined
+[2026-09-28T18:35:37.625Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ذكاء", state=undefined
+[2026-09-28T18:35:44.904Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ألغاز", state=undefined
+[2026-09-28T18:36:03.150Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حقيقة", state=undefined
+[2026-09-28T18:36:20.558Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م5", state=undefined
+[2026-09-28T18:36:40.716Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="رابط قصير", state=undefined
+[2026-09-28T18:37:00.886Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فيديو", state=undefined
+[2026-09-28T18:37:09.605Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="رابط قصير", state=undefined
+[2026-09-28T18:37:19.532Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="رابط قصير", state=undefined
+[2026-09-28T18:37:41.233Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="خرباااان هذا", state=undefined
+[2026-09-28T18:38:06.893Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="يحمل فيديوخات من فيسبوك والمواقع الاخرى صح", state=undefined
+[2026-09-28T18:38:24.414Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="صح", state=undefined
+[2026-09-28T18:38:26.978Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="رابط قصير", state=undefined
+[2026-09-28T18:38:40.758Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضخم", state=undefined
+[2026-09-28T18:38:49.319Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="شغال الله المستعان بس ماينفع للمصقات", state=undefined
+[2026-09-28T18:38:59.547Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تحميل يوتيوب", state=undefined
+[2026-09-28T18:39:06.391Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="او تحميل", state=undefined
+[2026-09-28T18:39:09.643Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تحميل", state=undefined
+[2026-09-28T18:39:21.341Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ترسله لاي واحد ويحمل الصوره", state=undefined
+[2026-09-28T18:39:30.180Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فيسبوك", state=undefined
+[2026-09-28T18:39:35.403Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-09-28T18:39:56.793Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فيديو حبيتك لاول مره", state=undefined
+[2026-09-28T18:40:44.858Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميتا كيف حالك", state=undefined
+[2026-09-28T18:41:00.105Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="لمه كبير", state=undefined
+[2026-09-28T18:41:12.911Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فيديو ريلز قصير", state=undefined
+[2026-09-28T18:41:30.816Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فيديو حالات واتس", state=undefined
+[2026-09-28T18:41:47.379Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="جبتي ما هو اكبر جبل باليمن", state=undefined
+[2026-09-28T18:42:05.922Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="جبتي مش شغال وجيمناي", state=undefined
+[2026-09-28T18:42:29.856Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميتا ما هو اكبر جبل باليمن", state=undefined
+[2026-09-28T18:43:12.948Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م6", state=undefined
+[2026-09-28T18:43:41.243Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميتا كيف ابدو اليوم 😅", state=undefined
+[2026-09-28T18:44:15.616Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="من انت", state=undefined
+[2026-09-28T18:45:20.661Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T18:45:38.054Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حب", state=undefined
+[2026-09-28T18:45:49.813Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كره", state=undefined
+[2026-09-28T18:46:40.765Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="وجهي", state=undefined
+[2026-09-28T18:47:00.247Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="امنيتي", state=undefined
+[2026-09-28T18:47:16.376Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميه الميه", state=undefined
+[2026-09-28T18:47:29.579Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="من يحبني", state=undefined
+[2026-09-28T18:47:53.669Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="من يكرهني", state=undefined
+[2026-09-28T18:48:10.440Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="غباء", state=undefined
+[2026-09-28T18:48:26.210Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميم", state=undefined
+[2026-09-28T18:48:36.808Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حقيقه", state=undefined
+[2026-09-28T18:49:00.835Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="دلع", state=undefined
+[2026-09-28T18:49:17.671Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="دلع لين", state=undefined
+[2026-09-28T18:49:19.785Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="سيارتي", state=undefined
+[2026-09-28T18:49:30.269Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="سيارتي معتصم", state=undefined
+[2026-09-28T18:49:46.080Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="دلع محتصم", state=undefined
+[2026-09-28T18:49:59.691Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="دلع محمد", state=undefined
+[2026-09-28T18:50:01.362Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="دلع محمد", state=undefined
+[2026-09-28T18:50:29.237Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="دلع معتصم", state=undefined
+[2026-09-28T18:51:08.466Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-28T18:51:11.807Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تيتو", state=undefined
+[2026-09-28T18:51:36.203Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-28T18:51:54.016Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-28T18:52:15.648Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ذحين حاول تطرد البوت", state=undefined
+[2026-09-28T18:52:48.733Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T18:54:57.052Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ان شاء الله", state=undefined
+[2026-09-28T18:55:19.784Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T18:55:29.228Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه", state=undefined
+[2026-09-28T18:56:01.541Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه انا بحبك", state=undefined
+[2026-09-28T18:56:05.639Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="صلاح الاخفش _يالليالي", state=undefined
+[2026-09-28T18:56:20.831Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه صلاح الاخفش _يالليالي", state=undefined
+[2026-09-28T18:56:22.259Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه صلاح الاخفش _يالليالي", state=undefined
+[2026-09-28T18:56:46.358Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ed sheeran - shape of you", state=undefined
+[2026-09-28T18:56:54.629Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حلو بصلحه الان", state=undefined
+[2026-09-28T18:56:58.646Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه  ed sheeran - shape of you", state=undefined
+[2026-09-28T18:57:49.459Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="توافث", state=undefined
+[2026-09-28T18:57:50.831Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ذحين تطرده", state=undefined
+[2026-09-28T18:58:03.106Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T18:59:30.393Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T18:59:44.843Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="يوم الورد", state=undefined
+[2026-09-28T19:00:11.329Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تصبح على خير", state=undefined
+[2026-09-28T19:00:30.878Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اين ستسافر", state=undefined
+[2026-09-28T19:00:46.683Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اين ستسافر معتصم 19", state=undefined
+[2026-09-28T19:01:03.124Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اين ستسافر محمد 19", state=undefined
+[2026-09-28T19:01:32.990Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايموجي المناسب", state=undefined
+[2026-09-28T19:01:59.251Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:02:16.653Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:02:46.124Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-28T19:02:49.865Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:03:22.552Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:03:46.279Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:04:09.360Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ذكاء", state=undefined
+[2026-09-28T19:04:21.544Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش تختار", state=undefined
+[2026-09-28T19:04:32.166Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الهدوء", state=undefined
+[2026-09-28T19:04:41.805Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الحفلات", state=undefined
+[2026-09-28T19:04:41.984Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش تختار", state=undefined
+[2026-09-28T19:04:48.608Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="صمت", state=undefined
+[2026-09-28T19:04:52.674Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش تختار", state=undefined
+[2026-09-28T19:04:55.017Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="موسيقى", state=undefined
+[2026-09-28T19:05:01.905Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فيلم", state=undefined
+[2026-09-28T19:05:04.799Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايشتختار", state=undefined
+[2026-09-28T19:05:11.068Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش تختار", state=undefined
+[2026-09-28T19:05:17.938Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الليل", state=undefined
+[2026-09-28T19:05:20.510Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش تختار", state=undefined
+[2026-09-28T19:06:02.465Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حقيقة", state=undefined
+[2026-09-28T19:06:12.178Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حقيقة", state=undefined
+[2026-09-28T19:06:22.535Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-28T19:06:31.723Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-28T19:06:33.300Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-28T19:06:37.184Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اقتباس", state=undefined
+[2026-09-28T19:06:41.161Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-28T19:06:49.072Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اكس او", state=undefined
+[2026-09-28T19:06:59.840Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 2", state=undefined
+[2026-09-28T19:07:04.482Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 1", state=undefined
+[2026-09-28T19:07:24.221Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حتى انا والله", state=undefined
+[2026-09-28T19:07:57.152Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="احههه", state=undefined
+[2026-09-28T19:08:02.403Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="اكس او", state=undefined
+[2026-09-28T19:08:08.858Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انضم 2", state=undefined
+[2026-09-28T19:10:02.810Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اكس او", state=undefined
+[2026-09-28T19:10:08.217Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ذحين جرب اطرد البوت", state=undefined
+[2026-09-28T19:10:14.223Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T19:10:25.865Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T19:11:12.757Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اكس او", state=undefined
+[2026-09-28T19:11:37.933Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="دوري او دورك", state=undefined
+[2026-09-28T19:11:41.950Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مستستلم", state=undefined
+[2026-09-28T19:11:56.596Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="عادك ما دخلت ادخل", state=undefined
+[2026-09-28T19:11:59.130Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="مسرع قدك بترقد امانه لا اليوم سمره لاصبح", state=undefined
+[2026-09-28T19:12:04.801Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 3", state=undefined
+[2026-09-28T19:12:09.928Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 2", state=undefined
+[2026-09-28T19:12:16.883Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انضم 1", state=undefined
+[2026-09-28T19:12:28.506Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="سهل بكر من غير نوم", state=undefined
+[2026-09-28T19:12:42.151Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ياخي لاتلعب خمسه هكذا ماحد بيفوز", state=undefined
+[2026-09-28T19:13:10.320Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="بشل القلب لي", state=undefined
+[2026-09-28T19:13:57.529Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ما خاصرتني بكتب 7 ونهيك", state=undefined
+[2026-09-28T19:14:25.390Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="هاااا", state=undefined
+[2026-09-28T19:14:59.060Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="انا جلست ابنيك ساعات ياخائنة العشره", state=undefined
+[2026-09-28T19:15:26.607Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايوه", state=undefined
+[2026-09-28T19:15:38.795Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انذار", state=undefined
+[2026-09-28T19:17:02.380Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T19:17:09.123Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T19:18:35.023Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حظر", state=undefined
+[2026-09-28T19:18:55.865Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايش الحظر اللي يسويه", state=undefined
+[2026-09-28T19:19:31.485Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انذار", state=undefined
+[2026-09-28T19:19:38.926Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-28T19:19:48.066Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حذف", state=undefined
+[2026-09-28T19:19:48.769Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="لو رسل رساله يحذفها", state=undefined
+[2026-09-28T19:20:03.255Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ها ليش ما حذف", state=undefined
+[2026-09-28T19:20:18.485Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="فك الحظر", state=undefined
+[2026-09-28T19:20:24.643Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-28T19:20:31.645Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="لانك مشرف", state=undefined
+[2026-09-28T19:20:38.969Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-28T19:20:59.186Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حظر", state=undefined
+[2026-09-28T19:25:27.768Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="طرد", state=undefined
+[2026-09-28T19:25:42.401Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="قد صلحت كلمات الاغنيه", state=undefined
+[2026-09-28T19:25:46.948Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه", state=undefined
+[2026-09-28T19:26:23.043Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايوب طارش ـ ضوء الليالي", state=undefined
+[2026-09-28T19:27:06.451Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه لا بدنا نروق بدنا نهدى شوي", state=undefined
+[2026-09-28T19:27:18.616Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="يشتي اسم الاغنيه", state=undefined
+[2026-09-28T19:27:36.828Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه ايوب طارش ـ ضوء الليالي", state=undefined
+[2026-09-28T19:28:02.581Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ميتا اعطني اسم اغنيه ومغنيها تكون عربيه مشهوره", state=undefined
+[2026-09-28T19:28:14.546Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه ماريا قحطان-صب القهوه وصب الشتي", state=undefined
+[2026-09-28T19:28:45.301Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه ماريا قحطان-صب القهوه وصب الشاي", state=undefined
+[2026-09-28T19:28:52.096Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه يا ليل الصبر", state=undefined
+[2026-09-28T19:29:09.306Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="كلمات الاغنيه صب القهوه وصب الشاي", state=undefined
+[2026-09-28T19:29:27.787Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه يا ليل الصبر - محمد عبده", state=undefined
+[2026-09-28T19:29:40.306Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-28T19:29:57.568Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="شكله مايدعم غير الا الاغاني الاجنبيه", state=undefined
+[2026-09-28T19:32:12.928Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="عادك حي", state=undefined
+[2026-09-28T19:32:14.294Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-28T19:32:29.820Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش رائيك بخلفية البوت", state=undefined
+[2026-09-28T19:32:30.220Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-28T19:33:18.206Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هذه الخلفيه", state=undefined
+[2026-09-28T19:33:25.518Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="صور", state=undefined
+[2026-09-28T19:33:34.389Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايوه", state=undefined
+[2026-09-28T19:34:23.379Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="بنجرب اني بقدر احظرك", state=undefined
+[2026-09-28T19:34:27.595Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:35:23.562Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كه ارسل اي حاجه الان", state=undefined
+[2026-09-28T19:35:49.543Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه", state=undefined
+[2026-09-28T19:36:00.325Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه يا ليل الصبر - محمد عبده", state=undefined
+[2026-09-28T19:36:30.489Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="كلمات الاغنيه محمد عبده - يا ليل الصبر", state=undefined
+[2026-09-28T19:38:06.399Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الوه", state=undefined
+[2026-09-28T19:38:17.583Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:38:27.024Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ما في شي", state=undefined
+[2026-09-28T19:38:41.402Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="قد حضرت رقمي وهو مش مشرف ويقدر يراسل", state=undefined
+[2026-09-28T19:38:57.849Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:39:06.129Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-28T19:39:08.857Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:39:16.601Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هبو", state=undefined
+[2026-09-28T19:40:35.776Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حضر", state=undefined
+[2026-09-28T19:44:14.193Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش عاد باقي ماجربناه", state=undefined
+[2026-09-28T19:45:19.779Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T19:45:29.243Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:45:38.179Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T19:46:43.805Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:46:55.516Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-28T19:46:59.130Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:47:44.683Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-28T19:47:54.610Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="م1", state=undefined
+[2026-09-28T19:47:56.574Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م44", state=undefined
+[2026-09-28T19:47:58.354Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="تسليه", state=undefined
+[2026-09-28T19:48:09.022Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م6", state=undefined
+[2026-09-28T19:48:15.161Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م7", state=undefined
+[2026-09-28T19:48:31.958Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مسح", state=undefined
+[2026-09-28T19:48:41.285Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مسح", state=undefined
+[2026-09-28T19:49:27.351Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايش رائيك الحظر نخليه يكون يحذف رسالة المستخدم", state=undefined
+[2026-09-28T19:50:41.458Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ايوه كذا", state=undefined
+[2026-09-28T19:51:29.600Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="بس بو في عضو بيعمل رسايل بيزعج المجموعه ليت كان نفس تلجرام تحذفها وتنهيها 
+مش حذف هذه الرساله المشرف معتصم", state=undefined
+[2026-09-28T19:52:30.074Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-28T19:52:48.294Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الكرة السحرية", state=undefined
+[2026-09-28T19:53:03.999Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميتا كم اشخاص هنا", state=undefined
+[2026-09-28T19:53:30.542Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="مايقدر يعرف مش مربوط بالمجموعه", state=undefined
+[2026-09-28T19:53:55.041Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="ميم", state=undefined
+[2026-09-28T19:54:57.574Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="عمري", state=undefined
+[2026-09-28T19:55:33.238Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="ميم", state=undefined
+[2026-09-28T19:56:57.626Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="كما والله به فيديوهات حق كبار بس انسي احذفهم شكله هذا البوت بيجيب لي سيئات لهناك لهنام", state=undefined
+[2026-09-28T19:57:15.641Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="بس مش بيدي به فيديوهات مضحكه وفيديوهات مش مليح", state=undefined
+[2026-09-28T19:57:18.450Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميم", state=undefined
+[2026-09-28T19:58:09.350Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:58:15.866Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T19:58:24.962Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-28T19:58:26.824Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:58:29.075Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:58:38.738Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الو", state=undefined
+[2026-09-28T19:58:51.046Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:59:13.410Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-28T19:59:39.177Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T19:59:46.249Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T19:59:51.109Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T20:02:44.226Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:03:02.256Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:03:16.582Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:03:33.378Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:03:44.249Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:04:12.999Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:04:45.792Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:05:03.165Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:05:31.290Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نمته", state=undefined
+[2026-09-28T20:05:33.213Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:05:59.541Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:06:22.571Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:06:43.244Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:06:57.234Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:07:28.395Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:07:53.019Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:08:10.810Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:08:42.202Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:09:01.077Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:09:17.856Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:09:46.044Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:10:10.325Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:10:24.698Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:10:47.071Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:10:58.819Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:11:16.921Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:11:37.163Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:11:48.870Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:12:01.299Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:12:35.314Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:12:44.871Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:13:06.808Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:13:24.640Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:13:54.396Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:14:58.972Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:14:59.616Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:15:44.482Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:16:20.133Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:16:39.790Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="نكته", state=undefined
+[2026-09-28T20:24:29.225Z] [CustomCmd] chat=120363429263237948@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T20:24:47.849Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الو", state=undefined
+[2026-09-28T20:24:59.602Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T20:25:07.559Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-28T20:25:10.973Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-28T20:25:26.444Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الو", state=undefined
+[2026-09-28T20:26:50.658Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-28T20:40:22.749Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الو", state=undefined
+[2026-09-28T20:40:28.698Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-29T06:44:31.778Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-29T06:44:40.823Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-29T06:44:48.439Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-29T06:45:08.961Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-29T06:46:10.977Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-29T06:46:34.875Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الغاء الحظر", state=undefined
+[2026-09-29T06:46:39.488Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="تقييد", state=undefined
+[2026-09-29T06:46:44.345Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-29T06:46:48.895Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="تقيد", state=undefined
+[2026-09-29T06:47:54.922Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-09-29T06:48:23.379Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="القيود", state=undefined
+[2026-09-29T06:48:29.021Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-29T06:48:58.274Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="مسح الكل", state=undefined
+[2026-09-29T06:49:23.223Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="مسح الكل", state=undefined
+[2026-09-29T07:07:00.304Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="الغاء التقييد", state=undefined
+[2026-09-29T07:07:08.720Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-29T08:42:31.634Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="اعدادات المنشن", state=undefined
+[2026-09-29T08:43:19.408Z] [CustomCmd] chat=120363412018101967@g.us, sender=256985710764182@lid, msg="اعدادات المنشن", state=undefined
+[2026-09-29T08:43:39.002Z] [CustomCmd] chat=120363412018101967@g.us, sender=256985710764182@lid, msg="اعدادات المنشن", state=undefined
+[2026-09-29T08:43:58.340Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="بوت", state=undefined
+[2026-09-29T08:50:55.751Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نداء المطور", state=undefined
+[2026-09-29T08:51:12.322Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نداء المطور", state=undefined
+[2026-09-29T08:51:20.207Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نداء المطور", state=undefined
+[2026-09-29T08:51:29.540Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="نداء المطور", state=undefined
+[2026-09-29T08:52:15.787Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="المطور", state=undefined
+[2026-09-29T09:18:18.816Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مكته", state=undefined
+[2026-09-29T09:19:11.543Z] [CustomCmd] chat=155920801779895@lid, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-29T09:23:42.794Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-29T09:23:51.817Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نمته", state=undefined
+[2026-09-29T09:24:08.605Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م4", state=undefined
+[2026-09-29T09:24:24.271Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اكس او", state=undefined
+[2026-09-29T09:25:02.514Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="انضم 1", state=undefined
+[2026-09-29T09:26:19.355Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="مستسلن", state=undefined
+[2026-09-29T09:27:06.124Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state=undefined
+[2026-09-29T09:33:14.624Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اسم القروب محتصم", state=undefined
+[2026-09-29T09:34:07.621Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضع ترحيب", state=undefined
+[2026-09-29T09:34:51.504Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-29T09:35:27.813Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ضع وداع", state=undefined
+[2026-09-29T09:35:41.672Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اضف رد", state=undefined
+[2026-09-29T09:35:51.147Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هلا وغلا", state=undefined
+[2026-09-29T09:35:58.987Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ههعع", state=undefined
+[2026-09-29T10:21:03.519Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الوو", state=undefined
+[2026-09-29T10:21:14.524Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-29T10:21:33.719Z] [CustomCmd] chat=120363412018101967@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-09-29T10:21:37.746Z] [CustomCmd] chat=120363412018101967@g.us, sender=246819506405401@lid, msg="الاوامر", state=undefined
+[2026-09-29T13:44:52.739Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T13:46:44.329Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الاوامر", state=undefined
+[2026-09-29T13:46:56.452Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="غيرت البوت", state=undefined
+[2026-09-29T13:49:20.218Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="ايوه", state=undefined
+[2026-09-29T13:49:31.052Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="هذا بيكون الرسمي", state=undefined
+[2026-09-29T13:49:38.098Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="متى براىيك انشره", state=undefined
+[2026-09-29T13:50:01.156Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="انتضر قليل يومين نجرب جميع الاوامر والي مش شغال نشغله", state=undefined
+[2026-09-29T13:50:36.582Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="تم", state=undefined
+[2026-09-29T13:50:53.723Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="قدنا حتى احاول والله بهذه الفتره صلحت معظم الاخطاء", state=undefined
+[2026-09-29T13:51:12.445Z] [CustomCmd] chat=120363429263237948@g.us, sender=263806118797548@lid, msg="باقي بس اوامر الذكاء الاصطناعي واوامر التحميل فيهم بعض اخطاء", state=undefined
+[2026-09-29T13:53:12.969Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-09-29T13:53:15.954Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-29T19:19:27.541Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:19:41.410Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="م1", state=undefined
+[2026-09-29T19:19:44.548Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="م2", state=undefined
+[2026-09-29T19:22:57.392Z] [CustomCmd] chat=263806118797548@lid, sender=263806118797548@lid, msg="كشف الرتب", state=undefined
+[2026-09-29T19:25:22.502Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="م4", state=undefined
+[2026-09-29T19:36:55.390Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميم", state=undefined
+[2026-09-29T19:37:01.572Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميم", state=undefined
+[2026-09-29T19:37:03.178Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:38:10.444Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:40:50.596Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="حقيقة", state=undefined
+[2026-09-29T19:40:58.839Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:41:00.414Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:41:01.837Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-09-29T19:41:01.962Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="حقيقه", state=undefined
+[2026-09-29T19:41:18.759Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميم", state=undefined
+[2026-09-29T19:42:24.758Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="غزل", state=undefined
+[2026-09-29T19:44:49.800Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميم", state=undefined
+[2026-09-29T19:45:12.152Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-29T19:45:23.240Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-29T19:52:46.379Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-29T19:52:53.602Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تحليل الشخصيه", state=undefined
+[2026-09-29T19:55:18.186Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="توافق", state=undefined
+[2026-09-29T19:55:34.021Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="توافق", state=undefined
+[2026-09-29T19:55:47.106Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="يوم الورد", state=undefined
+[2026-09-29T19:58:57.470Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="يوم الورد", state=undefined
+[2026-09-29T19:59:06.050Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-29T20:01:58.096Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-29T20:02:05.175Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="غزل", state=undefined
+[2026-09-29T20:02:16.286Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="غزل", state=undefined
+[2026-09-29T20:02:18.501Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="غزل", state=undefined
+[2026-09-29T20:02:28.238Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-29T20:02:39.346Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-29T20:02:40.605Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="تصبح على خير", state=undefined
+[2026-09-29T20:02:56.232Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-29T20:03:00.070Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="اين ستسافر", state=undefined
+[2026-09-29T20:03:23.222Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ذكاء", state=undefined
+[2026-09-29T20:03:56.035Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="شعر", state=undefined
+[2026-09-29T20:08:31.490Z] [CustomCmd] chat=120363429263237948@g.us, sender=216050595545142@lid, msg="الاوامر", state=undefined
+[2026-09-29T20:09:07.517Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م1", state=undefined
+[2026-09-29T20:09:30.194Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="الايدي", state=undefined
+[2026-09-29T20:10:06.396Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="المالكين", state=undefined
+[2026-09-29T20:10:12.933Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مالك", state=undefined
+[2026-09-29T20:10:34.024Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="مسح الكل", state=undefined
+[2026-09-29T20:10:58.327Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="حضر", state=undefined
+[2026-09-29T20:11:14.968Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تقيد يوم", state=undefined
+[2026-09-29T20:11:29.676Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م2", state=undefined
+[2026-09-29T20:11:53.631Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فتح امر الرابط", state=undefined
+[2026-09-29T20:12:22.725Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="فتح امرنداء المالك", state=undefined
+[2026-09-29T20:12:30.510Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state=undefined
+[2026-09-29T20:12:50.077Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="التحكم بلاوامر", state=undefined
+[2026-09-29T20:13:00.643Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تغيير امر", state=undefined
+[2026-09-29T20:13:11.661Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="هلا", state={"step":"waiting_old_command","chatId":"120363429263237948@g.us"}
+[2026-09-29T20:13:37.741Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="التحكم بلاشتراك الاجباري", state={"step":"waiting_old_command","chatId":"120363429263237948@g.us"}
+[2026-09-29T20:13:47.372Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state={"step":"waiting_old_command","chatId":"120363429263237948@g.us"}
+[2026-09-29T20:14:02.011Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="م3", state={"step":"waiting_new_command","oldCommand":"م3","chatId":"120363429263237948@g.us"}
+[2026-09-29T20:14:31.413Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="التحكم بلاشتراك الاجباري", state=undefined
+[2026-09-29T20:14:48.277Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اضف اشتراك", state=undefined
+[2026-09-29T20:15:05.852Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="تفعيل الاشتراك", state=undefined
+[2026-09-29T20:15:32.698Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="عرض الاشتراك", state=undefined
+[2026-09-29T20:16:07.665Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="قائمة المنع", state=undefined
+[2026-09-29T20:16:37.535Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اوامر المنشن", state=undefined
+[2026-09-29T20:16:52.387Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="منشن", state=undefined
+[2026-09-29T20:17:07.691Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="منشن الكل", state=undefined
+[2026-09-29T20:17:22.481Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="منشن مخفي", state=undefined
+[2026-09-29T20:17:42.093Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="اسم القروب على الله", state=undefined
+[2026-09-29T20:18:03.443Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نمته", state=undefined
+[2026-09-29T20:18:06.459Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-29T20:20:01.523Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-29T20:20:25.509Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="جرد", state=undefined
+[2026-09-29T20:20:31.397Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="طرد", state=undefined
+[2026-09-29T20:21:01.591Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-29T20:26:45.774Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-29T20:27:31.767Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكته", state=undefined
+[2026-09-29T20:27:56.529Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="نكمل", state=undefined
+[2026-09-29T20:28:01.627Z] [CustomCmd] chat=120363429263237948@g.us, sender=155920801779895@lid, msg="ميتا كيفك", state=undefined
+[2026-10-01T05:06:33.904Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-10-01T05:06:41.517Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-10-01T05:19:20.522Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-01T05:19:30.895Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ليش", state=undefined
+[2026-10-01T05:19:32.816Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="رتبتي", state=undefined
+[2026-10-01T05:19:37.883Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-10-01T05:28:28.887Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="نشط", state=undefined
+[2026-10-01T05:31:09.480Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-10-01T05:34:57.195Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع الحظر", state=undefined
+[2026-10-01T05:35:31.394Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع الحظر", state=undefined
+[2026-10-01T05:35:46.591Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاءالحظر", state=undefined
+[2026-10-01T05:35:54.460Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="نشط", state=undefined
+[2026-10-01T05:36:01.655Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-10-01T05:36:19.732Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-01T05:36:32.613Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-01T05:36:46.747Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع الحظر", state=undefined
+[2026-10-01T05:37:57.512Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="طرد", state=undefined
+[2026-10-01T05:41:26.328Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-01T05:42:56.056Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="كتم", state=undefined
+[2026-10-01T05:42:58.019Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-01T05:43:07.707Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="تنزيل مالك", state=undefined
+[2026-10-01T05:48:31.092Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="م1", state=undefined
+[2026-10-01T05:48:59.762Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع القيود", state=undefined
+[2026-10-01T05:49:04.352Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع الحظر", state=undefined
+[2026-10-01T05:49:15.375Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-01T05:49:19.927Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="م5", state=undefined
+[2026-10-01T05:49:38.584Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي كيفك", state=undefined
+[2026-10-01T05:52:48.570Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جو", state=undefined
+[2026-10-01T05:52:55.127Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جو صنعاء", state=undefined
+[2026-10-01T05:52:57.921Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="طقس", state=undefined
+[2026-10-01T05:53:03.883Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="طقس صنعاء", state=undefined
+[2026-10-01T05:53:29.733Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="اخبار عربيه", state=undefined
+[2026-10-01T05:53:34.277Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="اخبار عربية", state=undefined
+[2026-10-01T05:53:48.808Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="اخبار", state=undefined
+[2026-10-01T06:03:51.209Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-10-01T07:54:45.784Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="نشط", state=undefined
+[2026-10-01T07:54:52.655Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="جبتي انيكم", state=undefined
+[2026-10-01T07:55:08.767Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="جبتي انت من اي شركة", state=undefined
+[2026-10-01T07:55:30.652Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="جبتي طيب ما الشؤكة التي طورتك وانت اي نموذج", state=undefined
+[2026-10-01T07:55:50.503Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="جبتي انيكك", state=undefined
+[2026-10-01T07:56:01.863Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="جبتي انيك امك", state=undefined
+[2026-10-01T17:48:31.751Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-10-01T17:48:38.789Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي كيف حالك", state=undefined
+[2026-10-01T17:49:03.077Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي انت اي نموذج ومن اي شركة تم تطويرك", state=undefined
+[2026-10-01T17:49:09.930Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي ايش اسمك", state=undefined
+[2026-10-01T17:49:26.294Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي مامهمتك", state=undefined
+[2026-10-01T17:52:20.428Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي اكتب كود ابيثون معقد", state=undefined
+[2026-10-01T17:52:32.015Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا انت من اي شركة واي نموذج", state=undefined
+[2026-10-01T17:52:45.195Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا رد بالعربيه", state=undefined
+[2026-10-01T17:53:11.172Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا انت من اي شركة واي نموذج", state=undefined
+[2026-10-01T18:03:10.968Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا طيب اي نموذج بالتحديد", state=undefined
+[2026-10-01T18:03:26.568Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا طيب اي نموذج بالتحديد جاوب بالعربي", state=undefined
+[2026-10-01T18:07:05.956Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا كيفك", state=undefined
+[2026-10-01T18:25:05.386Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا كيف حالك", state=undefined
+[2026-10-01T18:25:24.498Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا ماهي عاصمة اليمن وانت اي نموذج ومن اي شركة", state=undefined
+[2026-10-01T18:26:02.763Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا هل انت متاكد انك كذلك وهل تدعم الادوات tools", state=undefined
+[2026-10-01T18:26:45.348Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا انت تعمل داخل اي خدمه اي كيف استطيع استخدامك مع هذه الخدمه التي تشتغل عليها", state=undefined
+[2026-10-01T18:27:14.046Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا طيب كيف استخدم امر لحظر مستخدم", state=undefined
+[2026-10-01T18:27:48.688Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا والغاء الحظر ماذا استخدم", state=undefined
+[2026-10-01T18:28:19.036Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا طيب كم الاوامر المتوفره في البوت", state=undefined
+[2026-10-01T18:28:36.275Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ميتا ماهي", state=undefined
+[2026-10-01T18:29:07.357Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي ماهي جميع اوامر البوت", state=undefined
+[2026-10-01T18:29:41.357Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي هل يوجد امر في البوت لمعرفة عمري", state=undefined
+[2026-10-01T18:30:08.328Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي ماذا افعل بعد كتابة عمري", state=undefined
+[2026-10-01T18:30:32.642Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي هل يمكنك تغيير اسم المجموعه الى عهد الاصدقاء", state=undefined
+[2026-10-01T19:17:06.548Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي قم بحظر المستخدم @256985710764182", state=undefined
+[2026-10-01T19:27:10.956Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="جبتي قم بقفل الحذف", state=undefined
+[2026-10-01T19:58:35.106Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نعم", state=undefined
+[2026-10-01T19:58:59.417Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نعم", state=undefined
+[2026-10-01T19:59:04.860Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ال", state=undefined
+[2026-10-01T19:59:40.223Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="ما رأيك بالطقس اليوم", state=undefined
+[2026-10-01T19:59:47.583Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-01T20:00:02.153Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="ما رأيك بالطقس اليوم", state=undefined
+[2026-10-01T20:00:07.864Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-01T20:02:01.566Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="قفل القروب", state=undefined
+[2026-10-01T20:03:59.394Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="قفل القروب", state=undefined
+[2026-10-01T20:04:19.329Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="فتح القروب", state=undefined
+[2026-10-02T03:06:55.105Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="نعم لين", state=undefined
+[2026-10-02T03:16:12.572Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="ما رأيك بالطقس اليوم", state=undefined
+[2026-10-02T03:16:23.724Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T03:18:06.394Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="عمر", state=undefined
+[2026-10-02T03:18:11.952Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="عمره", state=undefined
+[2026-10-02T03:18:30.818Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="عمري", state=undefined
+[2026-10-02T03:20:43.267Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="قفل القروب", state=undefined
+[2026-10-02T03:21:23.840Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="فتح القروب", state=undefined
+[2026-10-02T03:25:34.187Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="فتح القروب", state=undefined
+[2026-10-02T03:29:18.231Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="الوو", state=undefined
+[2026-10-02T03:29:22.153Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-10-02T03:33:47.559Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="فتح القروب", state=undefined
+[2026-10-02T03:33:56.559Z] [CustomCmd] chat=120363900000000000@g.us, sender=216050595545142@lid, msg="فتح القروب", state=undefined
+[2026-10-02T03:42:25.513Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="حظر 263806118797548", state=undefined
+[2026-10-02T03:45:07.119Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="احظر المستخدم", state=undefined
+[2026-10-02T03:48:10.334Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="الاوامر", state=undefined
+[2026-10-02T03:58:49.099Z] [CustomCmd] chat=120363411111111111@g.us, sender=155920801779895@lid, msg="قفل القروب", state=undefined
+[2026-10-02T04:01:24.176Z] [CustomCmd] chat=120363411111111111@g.us, sender=155920801779895@lid, msg="قفل القروب", state=undefined
+[2026-10-02T05:04:55.915Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="قفل القروب", state=undefined
+[2026-10-02T05:06:51.489Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="قفل القروب", state=undefined
+[2026-10-02T05:09:56.546Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T05:10:15.271Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T05:32:38.054Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="رتبه", state=undefined
+[2026-10-02T05:32:38.065Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="رتبه", state=undefined
+[2026-10-02T05:32:38.067Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="مالكين", state=undefined
+[2026-10-02T05:32:38.071Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="رتبه", state=undefined
+[2026-10-02T05:33:15.049Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T05:33:15.055Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T05:33:15.058Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="المالكين", state=undefined
+[2026-10-02T05:33:15.063Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T07:33:07.363Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="كيف تقدري تساعديني", state=undefined
+[2026-10-02T07:34:00.967Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم", state=undefined
+[2026-10-02T07:34:50.397Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم look ar", state=undefined
+[2026-10-02T07:35:19.483Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم ar look", state=undefined
+[2026-10-02T07:35:34.802Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم كيفك en", state=undefined
+[2026-10-02T07:35:51.109Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم look ar", state=undefined
+[2026-10-02T07:36:22.289Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="ترجم", state=undefined
+[2026-10-02T07:36:54.027Z] [CustomCmd] chat=120363430093807011@g.us, sender=263806118797548@lid, msg="حظر", state=undefined
+[2026-10-02T07:37:10.696Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T07:39:15.720Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T07:39:31.878Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T07:39:48.055Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T07:40:06.111Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T07:40:44.007Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="تقيد", state=undefined
+[2026-10-02T07:42:17.794Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T08:40:36.241Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="حظر", state=undefined
+[2026-10-02T08:40:36.324Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="حظر", state=undefined
+[2026-10-02T08:40:36.329Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T08:40:45.328Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="حظر", state=undefined
+[2026-10-02T08:40:45.336Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="حظر", state=undefined
+[2026-10-02T08:40:45.341Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="حظر", state=undefined
+[2026-10-02T08:40:45.346Z] [CustomCmd] chat=120363922222222222@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T08:41:35.350Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="مرحبا", state=undefined
+[2026-10-02T08:41:35.362Z] [CustomCmd] chat=120363911111111111@g.us, sender=216050595545142@lid, msg="الرتبه", state=undefined
+[2026-10-02T08:52:43.335Z] [CustomCmd] chat=120363933333333333@g.us, sender=216050595545142@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T08:52:43.341Z] [CustomCmd] chat=120363933333333333@g.us, sender=216050595545142@lid, msg="مرحبا يا شباب", state=undefined
+[2026-10-02T08:55:51.977Z] [CustomCmd] chat=120363944444444444@g.us, sender=216050595545142@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T08:55:51.985Z] [CustomCmd] chat=120363944444444444@g.us, sender=216050595545142@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T08:56:21.729Z] [CustomCmd] chat=120363944444444444@g.us, sender=216050595545142@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T08:56:21.737Z] [CustomCmd] chat=120363944444444444@g.us, sender=216050595545142@lid, msg="الغاء التقيد", state=undefined
+[2026-10-02T09:41:32.663Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T09:42:00.410Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T09:43:44.000Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="رفع", state=undefined
+[2026-10-02T09:47:26.597Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T09:47:49.275Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T09:48:44.666Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T10:38:37.579Z] [CustomCmd] chat=120363430093807011@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T18:44:15.428Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="فتح الروابط", state=undefined
+[2026-10-02T18:44:37.598Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="فتح الروابط", state=undefined
+[2026-10-02T18:46:33.272Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="فتح الروابط", state=undefined
+[2026-10-02T18:50:49.794Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T18:50:59.923Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="فتح الروابط", state=undefined
+[2026-10-02T18:51:51.580Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="منع", state=undefined
+[2026-10-02T18:51:53.808Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حذف", state=undefined
+[2026-10-02T18:52:18.591Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حذف", state=undefined
+[2026-10-02T18:52:45.500Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="الو", state=undefined
+[2026-10-02T18:53:39.154Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حذف", state=undefined
+[2026-10-02T18:53:41.989Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="الغاء منع", state=undefined
+[2026-10-02T18:54:11.759Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="الغاء منع قحبه", state=undefined
+[2026-10-02T18:56:46.236Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="كيف حالك", state=undefined
+[2026-10-02T18:57:02.619Z] [CustomCmd] chat=120363413293532956@g.us, sender=263806118797548@lid, msg="بخير ما دامك بخير", state=undefined
+[2026-10-02T18:58:54.530Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حذف", state=undefined
+[2026-10-02T18:58:55.535Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T18:59:42.767Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="فتح الروابط", state=undefined
+[2026-10-02T19:04:15.558Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="مسح", state=undefined
+[2026-10-02T19:04:17.238Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T19:04:18.474Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T19:04:48.685Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T19:04:49.950Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined
+[2026-10-02T19:05:02.779Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T19:05:37.137Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T19:06:04.754Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="الغاء الحظر", state=undefined
+[2026-10-02T19:06:33.520Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="حظر", state=undefined
+[2026-10-02T19:06:34.723Z] [CustomCmd] chat=120363413293532956@g.us, sender=256985710764182@lid, msg="قفل الروابط", state=undefined

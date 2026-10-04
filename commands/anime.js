@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 const { exec } = require('child_process');
 const fs = require('fs');
@@ -110,7 +111,7 @@ async function sendAnimu(sock, chatId, message, type) {
 
         await sock.sendMessage(
             chatId,
-            { text: '*↢ فشل في تحميل الأنمي.*' },
+            { text: UNDER_MAINTENANCE },
             { quoted: message }
         );
 }
@@ -144,7 +145,7 @@ async function animeCommand(sock, chatId, message, args) {
         await sendAnimu(sock, chatId, message, sub);
     } catch (err) {
         console.error('Error in animu command:', err);
-        await sock.sendMessage(chatId, { text: '❌ حدث خطأ أثناء تحميل الأنمي.' }, { quoted: message });
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
     }
 }
 

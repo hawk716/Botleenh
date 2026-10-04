@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const fetch = require('node-fetch');
 const fs = require('fs');
 const { exec } = require('child_process');
@@ -90,7 +91,7 @@ async function emojimixCommand(sock, chatId, msg) {
     } catch (error) {
         console.error('Error in emojimix command:', error);
         await sock.sendMessage(chatId, {
-            text: '❌ *حدث خطأ أثناء دمج الإيموجي! جرب إيموجي مختلفة.*'
+            text: UNDER_MAINTENANCE
         });
     }
 }

@@ -1,3 +1,4 @@
+const { UNDER_MAINTENANCE } = require('../lib/messages');
 const { LANGUAGES, hasDialects } = require('./tts-data');
 const path = require('path');
 const fs = require('fs');
@@ -101,7 +102,7 @@ async function handleDialect(sock, chatId, senderId, msg, resolvedIdx) {
 
   const lang = LANGUAGES[state.languageIndex];
   if (!lang.dialects || resolvedIdx < 0 || resolvedIdx >= lang.dialects.length) {
-    await sock.sendMessage(chatId, { text: '*↢ اللهجة غير معروفة. حاول مرة أخرى.*' }, msg?.key ? { quoted: msg } : {});
+    await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, msg?.key ? { quoted: msg } : {});
     return true;
   }
 
@@ -150,7 +151,7 @@ async function showVoices(sock, chatId, senderId, msg) {
   } catch (e) {
     console.error('Error fetching voices:', e);
     await sock.sendMessage(chatId, {
-      text: '*↢ عذراً، حدث خطأ في جلب قائمة الأصوات. حاول مرة أخرى لاحقاً.*'
+      text: UNDER_MAINTENANCE
     }, msg?.key ? { quoted: msg } : {});
     clearState(senderId);
     return true;
@@ -178,7 +179,7 @@ async function handleVoice(sock, chatId, senderId, msg, userInput) {
   }
 
   if (idx === -1) {
-    await sock.sendMessage(chatId, { text: '*↢ رقم أو اسم الصوت غير صحيح. حاول مرة أخرى.*' }, msg?.key ? { quoted: msg } : {});
+    await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, msg?.key ? { quoted: msg } : {});
     return true;
   }
 
@@ -195,7 +196,7 @@ async function handleVoice(sock, chatId, senderId, msg, userInput) {
     const sendOpts = msg?.key ? { quoted: msg } : {};
     if (err || !stdout.includes('OK:')) {
       console.error('SpeechGen TTS error:', stderr || stdout || err?.message);
-      await sock.sendMessage(chatId, { text: '*↢ عذراً، فشل إنشاء الصوت. حاول مرة أخرى لاحقاً.*' }, sendOpts).catch(() => {});
+      await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, sendOpts).catch(() => {});
       return;
     }
 
@@ -209,7 +210,7 @@ async function handleVoice(sock, chatId, senderId, msg, userInput) {
         }, sendOpts);
       } catch (sendErr) {
         console.error('Error sending audio:', sendErr);
-        await sock.sendMessage(chatId, { text: '*↢ عذراً، فشل إرسال الصوت.*' }, sendOpts).catch(() => {});
+        await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, sendOpts).catch(() => {});
       }
       setTimeout(() => {
         try { if (fs.existsSync(resultPath)) fs.unlinkSync(resultPath); } catch (e) {}
