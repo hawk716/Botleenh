@@ -48,6 +48,11 @@ const { join } = require('path')
 // Import lightweight store
 const store = require('./lib/lightweight_store')
 
+// المسارات المطلقة: تعمل مع أي cwd (PM2 أو لوحة استضافة)
+const ROOT = __dirname
+const SESSION_DIR = path.join(ROOT, 'session')
+const OWNER_FILE = path.join(ROOT, 'data', 'owner.json')
+
 // Reconnection tracking with exponential backoff
 let reconnectAttempts = 0
 let lastReconnectTime = 0
@@ -55,30 +60,73 @@ const MAX_RECONNECT_ATTEMPTS = 10
 const BASE_RECONNECT_DELAY = 3000 // 3 seconds
 const MAX_RECONNECT_DELAY = 60000 // 60 seconds
 
+// عند إعادة الاتصال: نغلق السوكيت القديم وننظّف كل المؤقتات قبل البدء.
+// بدون هذا يبقى السوكيت القديم حياً بمستمعيه → ازدواج معالجات ورسائل مكررة.
+let activeSock = null
+let isRestarting = false
+let processedMessageIds = null
+const bootTimers = []
+
+const trackTimer = (t) => { bootTimers.push(t); return t }
+const clearBootTimers = () => {
+    while (bootTimers.length) {
+        const t = bootTimers.pop()
+        try { clearInterval(t); clearTimeout(t) } catch {}
+    }
+}
+
+function disposeSocket(sock) {
+    if (!sock) return
+    try {
+        if (typeof sock.ev?.removeAllListeners === 'function') sock.ev.removeAllListeners('*')
+        else if (typeof sock.ev?.removeAllListeners === 'function') sock.ev.removeAllListeners()
+    } catch {}
+    try { if (typeof sock.end === 'function') sock.end(undefined) } catch {}
+    try { if (typeof sock.ws?.close === 'function') sock.ws.close() } catch {}
+    try { if (typeof sock.removeAllListeners === 'function') sock.removeAllListeners() } catch {}
+}
+
+// خروج آمن: نكتب المخزن أولاً ثم نخرج، وPM2/لوحة الاستضافة تعيد التشغيل.
+function safeExit(code = 1, reason = '') {
+    try { store.writeToFile() } catch {}
+    if (reason) console.error(`[exit:${code}] ${reason}`)
+    process.exit(code)
+}
+global.safeExit = safeExit
+
 // Initialize store
 store.readFromFile()
 const settings = require('./settings')
-setInterval(() => store.writeToFile(), settings.storeWriteInterval || 10000)
+trackTimer(setInterval(() => store.writeToFile(), settings.storeWriteInterval || 10000))
 
 // Memory optimization - Force garbage collection if available
-setInterval(() => {
+// يتطلب تشغيل node بـ --expose-gc (مضبوط في package.json)
+trackTimer(setInterval(() => {
     if (global.gc) {
         global.gc()
         console.log('🧹 Garbage collection completed')
     }
-}, 60_000) // every 1 minute
+}, 60_000)) // every 1 minute
 
 // Memory monitoring - Restart if RAM gets too high
-setInterval(() => {
+trackTimer(setInterval(() => {
     const used = process.memoryUsage().rss / 1024 / 1024
     if (used > 400) {
         console.log('⚠️ RAM too high (>400MB), restarting bot...')
-        process.exit(1) // Panel will auto-restart
+        safeExit(1, 'RAM guard')
     }
-}, 30_000) // check every 30 seconds
+}, 30_000)) // check every 30 seconds
 
 let phoneNumber = ""
-let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
+let owner = []
+try {
+    const raw = fs.readFileSync(OWNER_FILE, 'utf8')
+    owner = JSON.parse(raw)
+    if (!Array.isArray(owner)) owner = [owner]
+} catch (e) {
+    console.error(`⚠️ تعذّر قراءة ${OWNER_FILE}: ${e.message} — سيُكمل البوت بلا رقم مالك.`)
+    owner = []
+}
 
 global.botname = settings.botName
 global.themeemoji = "•"
@@ -100,7 +148,7 @@ const question = (text) => {
 
 async function startXeonBotInc() {
     let { version, isLatest } = await fetchLatestBaileysVersion()
-    const { state, saveCreds } = await useMultiFileAuthState(`./session`)
+    const { state, saveCreds } = await useMultiFileAuthState(SESSION_DIR)
     const msgRetryCounterCache = new NodeCache()
 
     const XeonBotInc = makeWASocket({
@@ -124,17 +172,27 @@ async function startXeonBotInc() {
         defaultQueryTimeoutMs: undefined,
     })
     global.sock = XeonBotInc;
+    activeSock = XeonBotInc;
 
     XeonBotInc.recentManualActions = new Map()
 
     store.bind(XeonBotInc.ev)
 
-    // Global duplicate message tracking set
-    const processedMessageIds = new Set();
-    // Periodically clear the set to prevent memory growth (every minute)
-    setInterval(() => {
-        processedMessageIds.clear();
-    }, 60000);
+    // Global duplicate message tracking set.
+    // خارج الدالة: كان يُنشأ جديداً كل اتصال فيضيع الحارس.
+    // لا يُمسح بالكامل أبداً — فقط حذف الأقدم عند تجاوز الحد (LRU).
+    if (!processedMessageIds) {
+        processedMessageIds = new Map();
+    }
+    const DEDUP_MAX = 5000;
+    if (processedMessageIds.size > DEDUP_MAX) {
+        const cutoff = processedMessageIds.size - DEDUP_MAX;
+        let i = 0;
+        for (const k of processedMessageIds.keys()) {
+            if (i++ >= cutoff) break;
+            processedMessageIds.delete(k);
+        }
+    }
 
     // Message handling
     XeonBotInc.ev.on('messages.upsert', async chatUpdate => {
@@ -155,7 +213,7 @@ async function startXeonBotInc() {
                     if (processedMessageIds.has(msgKey)) {
                         continue;
                     }
-                    processedMessageIds.add(msgKey);
+                    processedMessageIds.set(msgKey, Date.now());
 
                     await handleMessages(XeonBotInc, { messages: [mek], type: chatUpdate.type }, true)
                 } catch (err) {
@@ -167,11 +225,8 @@ async function startXeonBotInc() {
                     }
                 }
             }
-
-            // Clear message retry cache to prevent memory bloat
-            if (XeonBotInc?.msgRetryCounterCache) {
-                XeonBotInc.msgRetryCounterCache.clear()
-            }
+            // لا نمسح msgRetryCounterCache هنا: هو منطق إعادة الإرسال في Baileys،
+            // مسحه يبطله ويسبب إعادة إرسال عند فشل الشبكة.
         } catch (err) {
             console.error("Error in messages.upsert:", err)
         }
@@ -322,13 +377,26 @@ async function startXeonBotInc() {
             
             console.log(chalk.yellow(`📊 Disconnect Info: statusCode=${statusCode}, error=${errorMessage}`))
             
+            // نغلق السوكيت وننظّف المؤقتات قبل أي إعادة اتصال.
+            clearBootTimers()
+            disposeSocket(XeonBotInc)
+
             if (statusCode === DisconnectReason.loggedOut || statusCode === 401) {
                 try {
-                    rmSync('./session', { recursive: true, force: true })
+                    rmSync(SESSION_DIR, { recursive: true, force: true })
                 } catch { }
                 console.log(chalk.red('تم تسجيل الخروج من الجلسة. الرجاء إعادة المصادقة.'))
                 reconnectAttempts = 0
-                startXeonBotInc()
+                safeExit(1, 'loggedOut/401 — يعيد PM2 التشغيل ويطلب إعادة مصادقة')
+            } else if (statusCode === DisconnectReason.restartRequired) {
+                // الجلسة تطلب إعادة تشغيل: الخروج يعيد PM2 التشغيل بنفس الجلسة.
+                // البديل (startXeonBotInc) كان يسبب حلقة انهيار لا نهائية.
+                console.log(chalk.yellow('↻ طلب واتساب إعادة تشغيل الاتصال — جارٍ إعادة التشغيل.'))
+                safeExit(1, 'restartRequired')
+            } else if (statusCode === DisconnectReason.multideviceMismatch) {
+                console.log(chalk.red('تعارض في الأجهزة المتصلة — تم مسح الجلسة.'))
+                try { rmSync(SESSION_DIR, { recursive: true, force: true }) } catch { }
+                safeExit(1, 'multideviceMismatch')
             } else {
                 // Exponential backoff for reconnection
                 reconnectAttempts++
@@ -336,8 +404,8 @@ async function startXeonBotInc() {
                 const timeSinceLastReconnect = now - lastReconnectTime
                 
                 if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
-                    console.log(chalk.red(`❌ تم تجاوز الحد الأقصى لمحاولات إعادة الاتصال (${MAX_RECONNECT_ATTEMPTS}). يرجى إعادة تشغيل البوت يدويًا.`))
-                    process.exit(1)
+                    console.log(chalk.red(`❌ تم تجاوز الحد الأقصى لمحاولات إعادة الاتصال (${MAX_RECONNECT_ATTEMPTS}).`))
+                    safeExit(1, 'تجاوز حد محاولات إعادة الاتصال')
                 }
                 
                 // Calculate exponential backoff with jitter
@@ -352,7 +420,11 @@ async function startXeonBotInc() {
                 
                 setTimeout(() => {
                     lastReconnectTime = Date.now()
-                    startXeonBotInc()
+                    // catch إلزامي: بدونه يصبح unhandledRejection يُبتلع بلا إعادة تشغيل = موت صامت.
+                    startXeonBotInc().catch(err => {
+                        console.error('فشل إعادة الاتصال:', err?.message || err)
+                        safeExit(1, 'فشل إعادة الاتصال')
+                    })
                 }, totalDelay)
             }
         }
@@ -471,18 +543,16 @@ async function startXeonBotInc() {
         }
     });
 
-    XeonBotInc.ev.on('messages.upsert', async (m) => {
-        if (m.messages[0].key && m.messages[0].key.remoteJid === 'status@broadcast') {
-            await handleStatus(XeonBotInc, m);
-        }
-    });
+    // ملاحظة: معالج status في messages.upsert موجود أعلاه (سطر 147) —
+    // المستمع المكرر هنا كان يستدعي handleStatus مرتين → خطر rate-overlimit.
+    // status.update و messages.reaction يبقيا لأنهما أحداث مختلفة.
 
     XeonBotInc.ev.on('status.update', async (status) => {
-        await handleStatus(XeonBotInc, status);
+        try { await handleStatus(XeonBotInc, status); } catch (e) { console.error('status.update:', e.message) }
     });
 
     XeonBotInc.ev.on('messages.reaction', async (status) => {
-        await handleStatus(XeonBotInc, status);
+        try { await handleStatus(XeonBotInc, status); } catch (e) { console.error('messages.reaction:', e.message) }
     });
 
     return XeonBotInc
@@ -492,20 +562,35 @@ async function startXeonBotInc() {
 // Start the bot with error handling
 startXeonBotInc().catch(error => {
     console.error('Fatal error:', error)
-    process.exit(1)
+    safeExit(1, 'فشل بدء التشغيل')
 })
+
+// استثناءات غير متوقعة: نسجّل ثم نخرج — البوت في حالة غير معروفة.
+// البقاء حياً مع تلف داخلي أسوأ من إعادة تشغيل نظيفة.
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err)
+    safeExit(1, 'uncaughtException')
 })
 
 process.on('unhandledRejection', (err) => {
     console.error('Unhandled Rejection:', err)
 })
 
-let file = require.resolve(__filename)
-fs.watchFile(file, () => {
-    fs.unwatchFile(file)
-    console.log(chalk.redBright(`Update ${__filename}`))
-    delete require.cache[file]
-    require(file)
-})
+// إيقاف نظيف: نكتب المخزن ونغلق السوكيت قبل الخروج.
+let shuttingDown = false
+const shutdown = (signal) => {
+    if (shuttingDown) return
+    shuttingDown = true
+    console.log(`\n↻ استُقبل ${signal} — إغلاق نظيف...`)
+    clearBootTimers()
+    try { store.writeToFile() } catch {}
+    try { disposeSocket(activeSock) } catch {}
+    setTimeout(() => process.exit(0), 300)
+}
+process.on('SIGINT', () => shutdown('SIGINT'))
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGHUP', () => shutdown('SIGHUP'))
+
+// إعادة تحميل تلقائي عند تعديل الملف: كان ينفّذ index.js كاملاً داخل العملية
+// نفسها → makeWASocket ثانٍ يتصل بنفس الجلسة = ازدواج معالجات ورسائل مكررة.
+// اختفى: الاستضافة/PM2 تعيد التشغيل عند Deploy، وهذا هو السلوك الصحيح.

@@ -73,8 +73,18 @@ async function handleAntitagCommand(sock, chatId, userMessage, senderId, isSende
     }
 }
 
+// تطبيع JID: Baileys قد يعطي @lid بدل @s.whatsapp.net لنفس الشخص
+function sameUser(a, b) {
+    if (!a || !b) return false
+    return a.split('@')[0].split(':')[0] === b.split('@')[0].split(':')[0]
+}
+
 async function handleTagDetection(sock, chatId, message, senderId) {
     try {
+        // رسائل البوت نفسه لا تُفحص إطلاقاً.
+        // بدون هذا: البوت يرد بمنشن ← ح understatement坛 يحذف ردّه ← يرد مجدداً = حلقة ذاتية.
+        if (message.key.fromMe) return false;
+
         const antitagSetting = await getAntitag(chatId, 'on');
         if (!antitagSetting || !antitagSetting.enabled) return false;
 
@@ -96,9 +106,13 @@ async function handleTagDetection(sock, chatId, message, senderId) {
         let isGroupAdmin = false;
         try {
             const groupMetadata = await sock.groupMetadata(chatId);
-            const participant = groupMetadata.participants.find(p => p.id === senderId);
+            const participant = groupMetadata.participants.find(p => sameUser(p.id, senderId));
             isGroupAdmin = participant && (participant.admin === 'admin' || participant.admin === 'superadmin');
         } catch (e) {}
+
+        // البوت نفسه لا يُعاقب على منشناته (يرسل منشنات في واجهاته).
+        const botJid = sock.user?.id?.split(':')[0];
+        if (botJid && sameUser(senderId, botJid)) return false;
 
         const userRank = await getUserRank(chatId, senderId, isGroupAdmin);
         const userLevel = getRankLevel(userRank);

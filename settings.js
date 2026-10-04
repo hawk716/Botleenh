@@ -1,9 +1,14 @@
+// يُحمَّل .env هنا لأن settings يُستدعى قبل config.js في index.js
+try { require('dotenv').config() } catch {}
+
 const settings = {
   packname: '𝐋𝐞𝐞𝐧𝐁𝐨𝐭',
   botName: "𝐋𝐞𝐞𝐧𝐁𝐨𝐭",
   botOwner: 'Professor',
   ownerNumber: '963938953339',
-  giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
+  // مفتاح Giphy: من البيئة فقط (GIPHY_API_KEY في .env).
+  // كان مكتوباً هنا ← مكشوف في git.
+  giphyApiKey: process.env.GIPHY_API_KEY || '',
   imgflipUsername: '',
   imgflipPassword: '',
   commandMode: "public",

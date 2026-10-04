@@ -1,9 +1,42 @@
 node_modules/
 session/
 .env
+.env.*
 baileys_store.json
-data/*.json
+*.tmp
 *.log
+
+# بيانات التشغيل الخاصة بالمستخدمين (تُنشأ تلقائياً وتحتوي أرقام/LID)
+data/members.json
+data/messageCount.json
+data/subscriptions.json
+data/owner.json
+data/primaryOwner.json
+data/ranks.json
+data/warnings.json
+data/restrictions.json
+data/nicknames.json
+data/banned.json
+data/locks.json
+data/toggles.json
+data/groupSettings.json
+data/customCommands.json
+data/userGroupData.json
+data/premium.json
+data/autoread.json
+data/autotyping.json
+data/autoStatus.json
+data/antidelete.json
+data/antilinkViolations.json
+data/tagViolations.json
+data/grouprules.json
+data/mention.json
+data/replies.json
+
+# ملفات محتوى ثابتة تُرفع كـقوالب (تُنشأ لو غابت):
+# joke.json ghazal.json goodnight.json poetry.json trivia_questions.json
+# truth_questions.json scientific_facts.json meme_phrases.json meme_videos.json
+# wordban.json
 
 # مجلدات وأدوات خارجية لا يحتاجها البوت
 codex-nvidia-proxy/

@@ -334,6 +334,17 @@ if (isGroup) {
             return;
         }
 
+        // المقيَّد يُحذف قبل أي شيء آخر — بما فيه الوكيل، حتى لا يستهلك النموذج
+        // ولا يرسل رداً لرسالة ستُحذف بعد لحظات.
+        if (isGroup && await isRestricted(chatId, senderId)) {
+            try {
+                await sock.sendMessage(chatId, { delete: message.key });
+            } catch (e) {
+                console.error('Error deleting restricted user message:', e);
+            }
+            return;
+        }
+
         // ── وكيل الذكاء الاصطناعي ────────────────────────────────────────────
         // يُشغَّل ببادئة «لين» أو «leen» في بداية الرسالة.
         // وإذا وُجد طلب معلق لنفس المستخدم ونفس المجموعة، فأي رسالة لاحقة
@@ -350,15 +361,6 @@ if (isGroup) {
                 const handled = await handleAiRequest(sock, chatId, message, senderId, det.query, rawText, false);
                 if (handled) return;
             }
-        }
-
-        if (isGroup && await isRestricted(chatId, senderId)) {
-            try {
-                await sock.sendMessage(chatId, { delete: message.key });
-            } catch (e) {
-                console.error('Error deleting restricted user message:', e);
-            }
-            return;
         }
 
         if (isGroup) {
