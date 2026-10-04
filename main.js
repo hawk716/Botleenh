@@ -916,7 +916,9 @@ if (originalCommand) {
                 break;
             case cleanMessage === 'نص صوتي' || cleanMessage.startsWith('نص صوتي ') || normalizedCleanMessage === 'نص_صوتي' || normalizedCleanMessage.startsWith('نص_صوتي_'):
                 const habibiText = cleanMessage.replace(/نص صوتي|نص_صوتي/g, '').trim();
-                if (!habibiText) {
+                if (ttsFlow.isDisabled()) {
+                    await ttsFlow.startFlow(sock, chatId, senderId, habibiText, message);
+                } else if (!habibiText) {
                     await sock.sendMessage(chatId, { text: '*↢ يرجى كتابة النص بعد الأمر.*\nمثال: *نص صوتي مرحبا*' }, { quoted: message });
                 } else {
                     await ttsFlow.startFlow(sock, chatId, senderId, habibiText, message);
@@ -925,7 +927,9 @@ if (originalCommand) {
                 break;
             case cleanMessage === 'نطق النص' || cleanMessage.startsWith('نطق النص ') || normalizedCleanMessage === 'نطق_النص' || normalizedCleanMessage.startsWith('نطق_النص_'):
                 const ntaqText = cleanMessage.replace(/نطق النص|نطق_النص/g, '').trim();
-                if (!ntaqText) {
+                if (ttsFlow.isDisabled()) {
+                    await ttsFlow.startFlow(sock, chatId, senderId, ntaqText, message);
+                } else if (!ntaqText) {
                     await sock.sendMessage(chatId, { text: '*↢ يرجى كتابة النص بعد الأمر.*\nمثال: *نطق النص مرحبا*' }, { quoted: message });
                 } else {
                     await ttsFlow.startFlow(sock, chatId, senderId, ntaqText, message);

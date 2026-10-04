@@ -6,6 +6,13 @@ const { exec } = require('child_process');
 
 const TIMEOUT_MS = 120000;
 
+// معطّل مؤقتاً: توليد الصوت يعتمد على python3 + playwright + Chromium
+// (غير مثبّت) وخدمة speechgen.io ترفض الطلب المباشر بلا اشتراك مدفوع.
+// نردّ برسالة الصيانة الموحّدة. للتفعيل: DISABLED = false (بعد تجهيز الاعتمادية).
+const DISABLED = true;
+
+function isDisabled() { return DISABLED; }
+
 const states = new Map();
 
 function getState(senderId) {
@@ -27,11 +34,24 @@ function setState(senderId, data) {
 }
 
 function isWaiting(senderId) {
+  if (DISABLED) return false;
   return states.has(senderId);
+}
+
+// يعطي المستخدم رسالة الصيانة بدل أي خطوة من خطوات المسار.
+async function replyDisabled(sock, chatId, msg) {
+  try {
+    await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, msg?.key ? { quoted: msg } : {});
+  } catch (e) {
+    console.error('Error in TTS disabled reply:', e.message);
+  }
+  states.delete(msg?.key?.participant);
+  return true;
 }
 
 // Step 1: User sent a TTS command with text
 async function startFlow(sock, chatId, senderId, text, msg) {
+  if (DISABLED) return await replyDisabled(sock, chatId, msg);
   if (isWaiting(senderId)) return;
   const langList = LANGUAGES.map((l, i) => `*.${i + 1}. ${l.name} (${l.code})*`).join('\n');
   const message = `*↢ ارسـل اسم او رمز اللــغة التي تريد إستخدامها، 🌐🎤*\n━━━━━━━━━━━━━━\n${langList}`;
@@ -224,6 +244,7 @@ async function handleVoice(sock, chatId, senderId, msg, userInput) {
 
 // Main handler - called from main.js when user is in TTS flow
 async function handleTtsInput(sock, chatId, message, senderId, userMessage) {
+  if (DISABLED) return false;
   if (!isWaiting(senderId)) return false;
 
   const state = getState(senderId);
@@ -284,6 +305,7 @@ module.exports = {
   startFlow,
   handleTtsInput,
   isWaiting,
+  isDisabled,
   clearState,
   LANGUAGES,
 };
