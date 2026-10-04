@@ -46,18 +46,34 @@ const LANG_MAP = {
     'سواحيلي': 'sw'
 };
 
+// يقرأ اللغة من أي موضع: الأولى أو الأخيرة.
+// «نص الى صوت عربي مرحبا» و«نص الى صوت مرحبا عربي» كلاهما صحيح.
+function findLangToken(token) {
+    if (!token) return null;
+    const t = token.toLowerCase().replace(/[.,!?؟،]$/u, '');
+    if (LANG_MAP[t]) return LANG_MAP[t];
+    if (/^[a-z]{2}(-[A-Z]{2})?$/.test(token) || /^[a-z]{2}-[a-z]{2}$/.test(t)) return t;
+    return null;
+}
+
 function parseTtsArgs(text) {
     const trimmed = text.trim();
     if (!trimmed) return { lang: 'en', text: '' };
     const parts = trimmed.split(/\s+/);
-    const first = parts[0].toLowerCase();
 
-    if (LANG_MAP[first]) {
-        return { lang: LANG_MAP[first], text: parts.slice(1).join(' ') };
-    }
-    if (/^[a-z]{2}(-[A-Z]{2})?$/.test(first)) {
+    // 1) اللغة في البداية: «عربي مرحبا بك»
+    const first = findLangToken(parts[0]);
+    if (first) {
         return { lang: first, text: parts.slice(1).join(' ') };
     }
+
+    // 2) اللغة في النهاية: «مرحبا بك عربي»
+    const last = findLangToken(parts[parts.length - 1]);
+    if (last && parts.length > 1) {
+        return { lang: last, text: parts.slice(0, -1).join(' ') };
+    }
+
+    // 3) بلا لغة محددة: الإنجليزية، والنص كاملاً
     return { lang: 'en', text: trimmed };
 }
 
@@ -68,7 +84,7 @@ async function ttsCommand(sock, chatId, text, msg) {
         if (!cleanedText) {
             const sendOpts = msg?.key ? { quoted: msg } : {};
             await sock.sendMessage(chatId, {
-                text: `_*الاستخدام:*_\n*1. نص الى صوت + اللغة ↢بالرد*\n*2. نص الى صوت + النص + اللغة*\n────────────\n_*مثال:*_\n• نص الى صوت كيف حالك انجليزي\n• نص الى صوت كيف حالك en\n────────────\n*يدعم أكثر من 70 لغة*`
+                text: `*الاستخدام:*\n*1. نص الى صوت + اللغة ↢بالرد*\n*2. نص الى صوت + اللغة + النص*\n────────────\n*مثال:*\n• نص الى صوت مرحبا عربي\n• نص الى صوت مرحبا ar\n────────────\n*يدعم أكثر من 70 لغة*`
             }, sendOpts);
             return;
         }
@@ -78,7 +94,7 @@ async function ttsCommand(sock, chatId, text, msg) {
         if (!actualText) {
             const sendOpts = msg?.key ? { quoted: msg } : {};
             await sock.sendMessage(chatId, {
-                text: `يرجى تقديم النص بعد اللغة.\nمثال: *نص الى صوت ar مرحبا*`
+                text: `*يرجى تقديم النص بعد اللغة.*\n*مثال: نص الى صوت مرحبا عربي*`
             }, sendOpts);
             return;
         }
