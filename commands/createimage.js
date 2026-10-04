@@ -1,8 +1,16 @@
 const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
 
+// معطّل مؤقتاً: مزوّد الصور غير متاح. نرد برسالة الصيانة الموحّدة.
+const DISABLED = true;
+
 async function createImageCommand(sock, chatId, message) {
     try {
+        if (DISABLED) {
+            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
+            return;
+        }
+
         // Get the prompt from the message
         const text = message.message?.conversation?.trim() || 
                      message.message?.extendedTextMessage?.text?.trim() || '';
