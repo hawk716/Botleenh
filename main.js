@@ -1365,7 +1365,9 @@ if (originalCommand) {
                     }
                 }
                 break;
-            case cleanMessage === 'اعلى الاعضاء' || normalizedCleanMessage === 'اعلى_الاعضاء':
+            case cleanMessage === 'اعلى الاعضاء' || normalizedCleanMessage === 'اعلى_الاعضاء' ||
+                    cleanMessage === 'التوب' || normalizedCleanMessage === 'التوب' ||
+                    cleanMessage === 'توب' || normalizedCleanMessage === 'توب':
                 topMembers(sock, chatId, isGroup);
                 commandExecuted = true;
                 break;

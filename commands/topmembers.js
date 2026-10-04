@@ -31,9 +31,11 @@ function incrementMessageCount(groupId, userId) {
     saveMessageCounts(messageCounts);
 }
 
+// سرد بصيغة: 1. @user *- 119 رسالة*
+// نستخدم النص العادي مع mentionsadaa ليعرض واتساب الاسم فوق @user كما في المثال.
 function topMembers(sock, chatId, isGroup) {
     if (!isGroup) {
-        sock.sendMessage(chatId, { text: 'This command is only available in group chats.' });
+        sock.sendMessage(chatId, { text: '*↢ الامـر يخـص المجمـوعـات فقـط.*' });
         return;
     }
 
@@ -45,16 +47,18 @@ function topMembers(sock, chatId, isGroup) {
         .slice(0, 5); // Get top 5 members
 
     if (sortedMembers.length === 0) {
-        sock.sendMessage(chatId, { text: 'No message activity recorded yet.' });
+        sock.sendMessage(chatId, { text: '*↢ لا توجد رسائـل محسوبـة بعد.*' });
         return;
     }
 
-    let message = '🏆 Top Members Based on Message Count:\n\n';
-    sortedMembers.forEach(([userId, count], index) => {
-        message += `${index + 1}. @${userId.split('@')[0]} - ${count} messages\n`;
-    });
+    const lines = sortedMembers.map(([userId, count], index) =>
+        `${index + 1}. @${userId.split('@')[0]} *- ${count} رسالة*`
+    );
 
-    sock.sendMessage(chatId, { text: message, mentions: sortedMembers.map(([userId]) => userId) });
+    sock.sendMessage(chatId, {
+        text: `*↢التوب حسب عدد الرسائل،🏆:*\n${lines.join('\n')}`,
+        mentions: sortedMembers.map(([userId]) => userId)
+    });
 }
 
 module.exports = { incrementMessageCount, topMembers };
