@@ -377,6 +377,13 @@ if (isGroup) {
             if (handledRules) return;
         }
 
+        // اختيار تحميل الفيديو: 1 = كفيديو، 2 = كصوت (بعد بطاقة المعاينة).
+        // يجب أن يسبق اعتراض الأرقام 1-9 للعبةXO والأسئلة (السطر 388).
+        if (isVideoChoiceWaiting(senderId)) {
+            const handled = await handleVideoChoice(sock, chatId, message, senderId, rawText);
+            if (handled) return;
+        }
+
         if (/^[1-3]$/.test(userMessage)) {
             const { answerTrivia } = require('./commands/trivia');
             const answered = answerTrivia(sock, chatId, userMessage);
@@ -582,12 +589,6 @@ if (originalCommand) {
         if (zodiacCommand.isWaitingForBirthdate && zodiacCommand.isWaitingForBirthdate(senderId)) {
             await zodiacCommand.handleBirthdateInput(sock, chatId, message, senderId, rawText);
             return;
-        }
-
-        // اختيار تحميل الفيديو: 1 = كفيديو، 2 = كصوت (بعد بطاقة المعاينة)
-        if (isVideoChoiceWaiting(senderId)) {
-            const handled = await handleVideoChoice(sock, chatId, message, senderId, rawText);
-            if (handled) return;
         }
 
         // Check if user is in TTS flow (language/dialect/voice selection)
