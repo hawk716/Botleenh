@@ -1,6 +1,19 @@
 const axios = require('axios');
 
-module.exports = async function (sock, chatId) {
+// معطّل مؤقتاً: مزوّد الأخبار (aljazeera-articles.vercel.app) غير متاح.
+// نُظهر رسالة «معطل» الموحّدة بلا أي طلب شبكة.
+// للتفعيل: DISABLED = false
+const DISABLED = true;
+
+module.exports = async function (sock, chatId, message) {
+    if (DISABLED) {
+        const sendOpts = message?.key ? { quoted: message } : {};
+        await sock.sendMessage(chatId, {
+            text: '*↢ امـر ( اخبار عربية ) معطـل حالياً ⚠️*'
+        }, sendOpts);
+        return;
+    }
+
     try {
         const response = await axios.get('https://aljazeera-articles.vercel.app/get-liveblog');
         

@@ -1333,7 +1333,7 @@ if (originalCommand) {
                 if (cityDetailed) {
                     await weatherCommand(sock, chatId, message, cityDetailed, true);
                 } else {
-                    await sock.sendMessage(chatId, { text: '*↢ الرجاء تحديد مدينه مثال:*\n*↢ طقس غزة*' }, { quoted: message });
+                    await sock.sendMessage(chatId, { text: '*↢ الرجاء تحديد مدينه مثال:*\n*↢ جو غزة*' }, { quoted: message });
                 }
                 commandExecuted = true;
                 break;
@@ -1342,7 +1342,7 @@ if (originalCommand) {
                 commandExecuted = true;
                 break;
             case cleanMessage === 'اخبار عربية' || cleanMessage === 'اخبار عربيه' || normalizedCleanMessage === 'اخبار_عربية' || normalizedCleanMessage === 'اخبار_عربيه':
-                await arabicNewsCommand(sock, chatId);
+                await arabicNewsCommand(sock, chatId, message);
                 commandExecuted = true;
                 break;
             case cleanMessage === 'اكس او' || cleanMessage.startsWith('اكس او ') || normalizedCleanMessage === 'اكس_او' || normalizedCleanMessage.startsWith('اكس_او_'):
