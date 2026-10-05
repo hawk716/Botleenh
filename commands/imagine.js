@@ -1,93 +1,99 @@
-const { UNDER_MAINTENANCE } = require('../lib/messages');
 const axios = require('axios');
-const { fetchBuffer } = require('../lib/myfunc');
 
-// معطّل مؤقتاً: مزوّد الصور غير متاح. نرد برسالة الصيانة الموحّدة.
-const DISABLED = true;
+// نماذج Pollinations.ai المتاحة
+const MODELS = {
+    default: 'flux',
+    realistic: 'flux-realism',
+    anime: 'flux-anime',
+    fast: 'turbo',
+    pro: 'flux-pro'
+};
 
+/**
+ * أمر تخيل / توليد صورة
+ * الاستخدام: تخيل <وصف> | توليد صوره <وصف> | توليد صورة <وصف>
+ * يدعم اختيار النموذج: تخيل --واقعي <وصف> | تخيل --انمي <وصف> | تخيل --سريع <وصف>
+ */
 async function imagineCommand(sock, chatId, message) {
     try {
-        if (DISABLED) {
-            await sock.sendMessage(chatId, { text: UNDER_MAINTENANCE }, { quoted: message });
-            return;
+        const text = (
+            message.message?.conversation ||
+            message.message?.extendedTextMessage?.text ||
+            ''
+        ).trim();
+
+        // استخراج البرومبت بعد حذف أي شكل من أشكال الأمر
+        let imagePrompt = text
+            .replace(/^\.?\s*(تخيل|توليد\s+صوره|توليد\s+صورة)\s*/i, '')
+            .trim();
+
+        // اختيار النموذج من الكلمة المفتاحية
+        let model = MODELS.default;
+        if (/--واقعي/i.test(imagePrompt)) {
+            model = MODELS.realistic;
+            imagePrompt = imagePrompt.replace(/--واقعي/i, '').trim();
+        } else if (/--انمي|--أنمي/i.test(imagePrompt)) {
+            model = MODELS.anime;
+            imagePrompt = imagePrompt.replace(/--انمي|--أنمي/i, '').trim();
+        } else if (/--سريع/i.test(imagePrompt)) {
+            model = MODELS.fast;
+            imagePrompt = imagePrompt.replace(/--سريع/i, '').trim();
+        } else if (/--احترافي/i.test(imagePrompt)) {
+            model = MODELS.pro;
+            imagePrompt = imagePrompt.replace(/--احترافي/i, '').trim();
         }
 
-        // Get the prompt from the message
-        const prompt = message.message?.conversation?.trim() || 
-                      message.message?.extendedTextMessage?.text?.trim() || '';
-        
-        // Remove command prefix: تخيل OR توليد صوره OR توليد صورة
-        const imagePrompt = prompt.replace(/^\.?(تخيل|توليد\s+صوره|توليد\s+صورة)\s*/i, '').trim();
-        
         if (!imagePrompt) {
             await sock.sendMessage(chatId, {
-                text: 'يرجى تقديم وصف لتوليد الصورة.\nمثال: .imagine غروب جميل فوق الجبال'
-            }, {
-                quoted: message
-            });
+                text: `🎨 *أمر توليد الصورة*\n\n` +
+                      `يرجى كتابة وصف الصورة بعد الأمر.\n\n` +
+                      `*أمثلة:*\n` +
+                      `• تخيل غروب جميل فوق الجبال\n` +
+                      `• توليد صورة قطة بجانب النهر\n\n` +
+                      `*النماذج المتاحة:*\n` +
+                      `• بدون خيار ← جودة عالية (flux)\n` +
+                      `• --واقعي ← صور واقعية\n` +
+                      `• --انمي ← رسوم أنمي\n` +
+                      `• --سريع ← توليد سريع\n` +
+                      `• --احترافي ← جودة احترافية`
+            }, { quoted: message });
             return;
         }
 
-        // Send processing message
+        // رسالة الانتظار
         await sock.sendMessage(chatId, {
-            text: '🎨 جاري توليد صورتك... يرجى الانتظار.'
-        }, {
-            quoted: message
+            text: `🎨 جاري توليد صورتك...\n📝 الوصف: "${imagePrompt}"\n⏳ يرجى الانتظار...`
+        }, { quoted: message });
+
+        // بناء رابط Pollinations.ai
+        const seed = Math.floor(Math.random() * 999999);
+        const encodedPrompt = encodeURIComponent(imagePrompt);
+        const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&model=${model}&seed=${seed}&nologo=true&enhance=true`;
+
+        // تنزيل الصورة كـ buffer
+        const response = await axios.get(url, {
+            responseType: 'arraybuffer',
+            timeout: 60000,
+            headers: { 'User-Agent': 'LeenBot/1.0' }
         });
 
-        // Enhance the prompt with quality keywords
-        const enhancedPrompt = enhancePrompt(imagePrompt);
-
-        // Make API request
-        const response = await axios.get(`https://shizoapi.onrender.com/api/ai/imagine?apikey=shizo&query=${encodeURIComponent(enhancedPrompt)}`, {
-            responseType: 'arraybuffer'
-        });
-
-        // Convert response to buffer
         const imageBuffer = Buffer.from(response.data);
 
-        // Send the generated image
+        // إرسال الصورة
         await sock.sendMessage(chatId, {
             image: imageBuffer,
-            caption: `🎨 الصورة المولدة للوصف: "${imagePrompt}"`
-        }, {
-            quoted: message
-        });
+            caption: `🎨 *تم توليد الصورة*\n\n` +
+                     `📝 الوصف: ${imagePrompt}\n` +
+                     `🤖 النموذج: ${model}\n` +
+                     `✨ مشغّل بـ Pollinations.ai`
+        }, { quoted: message });
 
     } catch (error) {
-        console.error('Error in imagine command:', error);
+        console.error('[imagine] Error:', error.message);
         await sock.sendMessage(chatId, {
-            text: UNDER_MAINTENANCE
-        }, {
-            quoted: message
-        });
+            text: '❌ تعذّر توليد الصورة، يرجى المحاولة مرة أخرى أو تغيير الوصف.'
+        }, { quoted: message });
     }
-}
-
-// Function to enhance the prompt
-function enhancePrompt(prompt) {
-    // Quality enhancing keywords
-    const qualityEnhancers = [
-        'high quality',
-        'detailed',
-        'masterpiece',
-        'best quality',
-        'ultra realistic',
-        '4k',
-        'highly detailed',
-        'professional photography',
-        'cinematic lighting',
-        'sharp focus'
-    ];
-
-    // Randomly select 3-4 enhancers
-    const numEnhancers = Math.floor(Math.random() * 2) + 3; // Random number between 3-4
-    const selectedEnhancers = qualityEnhancers
-        .sort(() => Math.random() - 0.5)
-        .slice(0, numEnhancers);
-
-    // Combine original prompt with enhancers
-    return `${prompt}, ${selectedEnhancers.join(', ')}`;
 }
 
 module.exports = imagineCommand;

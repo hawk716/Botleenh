@@ -9,6 +9,7 @@ baileys_store.json
 # كوكيز يوتيوب/قوقل — بيانات اعتماد، لا تُرفع أبداً
 cookies.txt
 cookies*.txt
+cookies.json
 
 # بيانات التشغيل الخاصة بالمستخدمين (تُنشأ تلقائياً وتحتوي أرقام/LID)
 data/members.json
